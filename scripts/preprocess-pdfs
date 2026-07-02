@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# scripts/preprocess-pdfs — convert PDFs in inbox/ to markdown for process-inbox
+
+set -euo pipefail
+
+KB_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INBOX_DIR="$KB_ROOT/inbox"
+
+if [[ ! -d "$INBOX_DIR" ]]; then
+    echo "Error: $INBOX_DIR does not exist"
+    exit 1
+fi
+
+found=0
+converted=0
+deleted=0
+
+while IFS= read -r -d '' pdf; do
+    found=$((found + 1))
+    basename="$(basename "$pdf" .pdf)"
+    md_file="$(dirname "$pdf")/${basename}.md"
+
+    # Skip if markdown already exists (avoid overwriting)
+    if [[ -f "$md_file" ]]; then
+        echo "Skipping: $pdf (already exists: ${basename}.md)"
+        continue
+    fi
+
+    echo "Converting: $pdf → ${basename}.md"
+
+    # Extract text and wrap in markdown
+    if ! {
+        echo "# ${basename//-/ }"
+        echo ""
+        pdftotext "$pdf" -
+    } > "$md_file"; then
+        echo "Error: failed to convert $pdf"
+        rm -f "$md_file"
+        continue
+    fi
+
+    # Verify output is non-empty
+    if [[ ! -s "$md_file" ]]; then
+        echo "Warning: $md_file is empty, keeping source PDF"
+        continue
+    fi
+
+    converted=$((converted + 1))
+
+    # Delete source PDF on successful conversion
+    rm "$pdf"
+    deleted=$((deleted + 1))
+    echo "Deleted source: $pdf"
+done < <(find "$INBOX_DIR" -type f -name '*.pdf' -print0)
+
+if [[ $found -eq 0 ]]; then
+    echo "No PDFs found in inbox/."
+else
+    echo "Done. $found PDF(s) found, $converted converted, $deleted deleted."
+fi

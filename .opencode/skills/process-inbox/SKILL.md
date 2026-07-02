@@ -38,13 +38,27 @@ knowledge repo.
 
 ---
 
+## Step 0.5 — PDF preprocessing
+
+If there are `.pdf` files anywhere in `inbox/`, automatically run:
+
+```bash
+scripts/preprocess-pdfs
+```
+
+This extracts text from every PDF into a sibling `.md` file and deletes the source PDF on
+success. After it finishes, continue to Step 1; the newly created `.md` files will be picked
+up automatically.
+
+---
+
 ## Step 1 — Collect inbox files
 
 Build the work list:
 
 1. Search the requested scope (`inbox/chats/**`, `inbox/agents/**`, `inbox/articles/**`, or the whole `inbox/**`
    when no scope is given) for readable text files: `.md`, `.txt`, and extensionless text.
-2. Exclude `.keep` and any dotfiles.
+2. Exclude `.keep`, any dotfiles, and `.pdf` files (see PDF preprocessing below).
 3. Sort alphabetically by path.
 
 If the list is empty, print "Inbox is empty — nothing to process." and stop.
