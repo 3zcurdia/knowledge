@@ -259,4 +259,8 @@ create index(:messages, [:sender_type, :sender_id])
 create unique_index(:teams_agents, [:agent_id, :team_id])
 ```
 
+## See also
+
+- [Distributed Systems Lessons from LiveView: State Ownership and Eventual Consistency](../../captures/patterns/liveview-distributed-systems-lessons.md)
+
 > Source: inbox/chats/sevice-desk-design.md · processed 2026-07-02

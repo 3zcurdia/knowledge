@@ -93,4 +93,8 @@ PNG or process in chunks to reduce space usage.
 3. Optionally reintroduce grain
 4. Avoid amplifying DVD artifacts into the final output
 
+## See also
+
+- [Qwen 3.6 Model Hardware Fit Guide](../../notes/qwen-3-6-model-hardware-fit-guide.md)
+
 > Source: inbox/chats/ai-upscale-movie.md · processed 2026-07-02

@@ -30,4 +30,8 @@ def mount(%{"room" => room}, _session, socket) do
 end
 ```
 
+## See also
+
+- [Service Desk Application Schema and Architecture Design](../../projects/service-desk/schema-and-architecture-design.md)
+
 > Source: inbox/articles/Love LiveView and think distributed systems.md · processed 2026-07-02

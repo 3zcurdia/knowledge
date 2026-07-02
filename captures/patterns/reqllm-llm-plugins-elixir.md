@@ -31,4 +31,9 @@ Each provider implements `ReqLLM.Plugin` with `attach/2` (configure request) and
 
 High-level helpers (`generate_text/3`) and low-level Req plugin API for advanced use cases with custom middleware.
 
+## See also
+
+- [Agentic Workflows with Oban Pro: Cascades, Human-in-the-Loop, Grafting](oban-pro-agentic-workflows.md)
+- [Agentic Systems Are Just Database State and Processes](../observations/agentic-systems-database-state.md)
+
 > Source: inbox/articles/Introducing ReqLLM Req Plugins for LLM Interactions.md · processed 2026-07-02

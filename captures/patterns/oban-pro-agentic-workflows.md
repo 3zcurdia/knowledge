@@ -33,4 +33,10 @@ Define a placeholder in a workflow, then expand it into a sub-workflow at runtim
 - No external infrastructure needed
 - Works for both agentic and non-agentic deterministic workflows
 
+## See also
+
+- [Agentic Systems Are Just Database State and Processes](../observations/agentic-systems-database-state.md)
+- [ReqLLM: Composable LLM Interactions via Req Plugins](reqllm-llm-plugins-elixir.md)
+- [Phoenix Monitoring with PromEx, Prometheus, and Grafana](phoenix-promex-grafana-monitoring.md)
+
 > Source: inbox/articles/Unlocking Agentic Workflows with Oban Pro.md · processed 2026-07-02

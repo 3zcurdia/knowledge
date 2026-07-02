@@ -18,4 +18,9 @@ system (~$68 on Amazon, or OEM Ford locking fuel plug). An aftermarket locking
 fuel door is also available (under $100 from AmericanTrucks, O'Reilly). Converting
 to a traditional screw cap is not recommended.
 
+## See also
+
+- [Ford 10R80 10-Speed Automatic Transmission Fluid Service](../../notes/ford-10r80-transmission-fluid-service.md)
+- [2018 Ford F-150 5.0 Coyote V8 Engine Specifications](../numbers/ford-5-0-coyote-v8-specs.md)
+
 > Source: inbox/chats/ford-f150.md · processed 2026-07-02

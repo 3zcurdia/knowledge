@@ -32,4 +32,8 @@ Prometheus scrapes the app's `/metrics` endpoint and stores time series. Grafana
 
 Monitor Prometheus itself by exporting its `/metrics` to a secondary scraper. Track `prometheus_tsdb_head_series`, `process_resident_memory_bytes`, and `prometheus_rule_evaluation_failures_total`.
 
+## See also
+
+- [Agentic Workflows with Oban Pro: Cascades, Human-in-the-Loop, Grafting](oban-pro-agentic-workflows.md)
+
 > Source: inbox/articles/Phoenix App Monitoring Grafana and PromEx Real-Time Setup.md · processed 2026-07-02

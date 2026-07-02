@@ -41,4 +41,10 @@ Recommended stack:
 Pairing the model with project-specific context via RAG (indexing the repository and
 documentation) dramatically improves accuracy for Elixir development.
 
+## See also
+
+- [Top Use Cases for Local LLMs](top-use-cases-for-local-llms.md)
+- [LLM Benchmark Prompts for Text Processing](../captures/patterns/llm-benchmark-prompts-text-processing.md)
+- [AI Movie Upscaling Pipeline for Local Hardware](../captures/patterns/ai-movie-upscaling-pipeline.md)
+
 > Source: inbox/chats/local-models.md · processed 2026-07-02

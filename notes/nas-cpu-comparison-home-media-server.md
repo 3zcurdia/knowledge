@@ -74,4 +74,8 @@ compelling ARM alternative for users comfortable with ARM Linux, while the Pi 5 
 best viewed as a compact, low-cost storage server rather than a media transcoding
 platform.
 
+## See also
+
+- [Intel Processor Naming Conventions](intel-processor-naming-conventions.md)
+
 > Source: inbox/chats/nas-x86.md · processed 2026-07-02

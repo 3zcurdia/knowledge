@@ -43,4 +43,10 @@ hardware for real-time voice interfaces and autocomplete tools.
 | Phi-4          | High reasoning efficiency on small RAM  | 10–14GB RAM  |
 | Mistral Small 3| Maximum speed & low-latency tasks       | 6–8GB RAM    |
 
+## See also
+
+- [Qwen 3.6 Model Hardware Fit Guide](qwen-3-6-model-hardware-fit-guide.md)
+- [LLM Benchmark Prompts for Text Processing](../captures/patterns/llm-benchmark-prompts-text-processing.md)
+- [Local AI as Default: On-Device Processing Over Cloud APIs](../captures/observations/local-ai-default-architecture.md)
+
 > Source: inbox/chats/local-models.md · processed 2026-07-02

@@ -92,4 +92,9 @@ and a detailed explanation showing how the conclusion was reached.
 | Long Document Analysis | Synthesis, reasoning, organization |
 | RAG | Grounding responses in sources, avoiding unsupported claims |
 
+## See also
+
+- [Top Use Cases for Local LLMs](../../notes/top-use-cases-for-local-llms.md)
+- [Qwen 3.6 Model Hardware Fit Guide](../../notes/qwen-3-6-model-hardware-fit-guide.md)
+
 > Source: inbox/chats/local-models.md · processed 2026-07-02

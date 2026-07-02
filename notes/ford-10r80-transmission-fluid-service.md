@@ -33,4 +33,9 @@ The 10R80 transmission (paired with 5.0 V8 in 2018+ F-150) is often labeled
 - Unknown service history
 - Over ~60,000 miles
 
+## See also
+
+- [2018 Ford F-150 5.0 Coyote V8 Engine Specifications](../captures/numbers/ford-5-0-coyote-v8-specs.md)
+- [Ford Easy Fuel Capless Fuel System](../captures/observations/ford-easy-fuel-capless-system.md)
+
 > Source: inbox/chats/ford-f150.md · processed 2026-07-02

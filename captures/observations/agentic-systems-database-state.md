@@ -17,4 +17,9 @@ Agents are processes that instruct LLMs to make tool calls. Agentic memory is wh
 
 The instruction sent to the LLM is a functional representation of database state. The UI, agent control flow, and context engineering are all driven by the same data model.
 
+## See also
+
+- [Agentic Workflows with Oban Pro: Cascades, Human-in-the-Loop, Grafting](../patterns/oban-pro-agentic-workflows.md)
+- [ReqLLM: Composable LLM Interactions via Req Plugins](../patterns/reqllm-llm-plugins-elixir.md)
+
 > Source: inbox/articles/Bringing agents back down to earth.md · processed 2026-07-02

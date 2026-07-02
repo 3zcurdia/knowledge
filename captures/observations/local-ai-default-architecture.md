@@ -22,4 +22,8 @@ Swift's `FoundationModels` framework enables on-device AI with typed outputs via
 
 Use cloud models only when genuinely necessary. Keep user data local. Treat AI as a typed subsystem with predictable behavior, not a chat box.
 
+## See also
+
+- [Top Use Cases for Local LLMs](../../notes/top-use-cases-for-local-llms.md)
+
 > Source: inbox/articles/Local AI Needs to be the Norm.md · processed 2026-07-02

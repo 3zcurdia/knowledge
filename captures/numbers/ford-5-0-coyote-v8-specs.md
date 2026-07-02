@@ -16,4 +16,9 @@
 The F-150 5.0 wins in horsepower against both. The Hilux diesel can come close in
 torque, but at much lower RPM.
 
+## See also
+
+- [Ford 10R80 10-Speed Automatic Transmission Fluid Service](../../notes/ford-10r80-transmission-fluid-service.md)
+- [Ford Easy Fuel Capless Fuel System](../observations/ford-easy-fuel-capless-system.md)
+
 > Source: inbox/chats/ford-f150.md · processed 2026-07-02
