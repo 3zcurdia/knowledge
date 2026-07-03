@@ -1,0 +1,31 @@
+{
+  "id": "captures/numbers/moores-law",
+  "path": "captures/numbers/moores-law.md",
+  "title": "Moore's law",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "Moore's law is the empirical observation that transistor count in integrated circuits doubles about every two years with minimal cost increase. Originally predicted by Gordon Moore in 1965 (doubling every year), revised in 1975 to every two years (41% CAGR). David House predicted chip performance doubles every 18 months combining Moore's law with Dennard scaling. As of 2025, top processors exceed 92 billion transistors. Semiconductor advancement has slowed since ~2010; current cadence is closer to 3 years. Related laws include Dennard scaling (ended mid-2000s), Rock's law (fab cost doubles every 4 years), Kryder's law, Keck's law, and Eroom's law.",
+  "keywords": ["moore's law", "transistors", "semiconductor", "scaling", "integrated circuit", "process nodes", "CAGR"],
+  "entities": ["Gordon Moore", "Intel", "David House", "Robert Dennard", "TSMC", "Samsung", "Nvidia", "Jensen Huang", "Pat Gelsinger"],
+  "see_also": ["captures/numbers/mosfet-scaling-process-nodes"],
+  "source": "inbox/articles/Moore's law.md",
+  "processed_at": "2026-07-03",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Moore's law is the observation that the number of transistors in an integrated circuit doubles about every two years, with minimal increase in cost. Named after Gordon Moore, co-founder of Intel, who in 1965 noted doubling every year, revised in 1975 to every two years (CAGR of 41%)."
+    },
+    {
+      "section": "Key metrics",
+      "content": "## Key metrics\n\n- Transistor doubling: every ~2 years (originally every year, revised in 1975)\n- CAGR: 41%\n- David House prediction: chip performance doubles every 18 months\n- As of 2025: 92.2+ billion transistors in commercially available processors (GB202 GPU)\n"
+    },
+    {
+      "section": "Related laws",
+      "content": "## Related laws\n\n- Dennard scaling (1974): power density stays constant as transistors shrink. Ended mid-2000s.\n- Moore's second law / Rock's law: fab capital cost doubles every 4 years.\n- Kryder's law: HDD areal density doubling (slowed ~2010).\n- Keck's law: fiber-optic capacity increases faster than Moore's law.\n- Eroom's law: drug development cost doubles every 9 years.\n"
+    },
+    {
+      "section": "Current status",
+      "content": "## Current status\n\nSemiconductor advancement slowed since ~2010. Intel's Gelsinger (2023): \"closer to every three years now.\" Huang declared Moore's law dead in 2022; Intel countered. ITRS final roadmap in 2016 shifted to \"More than Moore\" strategy.\n"
+    }
+  ]
+}

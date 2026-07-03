@@ -1,0 +1,35 @@
+{
+  "id": "captures/concepts/occams-razor",
+  "path": "captures/concepts/occams-razor.md",
+  "title": "Occam's razor",
+  "category": "captures/concepts",
+  "type": "concepts",
+  "summary": "Occam's razor (principle of parsimony) is a problem-solving principle recommending explanations with the smallest possible set of elements. Attributed to William of Ockham (14th century). When competing hypotheses have equal explanatory power, prefer the one requiring fewest assumptions. Applies across science (heuristic for model development), medicine (Zebra rule), software (rule of least power), and statistics (Bayesian model comparison, AIC, BIC, minimum description length). Mathematically grounded: unnecessary assumptions increase probability of error. Caveats: only adjudicates between equally supported theories; simplicity can mean structural or ontological; no-free-lunch theorems show reliance on prior assumptions.",
+  "keywords": ["occam's razor", "parsimony", "simplicity", "problem-solving", "mental model", "heuristic", "william of ockham"],
+  "entities": ["William of Ockham", "Isaac Newton", "Albert Einstein", "Bertrand Russell", "Karl Popper", "Francis Crick", "Ray Solomonoff"],
+  "see_also": [],
+  "source": "inbox/articles/Occam's razor.md",
+  "processed_at": "2026-07-03",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Occam's razor (also Ockham's razor or the principle of parsimony) is a problem-solving principle that recommends searching for explanations constructed with the smallest possible set of elements. Attributed to William of Ockham, a 14th-century English philosopher and theologian."
+    },
+    {
+      "section": "Key formulations",
+      "content": "## Key formulations\n\n- Original: Pluralitas non est ponenda sine necessitate — \"Plurality must never be posited without necessity\"\n- Newton: \"We are to admit no more causes of natural things than such as are both true and sufficient to explain their appearances\"\n- Einstein: \"Everything should be kept as simple as possible, but not simpler\"\n- Russell: \"Whenever possible, substitute constructions out of known entities for inferences to unknown entities\"\n"
+    },
+    {
+      "section": "Applications",
+      "content": "## Applications\n\n- Science: heuristic for theoretical model development, prefers simpler theories because they are more testable and falsifiable.\n- Medicine: \"Zebra\" rule — reject exotic diagnoses when commonplace explanation is more likely.\n- Software: Rule of least power — use simplest programming language that solves the problem.\n- Statistics: Bayesian model comparison uses Occam factors (AIC, BIC, MDL, Solomonoff's theory).\n"
+    },
+    {
+      "section": "Mathematical basis",
+      "content": "## Mathematical basis\n\nAll assumptions introduce possibilities for error. A study of 97 economic forecasts found complexity increased forecast errors by an average of 27%.\n"
+    },
+    {
+      "section": "Caveats",
+      "content": "## Caveats\n\n- Not an embargo against complex explanations — only adjudicates between theories with equal explanatory power.\n- Simplicity can mean structural (syntax) or ontological (semantics) — these often pull in different directions.\n- Francis Crick: \"While Ockham's razor is a useful tool in the physical sciences, it can be a very dangerous implement in biology.\"\n- No-free-lunch theorems show reliance on assumptions about prior probability distribution.\n"
+    }
+  ]
+}

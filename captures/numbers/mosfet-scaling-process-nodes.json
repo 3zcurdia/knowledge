@@ -1,0 +1,19 @@
+{
+  "id": "captures/numbers/mosfet-scaling-process-nodes",
+  "path": "captures/numbers/mosfet-scaling-process-nodes.md",
+  "title": "MOSFET scaling — process node timeline",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "Historical record of MOSFET transistor gate lengths in semiconductor fabrication from 1968 to ~2027. Tracks the progression from 20 μm (1968) through sub-micron nodes (1984) to current 2 nm (2025) and projected 1 nm (~2027). Shows the cadence of process node shrinks, generally every 2 years, with notable acceleration in the 2000s and recent slowdown to ~3 year cadence at advanced nodes.",
+  "keywords": ["MOSFET", "process node", "semiconductor fabrication", "transistor scaling", "gate length", "nanometer", "lithography"],
+  "entities": ["Intel", "TSMC", "Samsung", "IBM"],
+  "see_also": ["captures/numbers/moores-law"],
+  "source": "inbox/articles/Moore's law.md",
+  "processed_at": "2026-07-03",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Historical record of MOSFET transistor gate lengths used in semiconductor device fabrication, from 1968 to present.\n\n| Year | Process node |\n|------|-------------|\n| 1968 | 20 μm |\n| 1971 | 10 μm |\n| 1974 | 6 μm |\n| 1977 | 3 μm |\n| 1981 | 1.5 μm |\n| 1984 | 1 μm |\n| 1987 | 800 nm |\n| 1990 | 600 nm |\n| 1993 | 350 nm |\n| 1996 | 250 nm |\n| 1999 | 180 nm |\n| 2001 | 130 nm |\n| 2003 | 90 nm |\n| 2005 | 65 nm |\n| 2007 | 45 nm |\n| 2009 | 32 nm |\n| 2010 | 28 nm |\n| 2012 | 22 nm |\n| 2014 | 14 nm |\n| 2016 | 10 nm |\n| 2018 | 7 nm |\n| 2020 | 5 nm |\n| 2022 | 3 nm |\n| 2025 | 2 nm |\n| ~2027 | 1 nm (projected) |\n"
+    }
+  ]
+}
