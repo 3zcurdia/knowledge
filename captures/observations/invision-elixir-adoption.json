@@ -1,0 +1,31 @@
+{
+  "id": "captures/observations/invision-elixir-adoption",
+  "path": "captures/observations/invision-elixir-adoption.md",
+  "title": "Invision AI: Adopting Elixir to Simplify System Architecture",
+  "category": "captures/observations",
+  "type": "observations",
+  "summary": "Invision AI replaced a fragmented C++, Go, Python, and JavaScript stack with Elixir for real-time mobility systems (vehicle occupancy and incident detection). BEAM message-passing concurrency and supervisors give fault tolerance; Phoenix LiveView server-owned rendering removed client-side JS; REPL introspection inspects live GenServer state and CPU in production; the team went from zero Elixir to merged PRs in two weeks. Tooling: Oban for jobs, Telemetry to Prometheus, Ecto for composable SQL. One engineer shipped a production-ready full-stack app in two months.",
+  "keywords": ["elixir", "phoenix", "liveview", "beam", "oban", "ecto", "telemetry", "mobility", "migration"],
+  "entities": ["Invision AI", "Elixir", "BEAM", "Phoenix", "LiveView", "Django", "Go", "C++", "Python", "JavaScript", "Oban", "Telemetry", "Prometheus", "Ecto", "GenServer", "Elixir School", "Elixir in Action"],
+  "see_also": [],
+  "source": "inbox/articles/Elixir A Journey to Simplifying System Architecture.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Invision AI replaced a fragmented stack of C++, Go, Python, and JavaScript with Elixir for their real-time mobility systems (vehicle occupancy detection, incident detection).\n"
+    },
+    {
+      "section": "Why Elixir",
+      "content": "## Why Elixir\n\n- **Concurrency + fault tolerance:** BEAM processes communicate only via message passing (no shared mutable state), supervisors handle restarts automatically.\n- **Full-stack with Phoenix LiveView:** Replaced Django + Go + C++ web stack. LiveView's server-owned rendering eliminates client-side JS for real-time updates.\n- **Introspection:** REPL inside running BEAM can inspect GenServer state, query process CPU usage, and call functions in production.\n- **Learning curve:** Team went from zero Elixir to productive in 2 weeks using \"Elixir in Action\" and Elixir School. First merge requests within 2 weeks.\n- **Testing:** Can run tests from a separate BEAM instance against production docker images using `:erpc.call/4`.\n"
+    },
+    {
+      "section": "Key Tools",
+      "content": "## Key Tools\n\n- **Oban** for job scheduling with queues, retries, and monitoring\n- **Telemetry** package for metrics export to Prometheus\n- **Ecto** for composable SQL queries\n"
+    },
+    {
+      "section": "Results",
+      "content": "## Results\n\nSingle person implemented a production-ready web app in 2 months with tests, concurrency, and full-stack features. Migration from C++/Go/Python stack nearly complete.\n"
+    }
+  ]
+}

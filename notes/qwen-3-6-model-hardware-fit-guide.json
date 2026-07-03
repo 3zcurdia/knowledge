@@ -1,0 +1,35 @@
+{
+  "id": "notes/qwen-3-6-model-hardware-fit-guide",
+  "path": "notes/qwen-3-6-model-hardware-fit-guide.md",
+  "title": "Qwen 3.6 Model Hardware Fit Guide",
+  "category": "notes",
+  "type": "notes",
+  "summary": "Guide to running the Qwen 3.6 open-weight models locally: the dense Qwen3.6-27B and the Mixture-of-Experts Qwen3.6-35B-A3B, which activates only ~3B parameters per token for flagship-level coding and reasoning at low cost. Recommends Q4-quantized MoE on M4 Pro 24GB and RTX 5060 Ti 16GB with MLX or Ollama on Apple Silicon and Ollama or llama.cpp on NVIDIA. Lists Qwen 3.6 focus areas (repository-level reasoning, agentic coding, frontend/backend integration) and a recommended Elixir plus Phoenix stack pairing the model with RAG-indexed project context, Phoenix source, LiveView, HexDocs, Elixir stdlib, and Ecto.",
+  "keywords": ["qwen", "llm", "local models", "mlx", "ollama", "llama.cpp", "moe", "quantization", "elixir", "phoenix"],
+  "entities": ["Qwen3.6-27B", "Qwen3.6-35B-A3B", "M4 Pro 24GB", "RTX 5060 Ti 16GB", "MLX", "Ollama", "llama.cpp", "VS Code", "Continue", "Cline", "OpenCode", "Phoenix", "LiveView", "HexDocs", "Ecto", "Elixir"],
+  "see_also": ["top-use-cases-for-local-llms.md", "../captures/patterns/llm-benchmark-prompts-text-processing.md", "../captures/patterns/ai-movie-upscaling-pipeline.md"],
+  "source": "inbox/chats/local-models.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "The latest Qwen 3.6 open-weight models are Qwen3.6-27B (dense) and\nQwen3.6-35B-A3B (Mixture of Experts). Despite 35B total parameters, the MoE\narchitecture only activates ~3B parameters per token, making it lighter to run than\nthe dense 27B while delivering flagship-level performance on coding and reasoning.\n"
+    },
+    {
+      "section": "Recommended Configurations",
+      "content": "## Recommended Configurations\n\n| Hardware          | Recommended Model       | Experience |\n|------------------|------------------------|------------|\n| M4 Pro 24GB      | Qwen3.6-35B-A3B (Q4)   | Excellent  |\n| RTX 5060 Ti 16GB | Qwen3.6-35B-A3B (Q4)   | Excellent  |\n| M4 Pro 24GB      | Qwen3.6-27B (Q4)       | Good, slower, more memory usage |\n| RTX 5060 Ti 16GB | Qwen3.6-27B (Q4)       | May require offloading or lower-bit quantization |\n"
+    },
+    {
+      "section": "Runtimes by Platform",
+      "content": "## Runtimes by Platform\n\n| Platform  | Runtime Options        |\n|-----------|-----------------------|\n| Apple Silicon | MLX or Ollama  |\n| NVIDIA    | Ollama or llama.cpp  |\n"
+    },
+    {
+      "section": "Qwen 3.6 Improvements",
+      "content": "## Qwen 3.6 Improvements\n\nAccording to the official Qwen 3.6 release, focus areas include:\n- Repository-level reasoning\n- Agentic coding\n- Better frontend/backend integration\n- Preserving reasoning across long coding sessions\n"
+    },
+    {
+      "section": "For Elixir + Phoenix Development",
+      "content": "## For Elixir + Phoenix Development\n\nRecommended stack:\n- **Model**: Qwen3.6-35B-A3B (Q4)\n- **Runtime**: Ollama (both platforms), MLX (Apple)\n- **IDE**: VS Code + Continue, Cline, or OpenCode\n- **Context**: Your project, Phoenix source, LiveView source, HexDocs, Elixir stdlib,\n  Ecto\n\nPairing the model with project-specific context via RAG (indexing the repository and\ndocumentation) dramatically improves accuracy for Elixir development.\n"
+    }
+  ]
+}

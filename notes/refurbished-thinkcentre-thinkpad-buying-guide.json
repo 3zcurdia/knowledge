@@ -1,0 +1,51 @@
+{
+  "id": "notes/refurbished-thinkcentre-thinkpad-buying-guide",
+  "path": "notes/refurbished-thinkcentre-thinkpad-buying-guide.md",
+  "title": "Refurbished ThinkCentre and ThinkPad Buying Guide",
+  "category": "notes",
+  "type": "notes",
+  "summary": "Practical buying guide for refurbished Lenovo ThinkCentre Tiny desktops and ThinkPad laptops for office work on Windows and Linux. Covers Windows 11 minimum CPU requirements (Intel 8th Gen or AMD Ryzen 2000+), recommended RAM and NVMe SSD specs, ThinkCentre M-series generations from M710q to M90q Gen 4, ThinkPad T480 through T14 Gen 4 plus X/L/P alternatives, Linux budget options on Intel 6th/7th Gen, sweet-spot picks around $150–450, Intel vs AMD Linux driver notes, low-power T and GE CPUs to look for, and a used-market best-value ranking topped by ThinkCentre M75q Gen 2 and T480.",
+  "keywords": ["thinkcentre", "thinkpad", "lenovo", "refurbished", "linux", "windows 11", "tiny", "laptop", "desktop", "amd", "intel"],
+  "entities": ["Lenovo", "ThinkCentre", "ThinkPad", "M710q Tiny", "M720q Tiny", "M920q Tiny", "M75q Gen 1", "M90q Gen 1", "M75q Gen 2", "M90q Gen 2", "M75q Gen 3", "M90q Gen 3", "M90q Gen 4", "T480", "T490", "T14 Gen 1", "T14 Gen 2", "T14 Gen 3", "T14 Gen 4", "X280", "X390", "X13 Gen 1", "L14 Gen 1", "P14s", "P15s", "i5-8250U", "i5-8500T", "Ryzen 5 Pro 5650GE", "Ryzen 5 Pro 5650U", "i5-8350U", "Windows 11"],
+  "see_also": [],
+  "source": "inbox/chats/intel-gens.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "A practical guide for buying refurbished Lenovo ThinkCentre Tiny desktops and\nThinkPad laptops for office work, covering both Windows and Linux use.\n"
+    },
+    {
+      "section": "Windows 11 Minimum",
+      "content": "## Windows 11 Minimum\n\n| Intel | 8th Gen or newer (e.g., i5-8250U, i5-8500T) |\n| AMD   | Ryzen 2000 (Zen+) or newer                   |\n\nOlder hardware (Intel 7th Gen and below) lacks official Windows 11 support.\n"
+    },
+    {
+      "section": "Recommended Specs",
+      "content": "## Recommended Specs\n\n- **RAM**: 16 GB minimum; 32 GB ideal. Avoid soldered RAM where upgrades matter.\n- **SSD**: NVMe SSD, 512 GB minimum. Avoid SATA-only unless price is very\n  attractive.\n"
+    },
+    {
+      "section": "ThinkCentre Tiny (Desktop) Models",
+      "content": "## ThinkCentre Tiny (Desktop) Models\n\n| Model        | CPU Gen          | Windows 11 | Notes |\n|-------------|------------------|------------|-------|\n| M710q Tiny  | 6th/7th Gen Intel | ❌         | Skip for Windows; fine for Linux |\n| M720q Tiny  | 8th Gen Intel     | ✅         | Good budget value |\n| M920q Tiny  | 8th Gen Intel     | ✅         | Great value; PCIe riser support |\n| M75q Gen 1  | Ryzen 3000 Pro    | ✅         | AMD alternative |\n| M90q Gen 1  | 10th Gen Intel    | ✅         | Faster CPUs |\n| M75q Gen 2  | Ryzen 5000 Pro    | ✅         | Best value — Ryzen 5 Pro 5650GE |\n| M90q Gen 2  | 11th Gen Intel    | ✅         | |\n| M75q Gen 3  | Ryzen 6000 Pro    | ✅         | DDR5 starts appearing |\n| M90q Gen 3  | 12th Gen Intel    | ✅         | Hybrid architecture |\n| M90q Gen 4  | 13th Gen Intel    | ✅         | Usually still expensive used |\n"
+    },
+    {
+      "section": "ThinkPad (Laptop) Models",
+      "content": "## ThinkPad (Laptop) Models\n\n| Model       | CPU                        | Windows 11 | Notes |\n|------------|---------------------------|------------|-------|\n| T480       | 8th Gen Intel              | ✅         | Legendary value — upgradeable RAM/SSD/Wi-Fi, Thunderbolt |\n| T490       | 8th Gen Intel              | ✅         | Good |\n| T14 Gen 1  | 10th Gen Intel / Ryzen 4000 | ✅        | Excellent |\n| T14 Gen 2  | 11th Gen Intel / Ryzen 5000 | ✅        | Outstanding — Ryzen 5650U recommended |\n| T14 Gen 3  | 12th Gen Intel / Ryzen 6000 | ✅        | Excellent |\n| T14 Gen 4  | 13th Gen Intel / Ryzen 7000 | ✅        | Premium |\n\nAlso worth considering: X280, X390, X13 Gen 1, L14 Gen 1, P14s, P15s.\n"
+    },
+    {
+      "section": "Linux-Specific Recommendations",
+      "content": "## Linux-Specific Recommendations\n\nWhen Windows 11 support is not required, Linux opens up more budget options:\n\n### Budget Champions (Intel 6th/7th Gen)\n\n- ThinkCentre M700 Tiny / M710q Tiny\n- ThinkPad T460 / T470\n- Intel graphics, Wi-Fi, NVMe, suspend/resume all well-supported\n\n### Sweet Spot ($150–300)\n\n- **ThinkCentre M720q Tiny**: Quad-core, PCIe expansion, 2 RAM slots\n- **ThinkCentre M920q Tiny**: Better build and expansion\n- **ThinkPad T480**: Arguably the most famous Linux ThinkPad — dual RAM slots,\n  replaceable SSD/Wi-Fi, Thunderbolt, USB-C charging\n\n### Performance Sweet Spot ($250–450)\n\n- **ThinkCentre M75q Gen 2** (Ryzen 5650GE): 6C/12T, very quiet, excellent\n  AMDGPU support\n- **ThinkPad T14 AMD Gen 1/2** (Ryzen 4650U / 5650U): Great battery, Linux\n  compatibility\n"
+    },
+    {
+      "section": "Intel vs AMD for Linux",
+      "content": "## Intel vs AMD for Linux\n\n- **Older Intel (6th–10th Gen)**: Excellent compatibility, very stable\n- **Modern AMD (Ryzen 4000+)**: Better graphics, multicore performance, efficiency,\n  excellent open-source drivers. Generally preferred for Linux desktop use today.\n"
+    },
+    {
+      "section": "CPUs to Look For",
+      "content": "## CPUs to Look For\n\n| Intel T-series (low-power) | AMD GE-series (low-power) |\n|---------------------------|--------------------------|\n| i5-8500T                  | Ryzen 5 Pro 3400GE       |\n| i5-9500T                  | Ryzen 5 Pro 4650GE       |\n| i5-10500T                 | Ryzen 5 Pro 5650GE       |\n| i5-11500T                 | Ryzen 7 Pro 5750GE       |\n| i5-12500T                 | Ryzen 5 Pro 6650GE       |\n| i5-13500T                 |                          |\n"
+    },
+    {
+      "section": "Overall Best Value Ranking (Used Market)",
+      "content": "## Overall Best Value Ranking (Used Market)\n\n1. ThinkCentre M75q Gen 2 (Ryzen 5 Pro 5650GE) — best performance per dollar\n2. ThinkCentre M920q (i5-8500T/8600T) — inexpensive, expandable, reliable\n3. ThinkCentre M90q Gen 3 (i5-12500T) — modern performance\n4. ThinkPad T480 (i5-8350U) — best-value business laptop\n5. ThinkPad T14 Gen 2 (Ryzen 5 Pro 5650U) — best balance of portability and power\n"
+    }
+  ]
+}

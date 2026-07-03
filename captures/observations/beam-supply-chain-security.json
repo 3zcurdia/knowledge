@@ -1,0 +1,27 @@
+{
+  "id": "captures/observations/beam-supply-chain-security",
+  "path": "captures/observations/beam-supply-chain-security.md",
+  "title": "BEAM Ecosystem Supply Chain Security Risks",
+  "category": "captures/observations",
+  "type": "observations",
+  "summary": "Observation that the BEAM ecosystem (Erlang, Elixir, Gleam) shares supply-chain risks like npm's ctrl+tinycolor token-theft incident; a smaller dependency tree limits blast radius but a single compromised popular package could ripple widely. Current gaps: optional 2FA, long-lived CI API keys, no publish-time malware scanning, no provenance signatures, no tooling-fed advisories in mix or rebar3. The Erlang Ecosystem Foundation's Ægis Initiative plans WebAuthn 2FA, trusted publishing via CI OIDC, Sigstore/SLSA attestations, registry scanning, and transparency logs with SBOMs.",
+  "keywords": ["beam", "supply chain", "security", "erlang", "elixir", "gleam", "hex", "package", "aegis"],
+  "entities": ["BEAM", "Erlang", "Elixir", "Gleam", "npm", "ctrl+tinycolor", "mix", "rebar3", "Erlang Ecosystem Foundation", "Ægis Initiative", "Sigstore", "SLSA", "SBOM", "WebAuthn"],
+  "see_also": [],
+  "source": "inbox/articles/Erlang Ecosystem Foundation - Supporting the BEAM community.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "The BEAM ecosystem (Erlang, Elixir, Gleam) faces supply-chain security risks similar to npm's `ctrl+tinycolor` incident, where a stolen publish token spread malware across hundreds of packages. While the smaller BEAM dependency tree reduces blast radius, a single compromised widely-used package could still ripple through hundreds of projects.\n"
+    },
+    {
+      "section": "Current Gaps",
+      "content": "## Current Gaps\n\n- **Account security:** 2FA is optional, not enforced. No WebAuthn support.\n- **Publishing:** Long-lived API keys in CI with no trusted publishing (short-lived OIDC tokens).\n- **Scanning:** No automated malware detection at publish time.\n- **Provenance:** No package signatures or build attestations.\n- **Warnings:** No registry-fed alerts surfaced in `mix` or `rebar3`.\n"
+    },
+    {
+      "section": "The Ægis Initiative",
+      "content": "## The Ægis Initiative\n\nThe Erlang Ecosystem Foundation's Ægis Initiative aims to address these gaps: WebAuthn-backed 2FA for publishers, trusted publishing via CI, Sigstore/SLSA provenance, registry scanning with advisories in tooling, and transparency logs with SBOMs.\n"
+    }
+  ]
+}

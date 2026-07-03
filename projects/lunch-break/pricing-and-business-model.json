@@ -1,0 +1,51 @@
+{
+  "id": "projects/lunch-break/pricing-and-business-model",
+  "path": "projects/lunch-break/pricing-and-business-model.md",
+  "title": "Side-Project SaaS Pricing and Business Model for Meal Tracking App",
+  "category": "projects/lunch-break",
+  "type": "projects",
+  "summary": "Business model decisions for a lifestyle side-hustle SaaS meal tracking PWA built with Elixir/Phoenix and OpenRouter AI inference, optimized for self-sustaining rather than venture-scale operation. Adopts a hybrid BYOK plus hosted tier model where bring-your-own-key users validate the product at near-zero marginal cost and hosted subscribers drive revenue. Sets pricing at Free, BYOK ($10/year), and Hosted Pro ($2.99/month or $24/year), preferring annual plans for lower churn and admin, avoiding unlimited-AI claims with soft caps, and delaying infrastructure scaling across phases. Includes unit economics, break-even analysis, PWA-only positioning to dodge app store commissions, and lean hosting cost targets from $5 to $40/month.",
+  "keywords": ["saas", "pricing", "byok", "business model", "subscription", "meal tracking", "pwa", "unit economics", "openrouter", "phoenix"],
+  "entities": ["OpenRouter", "Phoenix", "Elixir", "Apple", "Google", "PWA"],
+  "see_also": [],
+  "source": "inbox/chats/meal-app-pricing.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Business model decisions for a lifestyle side-hustle SaaS — a meal tracking PWA\n(running Elixir/Phoenix with OpenRouter AI inference) designed to be self-sustaining,\nnot a venture-scale startup. All decisions prioritize simplicity, predictable costs, and\nlow support burden.\n"
+    },
+    {
+      "section": "Decision: Hybrid BYOK + Hosted Tier Model",
+      "content": "## Decision: Hybrid BYOK + Hosted Tier Model\n\n**Two user types:**\n\n1. **BYOK users** — bring their own OpenRouter API key; pay their own inference\n   costs. Near-zero marginal cost for the business.\n2. **Hosted users** — subscribe; the app provides AI usage.\n\n**Rationale:** BYOK users provide validation, feedback, and word-of-mouth without\ninference risk. Hosted users are the revenue engine.\n"
+    },
+    {
+      "section": "Decision: Pricing Tiers",
+      "content": "## Decision: Pricing Tiers\n\n| Tier     | Price        | What's included |\n|----------|-------------|----------------|\n| Free     | $0          | Manual tracking, limited AI trial (~20 parses/month) |\n| BYOK     | Free (beta) / $10/year | Own API key, full AI logging, export, advanced stats |\n| Hosted Pro | $2.99/month or $24/year | No API key needed, AI meal parsing included |\n\n**Rationale for $2.99/month:** $1–2 feels too cheap (creates support expectations\nwithout revenue); $2.99 feels affordable; $24/year reduces churn and payment\nprocessing burden. Annual plan saves ~33%.\n"
+    },
+    {
+      "section": "Decision: Prefer Annual over Monthly",
+      "content": "## Decision: Prefer Annual over Monthly\n\nAnnual plans are underrated for side businesses:\n- Less payment processing overhead\n- Lower churn\n- Better cash flow\n- Less admin\n"
+    },
+    {
+      "section": "Decision: Avoid \"Unlimited AI\" Claim",
+      "content": "## Decision: Avoid \"Unlimited AI\" Claim\n\nEven with cheap models, \"unlimited\" invites power users, abuse, and cost spikes.\nUse soft caps like \"~300 AI meal analyses/month for hosted users\" and position it as\n\"designed for personal daily meal logging.\"\n"
+    },
+    {
+      "section": "Decision: Delay Infrastructure Scaling",
+      "content": "## Decision: Delay Infrastructure Scaling\n\n**Phase 0 (now):** 1 server (app + DB), no load balancer, no permanent staging.\nTarget cost: $5–15/month.\n\n**Phase 1 (5–20 paying users):** Maybe upgrade server ($8–12), add basic backups\nand monitoring. Target: $10–20/month.\n\n**Phase 2 (20–50 paying):** Separate DB (optional), maybe second server. Target:\n$20–40/month.\n\n**Rationale:** Upgrading prematurely (2 servers, LB, staging) jumps costs from\n~$10/month to $50–80/month, requiring 30+ paying users just to break even.\nScale only when pain forces it (high CPU, memory issues, user complaints).\n"
+    },
+    {
+      "section": "Unit Economics",
+      "content": "## Unit Economics\n\n| Metric | Value |\n|--------|-------|\n| Fixed monthly cost (current) | ~$5–10 |\n| Hosted AI cost per user | ~$0.30–1.00 (light), ~$1.00–3.00 (heavy) |\n| Target hosted AI cost/user | $0.25–0.75 |\n| Payment processing fee (monthly) | ~$0.39 ($2.99 × 2.9% + $0.30) |\n| Net margin per hosted user | ~$1.59–2.39 |\n\n### Break-even Analysis\n\n| Fixed Cost | Margin/User | Users to Break Even |\n|-----------|-------------|---------------------|\n| $8        | $2.00       | 4                   |\n| $30       | $2.30       | 13                  |\n| $50       | $2.00       | 25                  |\n| $80       | $1.85       | 44                  |\n\nWith the lean approach, only 4–6 paid users are needed to break even.\n"
+    },
+    {
+      "section": "App Store Consideration",
+      "content": "## App Store Consideration\n\nNo iOS/Android native apps planned — PWA only. This avoids app store commission\n(Apple/Google take ~15–30% of subscriptions).\n"
+    },
+    {
+      "section": "Positioning",
+      "content": "## Positioning\n\nNot \"AI meal tracking with many models\" — pitch as:\n- Frictionless meal logging\n- Privacy-friendly\n- Bring your own AI key if you want\n- Cheap hosted option if you don't\n"
+    }
+  ]
+}

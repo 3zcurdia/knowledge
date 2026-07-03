@@ -1,0 +1,62 @@
+{
+  "id": "captures/patterns/llm-benchmark-prompts-text-processing",
+  "path": "captures/patterns/llm-benchmark-prompts-text-processing.md",
+  "title": "LLM Benchmark Prompts for Text Processing",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "A set of nine reusable one-paragraph prompts for benchmarking any LLM across text processing capabilities: general writing, summarization, information extraction, classification, translation, structured JSON output, OCR post-processing, long document analysis, and RAG over documents. Each prompt specifies the task, constraints, and expected output format. A companion table maps each prompt to the capability it tests: style and coherence, content preservation and compression, precision and hallucination resistance, reasoning and label consistency, fluency preserving technical content, instruction following and schema compliance, error correction without fabrication, synthesis and reasoning, and grounding responses in sources while avoiding unsupported claims.",
+  "keywords": ["llm", "benchmark", "prompts", "text-processing", "summarization", "classification", "translation", "json-output", "ocr", "rag"],
+  "entities": ["LLM", "JSON", "Markdown", "OCR", "RAG"],
+  "see_also": [
+    "../../notes/top-use-cases-for-local-llms.md",
+    "../../notes/qwen-3-6-model-hardware-fit-guide.md"
+  ],
+  "source": "inbox/chats/local-models.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "\nReusable one-paragraph prompts to benchmark any LLM across different text\nprocessing capabilities.\n"
+    },
+    {
+      "section": "1. General Writing",
+      "content": "## 1. General Writing\n\nWrite a professional but engaging blog post of about 500 words explaining why\nevent-driven architectures are becoming popular in modern web applications. The\naudience is experienced software developers familiar with REST APIs but new to\nasynchronous systems. Include practical examples, discuss trade-offs, and conclude\nwith recommendations for when event-driven architecture is and is not appropriate.\n"
+    },
+    {
+      "section": "2. Summarization",
+      "content": "## 2. Summarization\n\nRead the following article and produce three outputs: (1) a one-sentence summary,\n(2) a five-bullet executive summary, and (3) a detailed summary of approximately 250\nwords that preserves the key arguments, evidence, and conclusions without\nintroducing new information. Maintain the author's original intent and avoid opinions.\n"
+    },
+    {
+      "section": "3. Information Extraction",
+      "content": "## 3. Information Extraction\n\nExtract all people, organizations, locations, dates, monetary values, product names,\nphone numbers, email addresses, URLs, invoice numbers, purchase order numbers,\nand contractual deadlines from the following document. For each extracted item,\nidentify its category, exact text as it appears, and the sentence where it was found.\nIf a field is missing, explicitly return null instead of guessing.\n"
+    },
+    {
+      "section": "4. Classification",
+      "content": "## 4. Classification\n\nAnalyze the following customer support message and classify it into one primary\ncategory (Billing, Technical Support, Account Access, Feature Request, Complaint,\nCancellation, or General Inquiry), assign a priority level (Low, Medium, High,\nCritical), determine the customer's sentiment (Positive, Neutral, Negative), estimate\nwhether immediate human intervention is required, and briefly explain the reasoning\nbehind each classification.\n"
+    },
+    {
+      "section": "5. Translation",
+      "content": "## 5. Translation\n\nTranslate the following technical documentation from English into Spanish while\npreserving formatting, Markdown syntax, code blocks, variable names, API endpoints,\ncommands, filenames, and technical terminology. Use natural language appropriate for\nsoftware engineers in Latin America, avoiding literal translations when they reduce\nclarity.\n"
+    },
+    {
+      "section": "6. Structured JSON Output",
+      "content": "## 6. Structured JSON Output\n\nRead the following purchase order and convert it into valid JSON using this schema:\ncustomer, company, invoice_number, purchase_date, due_date, currency, line_items\n(description, quantity, unit_price, total), subtotal, tax, shipping, grand_total,\npayment_terms, and notes. Return only valid JSON that strictly follows the schema,\nusing null for missing values and preserving numeric types where appropriate.\n"
+    },
+    {
+      "section": "7. OCR Post-Processing",
+      "content": "## 7. OCR Post-Processing\n\nThe following text was produced by OCR and contains spelling errors, incorrect\npunctuation, broken words, duplicated lines, missing accents, incorrect line breaks,\nand formatting issues. Clean and reconstruct the document while preserving the\noriginal meaning, correcting obvious OCR mistakes, restoring paragraphs, normalizing\nwhitespace, and marking any sections that remain uncertain instead of inventing\nmissing text.\n"
+    },
+    {
+      "section": "8. Long Document Analysis",
+      "content": "## 8. Long Document Analysis\n\nAnalyze the following report as if you were preparing a briefing for a senior executive.\nIdentify the main objectives, major findings, supporting evidence, assumptions, risks,\nunresolved issues, contradictions, action items, deadlines, stakeholders, and\nrecommendations. Also identify any logical inconsistencies or unsupported claims, and\nconclude with a concise executive briefing highlighting the most important decisions\nthat should be made.\n"
+    },
+    {
+      "section": "9. RAG Over Documents",
+      "content": "## 9. RAG Over Documents\n\nUsing only the information contained in the provided documents, answer the following\nquestion. Cite every claim by referencing the specific document name and section\nwhere the information was found. If the answer cannot be determined from the\nprovided documents, explicitly state that the information is unavailable instead of\nrelying on outside knowledge or making assumptions. Provide both a concise answer\nand a detailed explanation showing how the conclusion was reached.\n"
+    },
+    {
+      "section": "What Each Prompt Tests",
+      "content": "## What Each Prompt Tests\n\n| Prompt       | Capability Tested |\n|-------------|------------------|\n| General Writing | Style, coherence, audience adaptation |\n| Summarization | Content preservation and compression |\n| Information Extraction | Precision and hallucination resistance |\n| Classification | Reasoning and label consistency |\n| Translation | Fluency while preserving technical content |\n| Structured JSON | Instruction following and schema compliance |\n| OCR Post-Processing | Error correction without fabrication |\n| Long Document Analysis | Synthesis, reasoning, organization |\n| RAG | Grounding responses in sources, avoiding unsupported claims |\n"
+    }
+  ]
+}

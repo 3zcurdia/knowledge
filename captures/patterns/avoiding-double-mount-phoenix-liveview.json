@@ -1,0 +1,43 @@
+{
+  "id": "captures/patterns/avoiding-double-mount-phoenix-liveview",
+  "path": "captures/patterns/avoiding-double-mount-phoenix-liveview.md",
+  "title": "Avoiding Double Mount in Phoenix LiveView",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Every Phoenix LiveView mounts twice on first page load: once for the static HTTP dead render and again when the WebSocket connects, so mount/3, handle_params/3, and render/1 all run twice. The connected?(socket) guard only trades the query for an empty first paint, breaking SEO, link previews, and no-JS fallback. The Phoenix team's adoptable LiveViews proposal (issue #3551) would reuse the dead-render process across socket connect. An interim :resume fork of phoenix_live_view parks the socket in a holder process, signs a token, and splices state on connect so mount/3 and on_mount hooks do not re-run. Migration patterns cover data loads, connection-only side effects via on_connect/1, connect-params replacement with cookies, and real-time counts.",
+  "keywords": ["phoenix", "liveview", "double-mount", "dead-render", "websocket", "connected-socket", "on-connect", "resume"],
+  "entities": ["Phoenix", "LiveView", "WebSocket", "GenServer", "DynamicSupervisor", "phoenix_live_view"],
+  "see_also": [],
+  "source": "inbox/articles/Stop mounting your LiveView twice.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "\nEvery LiveView mounts twice on first page load: once for the static HTTP dead render, then again when the WebSocket connects. This means `mount/3`, `handle_params/3`, and `render/1` all run twice on first load.\n"
+    },
+    {
+      "section": "Why connected?/1 Is a Band-Aid",
+      "content": "## Why connected?/1 Is a Band-Aid\n\nThe common `connected?(socket)` guard does not stop the double render — it just trades the query for an empty first paint, breaking SEO, link previews, and no-JavaScript fallback. The structural duplication (auth, `current_user`, layout, `on_mount` hooks) remains untouched.\n\nCosts of the `connected?/1` guard:\n\n- **Empty first paint** — skeleton/spinner until WebSocket connects; pushes Largest Contentful Paint behind the socket\n- **Broken SEO and link previews** — crawlers and social unfurlers get the empty dead render; `og:image`, `og:description` live in the root layout which only renders on the dead render\n- **JavaScript dependency** — the page needs JS to show anything, breaking graceful degradation\n- **Smeared connection logic** — `if connected?(socket)` forks multiply through `mount/3`\n"
+    },
+    {
+      "section": "What the Phoenix Team Is Building: Adoptable LiveViews",
+      "content": "## What the Phoenix Team Is Building: Adoptable LiveViews\n\nIssue [#3551](https://github.com/phoenixframework/phoenix_live_view/issues/3551) proposes keeping the dead-render process alive and letting the WebSocket adopt it. One mechanism, two wins: no second mount on first load, and process reuse on reconnect. As of mid-2026, the direction is accepted but no implementation is shipped yet.\n"
+    },
+    {
+      "section": "The :resume Fork (Interim Solution)",
+      "content": "## The :resume Fork (Interim Solution)\n\nA fork of `phoenix_live_view` adds an opt-in `:resume` feature:\n\n1. Dead render mounts fully, hands the socket to a holder process (GenServer under DynamicSupervisor)\n2. Signs the key into a token emitted as `data-phx-resume` on the root element\n3. On WebSocket connect, client sends the token back; server verifies and redeems the parked socket\n4. The parked state is spliced into the live socket — neither `mount/3` nor `on_mount` hooks run again\n\n### Configuration\n\n```elixir\n# config/config.exs — opt in for the whole app\nconfig :phoenix_live_view, :resume,\n  enabled: true,\n  ttl: 5_000,           # how long a parked socket waits for its WebSocket, in ms\n  max_children: 10_000  # backpressure: cap on concurrently parked sockets\n```\n\n```elixir\n# ...or opt in per LiveView\ndefmodule MyAppWeb.DashboardLive do\n  use Phoenix.LiveView, resume: true\nend\n```\n\n### Lifecycle Table\n\n| Callback | Dead render (HTTP) | Cold connect (no resume) | Warm connect (resumed) |\n| --- | --- | --- | --- |\n| `mount/3` | runs | runs again | **skipped** |\n| `on_mount` hooks | run | run again | **skipped** |\n| `on_connect/1` | — | runs | **runs** |\n| `handle_params/3` | runs | runs again | **skipped** (initial only) |\n| `render/1` | static HTML | full render | full render |\n\n`handle_params/3` is skipped only on the initial resumed connect (identical URL to dead render). It still runs on `push_patch`, live navigation, and parameter changes.\n"
+    },
+    {
+      "section": "Four Migration Patterns",
+      "content": "## Four Migration Patterns\n\n### 1. Data loads: delete the connected? guard\n\n```elixir\n# ❌ Stock pattern — under resume this loads nothing, ever\ndef mount(_params, _session, socket) do\n  posts = if connected?(socket), do: Blog.list_posts(), else: []\n  {:ok, assign(socket, :posts, posts)}\nend\n\n# ✅ Resume — load once on the dead render; reused on connect\ndef mount(_params, _session, socket) do\n  {:ok, assign(socket, :posts, Blog.list_posts())}\nend\n```\n\n### 2. Connection-only side effects: move to on_connect/1\n\n```elixir\n# ❌ Never fires under resume\ndef mount(_params, _session, socket) do\n  if connected?(socket) do\n    MyAppWeb.Endpoint.subscribe(\"room:lobby\")\n    :timer.send_interval(1_000, :tick)\n  end\n  {:ok, socket}\nend\n\n# ✅ on_connect/1 is the reliable home for connection-only work\ndef on_connect(socket) do\n  MyAppWeb.Endpoint.subscribe(\"room:lobby\")\n  :timer.send_interval(1_000, :tick)\n  {:ok, socket}\nend\n```\n\n### 3. Values derived from connect params: use cookies\n\n`get_connect_params/1` returns `nil` on the dead render. Move persisted client state to a cookie read via a plug:\n\n```elixir\nplug :put_welcome_flag\n\ndefp put_welcome_flag(conn, _opts) do\n  conn = fetch_cookies(conn)\n  Plug.Conn.put_session(conn, \"show_welcome\", conn.cookies[\"show_welcome\"] != \"false\")\nend\n\ndef on_mount(:welcome, _params, session, socket) do\n  {:cont, assign(socket, :show_welcome?, Map.get(session, \"show_welcome\", true))}\nend\n```\n\n### 4. Real-time data: snapshot on dead render, subscribe on connect\n\n```elixir\n# Dead render loads the count; reused on connect\ndef on_mount(:notifications, _params, _session, socket) do\n  {:cont, assign(socket, :unread, Notifications.count(socket.assigns.current_user))}\nend\n\n# On connect: just subscribe\ndef on_connect(socket) do\n  Notifications.subscribe(socket.assigns.current_user.id)\n  {:ok, socket}\nend\n\ndef handle_info({:new_notification, _}, socket) do\n  {:noreply, update(socket, :unread, &(&1 + 1))}\nend\n```\n"
+    },
+    {
+      "section": "Verification",
+      "content": "## Verification\n\n```bash\n# 1. Dead render must stamp the token (server half working)\ncurl -s http://localhost:4000/ | grep -o 'data-phx-resume=\"[^\"]*\"' | head -1\n\n# 2. Shipped bundle must contain the resume client\ngrep -c 'data-phx-resume' priv/static/assets/js/app.js\n\n# 3. Watch server log on fresh page load: mount/3 and queries run once\n```\n"
+    },
+    {
+      "section": "Summary",
+      "content": "## Summary\n\nUnder resume, sort work into three homes:\n\n- **`mount/3` and `on_mount` hooks** — pure, dead-render-derivable assigns (runs once, reused)\n- **`on_connect/1`** — connection-only side effects (subscriptions, timers, presence)\n- **Cookie/session on dead render** — anything previously from `get_connect_params/1`\n"
+    }
+  ]
+}

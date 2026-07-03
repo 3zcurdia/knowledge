@@ -1,0 +1,31 @@
+{
+  "id": "captures/patterns/rails-image-upload-custom-element",
+  "path": "captures/patterns/rails-image-upload-custom-element.md",
+  "title": "Reusable Drag-and-Drop Image Upload Custom Element in Rails",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "A self-contained Web Component (<image-upload>) for drag-and-drop image uploads in Rails forms. Unlike Stimulus controllers, custom elements work anywhere without data attributes or controller targets—just drop the tag in a view. The component creates its own hidden file input appended directly to the form (auto-detected or supplied via a form attribute), handles drag-and-drop with data-drag-active visual feedback, renders previews using FileReader, and supports removal via data-remove-image. Appending the input to the form (not the component) ensures Rails params receive the file, and for has_one_attached submitting an empty input removes the attachment.",
+  "keywords": ["rails", "web-components", "custom-element", "image-upload", "drag-and-drop", "active-storage", "forms"],
+  "entities": ["<image-upload>", "Stimulus", "FileReader", "has_one_attached", "data-drag-active", "data-remove-image"],
+  "see_also": [],
+  "source": "inbox/articles/Reusable drag-and-drop image preview in Rails.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "A self-contained Web Component (`<image-upload>`) for drag-and-drop image uploads in Rails forms. Unlike Stimulus controllers, custom elements work anywhere without data attributes or controller targets — just drop the tag in your view.\n\n"
+    },
+    {
+      "section": "How It Works",
+      "content": "## How It Works\n\nThe component creates its own hidden file input and appends it directly to the form (found automatically or via `form` attribute). It handles drag-and-drop with visual feedback via `data-drag-active`, renders previews using `FileReader`, and supports removal via a `data-remove-image` button.\n\n"
+    },
+    {
+      "section": "Usage",
+      "content": "## Usage\n\nInside a form (auto-detected):\n```erb\n<image-upload name=\"user[avatar]\" data-preview-image-url=\"<%= url_for(@user.avatar) if @user.avatar.attached? %>\">\n  <button type=\"button\" data-remove-image>Remove</button>\n</image-upload>\n```\n\nOutside a form (explicit ID):\n```erb\n<image-upload name=\"user[header]\" form=\"user_form\">\n  <button type=\"button\" data-remove-image>Remove</button>\n</image-upload>\n```\n\n"
+    },
+    {
+      "section": "Key Design Decisions",
+      "content": "## Key Design Decisions\n\n- File input is appended to the form, not the component, so Rails params receive it.\n- `form` attribute enables use outside the form element.\n- For `has_one_attached`, submitting an empty file input removes the attachment.\n\n"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "captures/concepts/conways-law",
+  "path": "captures/concepts/conways-law.md",
+  "title": "Conway's Law",
+  "category": "captures/concepts",
+  "type": "concepts",
+  "summary": "Conway's Law states that organizations which design systems are constrained to produce designs that mirror their own communication structures, named after Melvin Conway (1967). The technical structure of a system reflects the social boundaries of its producing organization: complex products end up shaped like the organizational structure they were designed in. The law describes correspondence rather than causality, with differing views on directionality. Includes variations by Yourdon & Constantine (1979) and Coplien & Harrison (2004), plus MIT and Harvard research evidence supporting the mirroring hypothesis that loosely-coupled organizations produce more modular products than tightly-coupled ones.",
+  "keywords": ["conway's law", "organization design", "software architecture", "mirroring hypothesis", "communication structure", "modularity"],
+  "entities": ["Melvin Conway", "Yourdon", "Constantine", "Coplien", "Harrison", "MIT", "Harvard"],
+  "see_also": [],
+  "source": "inbox/articles/Conway's law.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Organizations which design systems are constrained to produce designs which are copies of the communication structures of these organizations. Named after Melvin Conway (1967).\n"
+    },
+    {
+      "section": "Core Idea",
+      "content": "## Core Idea\n\nThe technical structure of a system reflects the social boundaries of the organizations that produced it, across which communication is more difficult. In short: complex products end up \"shaped like\" the organizational structure they were designed in.\n"
+    },
+    {
+      "section": "Interpretations",
+      "content": "## Interpretations\n\nThe law only describes correspondence, not causality. Different positions exist: that organizational structure dictates technical design, that technical design causes organization to restructure, or both.\n"
+    },
+    {
+      "section": "Variations",
+      "content": "## Variations\n\n- Yourdon & Constantine (1979): \"The structure of any system designed by an organization is isomorphic to the structure of the organization.\"\n- Coplien & Harrison (2004): \"Make sure the organization is compatible with the product architecture.\"\n"
+    },
+    {
+      "section": "Evidence",
+      "content": "## Evidence\n\nMIT and Harvard researchers found \"strong evidence to support the mirroring hypothesis\" — loosely-coupled organizations produce significantly more modular products than tightly-coupled ones.\n"
+    }
+  ]
+}

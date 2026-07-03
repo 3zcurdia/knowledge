@@ -1,0 +1,27 @@
+{
+  "id": "captures/patterns/liveview-distributed-systems-lessons",
+  "path": "captures/patterns/liveview-distributed-systems-lessons.md",
+  "title": "Distributed Systems Lessons from LiveView: State Ownership and Eventual Consistency",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Two distributed systems lessons from building a LiveView web chat. Lesson one — state ownership: web applications are distributed systems, so frontend validation aids UX but cannot enforce business rules because users can bypass it via DevTools. The knowledge of valid data belongs on the backend; LiveView's bi-directional protocol makes the backend validate and reply with %{accepted: true/false}, and the frontend acts on the reply (e.g. caching to localStorage). Lesson two — eventual consistency: distinguish empty (not yet loaded) from none (definitively absent). On page load show a loading indicator until data arrives from the cache rather than displaying a default that flickers when the cached value returns. Sequence: empty state, loading indicator, receive cached value or default, ready for interaction.",
+  "keywords": ["liveview", "distributed-systems", "state-ownership", "eventual-consistency", "frontend-validation", "phoenix"],
+  "entities": ["LiveView", "DevTools", "localStorage"],
+  "see_also": ["../../projects/service-desk/schema-and-architecture-design.md"],
+  "source": "inbox/articles/Love LiveView and think distributed systems.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "\nTwo distributed systems lessons from building a LiveView web chat: state ownership and eventual consistency.\n"
+    },
+    {
+      "section": "Lesson 1: State Ownership",
+      "content": "## Lesson 1: State Ownership\n\nWeb applications are distributed systems. Frontend validation is useful for UX but cannot enforce business rules — users can bypass it via DevTools. The knowledge of what constitutes valid data belongs on the backend.\n\nLiveView's bi-directional protocol makes this clean: the backend validates and replies with `%{accepted: true/false}`, and the frontend acts on the reply (e.g. caching in localStorage).\n\n```elixir\ndef handle_event(\"set_nickname\", %{\"nickname\" => nickname}, socket) do\n  if valid_nickname?(nickname) do\n    {:reply, %{accepted: true}, assign(socket, :nickname, nickname)}\n  else\n    {:reply, %{accepted: false}, socket}\n  end\nend\n```\n"
+    },
+    {
+      "section": "Lesson 2: Eventual Consistency",
+      "content": "## Lesson 2: Eventual Consistency\n\nDistinguish between \"empty\" (not yet loaded) and \"none\" (definitively absent). On page load, show a loading indicator until data arrives from the cache, rather than displaying a default that flickers when the cached value arrives.\n\nSequence: empty state → loading indicator → receive cached value (or default) → ready for interaction.\n\n```elixir\ndef mount(%{\"room\" => room}, _session, socket) do\n  {:ok, assign(socket, :nickname, nil)}\nend\n```\n"
+    }
+  ]
+}

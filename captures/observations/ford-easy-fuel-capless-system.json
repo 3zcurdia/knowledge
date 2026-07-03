@@ -1,0 +1,30 @@
+{
+  "id": "captures/observations/ford-easy-fuel-capless-system",
+  "path": "captures/observations/ford-easy-fuel-capless-system.md",
+  "title": "Ford Easy Fuel Capless Fuel System",
+  "category": "captures/observations",
+  "type": "observations",
+  "summary": "Many modern Ford vehicles use the Easy Fuel capless filler system instead of a screw-on gas cap: a spring-loaded rubber/flapper membrane seals automatically when the fuel nozzle is removed. It seals vapors and resists casual siphoning but is not a true lock like a keyed cap or locking fuel door. Aftermarket locking fuel plugs (~$68 on Amazon or OEM Ford) or locking fuel doors (under $100 from AmericanTrucks or O'Reilly) add real security; converting to a screw cap is not recommended.",
+  "keywords": ["ford", "easy fuel", "capless", "fuel system", "gas cap", "locking", "siphoning"],
+  "entities": ["Ford", "Easy Fuel", "AmericanTrucks", "O'Reilly", "Amazon"],
+  "see_also": [
+    "../../notes/ford-10r80-transmission-fluid-service.md",
+    "../numbers/ford-5-0-coyote-v8-specs.md"
+  ],
+  "source": "inbox/chats/ford-f150.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Many modern Ford vehicles use the **Easy Fuel capless filler system** instead of a\ntraditional screw-on gas cap. The filler neck has a rubber/flapper-style sealing\nmembrane that is spring-loaded and closes automatically when the fuel nozzle is\nremoved.\n"
+    },
+    {
+      "section": "Security",
+      "content": "## Security\n\n- Seals fuel vapors and keeps dirt/water out\n- Better against casual siphoning than an old open filler neck\n- **Not** a true locking system like a keyed gas cap or locking fuel door\n"
+    },
+    {
+      "section": "Upgrade Options",
+      "content": "## Upgrade Options\n\nFor actual security, add an aftermarket locking fuel plug made for Ford's capless\nsystem (~$68 on Amazon, or OEM Ford locking fuel plug). An aftermarket locking\nfuel door is also available (under $100 from AmericanTrucks, O'Reilly). Converting\nto a traditional screw cap is not recommended.\n"
+    }
+  ]
+}

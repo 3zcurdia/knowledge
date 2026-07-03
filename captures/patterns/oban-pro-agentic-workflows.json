@@ -1,0 +1,39 @@
+{
+  "id": "captures/patterns/oban-pro-agentic-workflows",
+  "path": "captures/patterns/oban-pro-agentic-workflows.md",
+  "title": "Agentic Workflows with Oban Pro: Cascades, Human-in-the-Loop, Grafting",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Oban Pro v1.6+ enables agentic workflows in Elixir through three primitives: cascading workflows that link functions with shared context and automatic retries across nodes, human-in-the-loop checkpoints that pause jobs via tag updates and snooze for human approval, and dynamic workflow grafting that expands a placeholder into a sub-workflow at runtime so downstream jobs automatically depend on the expanded graft. The approach is durable, self-hosted, transactionally guaranteed, and needs no external infrastructure, suiting both agentic and deterministic workflows.",
+  "keywords": ["oban", "elixir", "agentic-workflows", "cascades", "human-in-the-loop", "grafting", "job-chains"],
+  "entities": ["Oban Pro", "Oban", "Workflow", "Oban.insert_all", "Oban.update_job"],
+  "see_also": [
+    "../observations/agentic-systems-database-state.md",
+    "reqllm-llm-plugins-elixir.md",
+    "phoenix-promex-grafana-monitoring.md"
+  ],
+  "source": "inbox/articles/Unlocking Agentic Workflows with Oban Pro.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Oban Pro v1.6+ provides primitives for agentic workflows: cascading job chains, human-in-the-loop checkpoints, and dynamic workflow grafting.\n\n"
+    },
+    {
+      "section": "Cascading Workflows",
+      "content": "## Cascading Workflows\n\nLink functions together with shared context, automatic retries, and distribution across nodes:\n```elixir\nWorkflow.new()\n|> Workflow.put_context(%{source: source, model: \"gpt-4o-mini\"})\n|> Workflow.add_cascade(:plan, &plan/1)\n|> Workflow.add_cascade(:draft, &draft/1, deps: :plan)\n|> Workflow.add_cascade(:revise, &revise/1, deps: :draft)\n|> Oban.insert_all()\n```\n\n"
+    },
+    {
+      "section": "Human-in-the-Loop",
+      "content": "## Human-in-the-Loop\n\nPause workflows for human review using `Oban.update_job/3` to modify tags and `{:snooze, {1, :hour}}` to wait. Humans approve/deny by updating tags, then triggering retry.\n\n"
+    },
+    {
+      "section": "Workflow Grafting",
+      "content": "## Workflow Grafting\n\nDefine a placeholder in a workflow, then expand it into a sub-workflow at runtime. Downstream jobs automatically depend on the expanded graft — you don't need to know up front which jobs will run.\n\n```elixir\n|> Workflow.add_graft(:load, &load_accounts/1, deps: :draft)\n|> Workflow.add_cascade(:finish, &finish_campaign/1, deps: [:draft, :load])\n```\n\n"
+    },
+    {
+      "section": "Key Benefits",
+      "content": "## Key Benefits\n\n- Durable, self-hosted, transactionally guaranteed\n- No external infrastructure needed\n- Works for both agentic and non-agentic deterministic workflows\n\n"
+    }
+  ]
+}

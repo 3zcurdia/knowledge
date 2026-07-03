@@ -1,0 +1,43 @@
+{
+  "id": "notes/top-use-cases-for-local-llms",
+  "path": "notes/top-use-cases-for-local-llms.md",
+  "title": "Top Use Cases for Local LLMs",
+  "category": "notes",
+  "type": "notes",
+  "summary": "As of 2026, local LLMs such as Llama 3.3, Qwen 3, and DeepSeek R1 rival cloud services in performance while offering sovereignty, cost-free operation, and offline capability. Outlines the top use cases: professional coding and IDE integration with Qwen 3 7B and Qwen 2.5 Coder 14B via Ollama or LM Studio; sensitive-data sovereignty for healthcare, legal, and finance under GDPR and HIPAA using Llama 3.3 8B and Mistral Small 3; agentic workflows and Chain-of-Thought reasoning with DeepSeek R1; cost-free RAG personal knowledge management with Gemma 4 12B and Phi-4; and real-time edge and offline applications. Includes a quick-reference table of leading local models with hardware requirements.",
+  "keywords": ["local llm", "llama", "qwen", "deepseek", "rag", "coding assistant", "privacy", "offline", "edge", "agentic"],
+  "entities": ["Llama 3.3", "Qwen 3", "DeepSeek R1", "Qwen 3 7B", "Qwen 2.5 Coder 14B", "Ollama", "LM Studio", "Llama 3.3 8B", "Mistral Small 3", "Gemma 4 12B", "Phi-4", "Mistral Small 3 7B", "GDPR", "HIPAA"],
+  "see_also": ["qwen-3-6-model-hardware-fit-guide.md", "../captures/patterns/llm-benchmark-prompts-text-processing.md", "../captures/observations/local-ai-default-architecture.md"],
+  "source": "inbox/chats/local-models.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "As of 2026, local LLMs like Llama 3.3, Qwen 3, and DeepSeek R1 rival cloud\nservices in performance while offering unique advantages.\n"
+    },
+    {
+      "section": "1. Professional Coding and IDE Integration",
+      "content": "## 1. Professional Coding and IDE Integration\n\nModels like Qwen 3 7B and Qwen 2.5 Coder 14B serve as offline coding assistants\nfor boilerplate generation, debugging, and refactoring. Zero-cost, unlimited code\ngeneration with deep local tool integration (Ollama, LM Studio).\n"
+    },
+    {
+      "section": "2. Sovereignty over Sensitive Data",
+      "content": "## 2. Sovereignty over Sensitive Data\n\nFor healthcare, legal, and finance industries, local models provide generative AI\nwithout violating GDPR or HIPAA. Models like Llama 3.3 8B and Mistral Small 3\nensure proprietary data never leaves local hardware.\n"
+    },
+    {
+      "section": "3. Agentic Workflows and Complex Reasoning",
+      "content": "## 3. Agentic Workflows and Complex Reasoning\n\nReasoning models like DeepSeek R1 handle multi-step problem solving via visible\nChain-of-Thought processes. Local agents can monitor systems or manage knowledge\nbases 24/7 without recurring subscription fees.\n"
+    },
+    {
+      "section": "4. Cost-Free Research and Personal Knowledge Management",
+      "content": "## 4. Cost-Free Research and Personal Knowledge Management\n\nLocal models are ideal for RAG (Retrieval-Augmented Generation) systems that index\npersonal notes, PDFs, and documents. Models like Gemma 4 12B or Phi-4 enable\nsynthesizing large amounts of personal data without API costs or rate limits.\n"
+    },
+    {
+      "section": "5. Real-Time, Edge, and Offline Applications",
+      "content": "## 5. Real-Time, Edge, and Offline Applications\n\nEssential for air-gapped networks, remote facilities, or environments with no\nconnectivity. Models like Mistral Small 3 7B reach 50+ tokens/second on mid-range\nhardware for real-time voice interfaces and autocomplete tools.\n"
+    },
+    {
+      "section": "Top 5 Local Models Quick Reference (2026)",
+      "content": "## Top 5 Local Models Quick Reference (2026)\n\n| Model           | Best For                                | Hardware Req |\n|----------------|-----------------------------------------|-------------|\n| Llama 3.3 8B   | All-around chat & instruction following  | 8GB RAM      |\n| Qwen 2.5/3 14B | Coding & multilingual tasks             | 16GB RAM     |\n| DeepSeek R1    | Complex logic & math reasoning          | 8–32GB RAM   |\n| Phi-4          | High reasoning efficiency on small RAM  | 10–14GB RAM  |\n| Mistral Small 3| Maximum speed & low-latency tasks       | 6–8GB RAM    |\n"
+    }
+  ]
+}

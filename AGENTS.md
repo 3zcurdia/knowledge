@@ -8,6 +8,7 @@ This is a markdown-only knowledge base. All content files use `.md` extension.
   - `numbers/` — quantitative facts: metrics, quotas, limits, benchmarks
   - `observations/` — qualitative findings: behaviors, states, "we noticed that…"
   - `patterns/` — reusable approaches: techniques, conventions, "how we handle…"
+  - `concepts/` — foundational principles, laws, mental models, definitions
 - `decisions/` — decision records (ADRs, trade-offs, rationale)
 - `inbox/` — unprocessed items
   - `agents/` — agent-generated content pending review

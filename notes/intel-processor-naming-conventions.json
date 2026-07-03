@@ -1,0 +1,53 @@
+{
+  "id": "notes/intel-processor-naming-conventions",
+  "path": "notes/intel-processor-naming-conventions.md",
+  "title": "Intel Processor Naming Conventions",
+  "category": "notes",
+  "type": "notes",
+  "summary": "Reference for Intel Core processor naming conventions, covering brand tiers (Core i3/i5/i7/i9 for entry-level to top-tier workstation), the newer Core Ultra branding (Series 1 Meteor Lake, Series 2 Lunar Lake/Arrow Lake) that drops the i prefix, generation identification from the digits after the hyphen (e.g. i7-9700 is 9th Gen, i5-12400 is 12th Gen), and suffix decoding (K unlocked, F no integrated graphics, KF, T, H/HK/HX laptop, U ultra-low power). Covers the 12th Gen+ hybrid P-core/E-core architecture, AMD market-position equivalents, an Intel-vs-AMD generation timeline from 8th Gen/Ryzen 1000 through Core Ultra S2/Ryzen AI 300, performance summaries by era, and key milestones like Alder Lake, AM5 socket longevity, and AMD X3D V-Cache gaming leadership.",
+  "keywords": ["intel", "amd", "cpu", "processor", "naming", "core-ultra", "ryzen", "generations", "hybrid-architecture"],
+  "entities": ["Intel", "Core i3", "Core i5", "Core i7", "Core i9", "Core Ultra", "Meteor Lake", "Lunar Lake", "Arrow Lake", "Alder Lake", "Raptor Lake", "Raptor Lake Refresh", "Rocket Lake", "Comet Lake", "Ice Lake", "Coffee Lake", "AMD", "Ryzen 3", "Ryzen 5", "Ryzen 7", "Ryzen 9", "Ryzen AI 300", "Ryzen 9000", "Zen", "Zen 5", "Hawk Point", "AM5", "7800X3D", "9800X3D", "3D V-Cache"],
+  "see_also": [
+    "nas-cpu-comparison-home-media-server.md"
+  ],
+  "source": "inbox/chats/intel-gens.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": ""
+    },
+    {
+      "section": "Brand Tiers (Core Series)",
+      "content": "## Brand Tiers (Core Series)\n\n| Brand   | Positioning                                             |\n|---------|---------------------------------------------------------|\n| Core i3 | Entry-level: web browsing, office, light streaming      |\n| Core i5 | Sweet spot: multitasking, gaming, productivity          |\n| Core i7 | High-end: enthusiasts, video editing, heavy multitasking |\n| Core i9 | Top tier: 3D rendering, workstation tasks               |\n\nIntel introduced **Core Ultra** branding for newer chips (Series 1: Meteor Lake, Series\n2: Lunar Lake / Arrow Lake), moving away from the \"i\" prefix.\n\n"
+    },
+    {
+      "section": "Identifying Generations",
+      "content": "## Identifying Generations\n\nThe first one or two digits after the hyphen indicate the generation:\n\n- `i7-9700` → 9th Gen\n- `i5-12400` → 12th Gen\n- `i9-14900K` → 14th Gen\n\nNewer generations generally mean better power efficiency, higher speeds, and newer\nfeatures (faster RAM support, better integrated graphics).\n\n"
+    },
+    {
+      "section": "Suffix Decoding",
+      "content": "## Suffix Decoding\n\n| Suffix | Meaning |\n|--------|---------|\n| K      | Unlocked for overclocking |\n| F      | No integrated graphics (requires dedicated GPU) |\n| KF     | Unlocked + no integrated graphics |\n| T      | Power-optimized for small desktop PCs |\n| H/HK/HX | High-performance laptop chips (gaming/workstation) |\n| U      | Ultra-low power (thin-and-light laptops) |\n\n"
+    },
+    {
+      "section": "Hybrid Architecture (12th Gen+)",
+      "content": "## Hybrid Architecture (12th Gen+)\n\nStarting with 12th Gen Alder Lake, cores split into two types:\n\n- **P-cores** (Performance): Handle heavy lifting and complex tasks\n- **E-cores** (Efficient): Handle background tasks, save battery, reduce heat\n\nA chip with 16 cores might have 8 P-cores and 8 E-cores.\n\n"
+    },
+    {
+      "section": "AMD Position Equivalents",
+      "content": "## AMD Position Equivalents\n\n| Intel        | AMD                  |\n|-------------|----------------------|\n| Core i3     | Ryzen 3              |\n| Core i5     | Ryzen 5              |\n| Core i7     | Ryzen 7              |\n| Core i9     | Ryzen 9              |\n| Core Ultra 5 | Ryzen AI 5 / Ryzen 5 |\n| Core Ultra 7 | Ryzen AI 7 / Ryzen 7 |\n| Core Ultra 9 | Ryzen AI 9 / Ryzen 9 |\n\nThese are market-position equivalents, not exact performance matches.\n\n"
+    },
+    {
+      "section": "Generation Timeline (Intel vs AMD)",
+      "content": "## Generation Timeline (Intel vs AMD)\n\n| Intel Gen      | Release    | Codename            | Closest AMD Gen   | AMD Release | AMD Codename |\n|---------------|-----------|---------------------|-------------------|-------------|-------------|\n| 8th Gen       | 2017      | Coffee Lake          | Ryzen 1000        | 2017        | Zen         |\n| 9th Gen       | 2018      | Coffee Lake Refresh  | Ryzen 2000        | 2018        | Zen+        |\n| 10th Gen      | 2019–2020 | Comet Lake / Ice Lake| Ryzen 3000        | 2019        | Zen 2       |\n| 11th Gen      | 2021      | Rocket Lake          | Ryzen 5000        | 2020        | Zen 3       |\n| 12th Gen      | Late 2021 | Alder Lake           | Ryzen 5000/7000   | 2020–2022   | Zen 3 / 4   |\n| 13th Gen      | Late 2022 | Raptor Lake          | Ryzen 7000        | 2022        | Zen 4       |\n| 14th Gen      | Late 2023 | Raptor Lake Refresh  | Ryzen 7000/8000G  | 2022–2024   | Zen 4       |\n| Core Ultra S1 | Late 2023 | Meteor Lake (mobile) | Ryzen 8040        | 2023        | Hawk Point  |\n| Core Ultra S2 | 2024      | Lunar Lk / Arrow Lk  | Ryzen AI 300/9000 | 2024        | Zen 5       |\n\n"
+    },
+    {
+      "section": "Performance Summary by Era",
+      "content": "## Performance Summary by Era\n\n| Period       | Intel                                     | AMD                                        |\n|-------------|-------------------------------------------|--------------------------------------------|\n| 2017–2018   | Better gaming                             | Better value and multicore                 |\n| 2019–2020   | Competitive                               | Strong lead in efficiency and productivity |\n| 2021        | 12th Gen regains leadership               | Ryzen 5000 still excellent                 |\n| 2022–2023   | 13th Gen very competitive                 | Ryzen 7000 X3D dominates gaming            |\n| 2024+       | Core Ultra focuses on AI and efficiency   | Ryzen 9000 strong; X3D top gaming choice   |\n\n"
+    },
+    {
+      "section": "Key Milestones",
+      "content": "## Key Milestones\n\n- **Intel 12th Gen (Alder Lake)**: Major redesign with hybrid P-cores and E-cores\n- **Intel 14th Gen desktop**: Largely a refresh of 13th Gen\n- **AMD AM5 socket**: Maintained since Ryzen 7000, enabling CPU upgrades without\n  motherboard changes\n- **AMD X3D processors** (7800X3D, 9800X3D): Widely regarded as best gaming\n  CPUs due to large 3D V-Cache\n\n"
+    }
+  ]
+}

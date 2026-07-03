@@ -1,0 +1,39 @@
+{
+  "id": "captures/numbers/webassembly-runtime-performance-2026",
+  "path": "captures/numbers/webassembly-runtime-performance-2026.md",
+  "title": "WebAssembly Runtime Performance Benchmarks 2026",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "Benchmarks of libsodium compiled to WebAssembly across 9 runtimes (Bun, Node, WAMR, wasm2c, WasmEdge, Wasmer, Wasmtime, WAVM, Wazero) using 2024-2026 releases on AMD Ryzen AI 9 HX 470 / Linux 7.1.0-rc7 / Zig 0.17.0-dev. Geometric mean slowdowns versus native show Wasmer 7.1.0 with wide_arithmetic fastest at 1.33x native; WAMR AOT ~1.57x; Wasmtime improving 2.67x to 2.41x; Bun ~3x faster 2025 to 2026. A 6.6x spread separates fastest from slowest runtimes.",
+  "keywords": ["webassembly", "wasm", "benchmarks", "wasmtime", "wasmer", "wamr", "bun", "node", "wazero", "wide_arithmetic"],
+  "entities": ["Bun", "Node", "WAMR", "wasm2c", "WasmEdge", "Wasmer", "Wasmtime", "WAVM", "Wazero", "libsodium", "AMD Ryzen AI 9 HX 470", "Zig"],
+  "see_also": [],
+  "source": "inbox/articles/Performance of WebAssembly runtimes in 2026.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Benchmark of libsodium compiled to WebAssembly across 9 runtimes (Bun, Node, WAMR, wasm2c, WasmEdge, Wasmer, Wasmtime, WAVM, Wazero) using 2024–2026 releases. Host: AMD Ryzen AI 9 HX 470, Linux 7.1.0-rc7, Zig 0.17.0-dev. Numbers are geometric mean of per-benchmark slowdowns relative to native (lower is better).\n"
+    },
+    {
+      "section": "Runtime Versions Tested",
+      "content": "## Runtime Versions Tested\n\n| Runtime | 2024 | 2025 | 2026 |\n| --- | --- | --- | --- |\n| Bun | 1.1.16 | 1.2.17 | 1.3.14 |\n| Node | 22.3.0 | 24.2.0 | 26.3.1 |\n| WAMR | 2.1.0 | 2.3.1 | 2.4.4 |\n| WABT wasm2c | 1.0.35 | 1.0.37 | 1.0.41 |\n| WasmEdge | 0.14.0 | 0.14.1 | 0.17.0 |\n| Wasmer | 4.3.2 | 6.0.1 | 7.1.0 |\n| Wasmtime | 22.0.0 | 34.0.0 | 46.0.0 |\n| WAVM | n/a | n/a | nightly/2026-04-05 |\n| Wazero | 1.7.3 | 1.9.0 | 1.12.0 |\n"
+    },
+    {
+      "section": "Key Findings",
+      "content": "## Key Findings\n\n- **Wasmer 7.1.0** is the best performer with `wide_arithmetic`: **1.33x native**\n- **Wasmtime** improved steadily every year: 2.67x (2024) → 2.54x (2025) → 2.41x (2026) baseline\n- **Bun** made a huge jump: ~3x faster from 2025 to 2026, though still slower than Node on this workload\n- **WAMR** in AOT mode: ~1.57x native (fast and stable)\n- **wasm2c** remains excellent if AOT translation to native C is acceptable\n- **WAVM** produced the fastest 2026 baseline number, but no fair historical comparison available\n- **WasmEdge** remains excellent once forced into AOT mode (`--run-mode=aot`)\n"
+    },
+    {
+      "section": "wide_arithmetic Impact",
+      "content": "## wide_arithmetic Impact\n\nThe biggest speedup in the experiment. Only Wasmtime and Wasmer could run the full `wide_arithmetic` build among stable releases tested:\n\n- **Wasmtime 46.0.0**: 2.41x native → **1.46x native** with wide_arithmetic\n- **Wasmer 7.1.0**: 2.08x native → **1.33x native** with wide_arithmetic\n\n`lime1` and `simd128` alone are not magic — sometimes they help, sometimes they hurt, and sometimes the difference is lost in noise.\n"
+    },
+    {
+      "section": "Baseline WebAssembly (no SIMD, no wide_arithmetic)",
+      "content": "## Baseline WebAssembly (no SIMD, no wide_arithmetic)\n\n| Runtime | 2024 | 2025 | 2026 |\n| --- | --- | --- | --- |\n| Wasmtime | 2.67x | 2.54x | 2.41x |\n| Node | 8.60x | — | 7.95x |\n| Wazero | 4.84x | 4.70x | 4.72x |\n| WAMR (AOT) | — | 1.59x | 1.57x |\n| Wasmer | — | — | ~baseline |\n| Bun | far behind | far behind | ~3x faster than 2025 |\n| WasmEdge | — | — | 1.74x (with AOT flag) |\n"
+    },
+    {
+      "section": "Takeaways",
+      "content": "## Takeaways\n\n- Runtime choice matters a lot for CPU-heavy WebAssembly: fastest (Wasmer+wide_arithmetic 1.33x) vs slowest (Bun baseline 8.77x) is a 6.6x spread\n- Feature support matters: the same runtime can move from \"pretty good\" to \"surprisingly close to native\" with better arithmetic instructions\n- Mainstream runtimes are not standing still — Wasmtime improved steadily, Bun made a huge jump, Wasmer gained a key feature\n- Benchmark your actual workload\n"
+    }
+  ]
+}

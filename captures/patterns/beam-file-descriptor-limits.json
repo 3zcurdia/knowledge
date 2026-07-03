@@ -1,0 +1,31 @@
+{
+  "id": "captures/patterns/beam-file-descriptor-limits",
+  "path": "captures/patterns/beam-file-descriptor-limits.md",
+  "title": "BEAM File Descriptor Limits: ulimit, +Q, and Containers",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "When the BEAM's file descriptor budget runs out, new connections stop arriving while existing users, CPU, memory, and :observer all look normal. Ranch logs {:error, :emfile} and silently turns away new connections. Three limits form the effective ceiling and must move together: the host OS ulimit (limits.conf or systemd LimitNOFILE), the container ulimit (docker-compose or ECS task definition), and the BEAM +Q flag in vm.args. The effective limit is min(ulimit -n, +Q), so raising only one leaves the others as the ceiling. 65,536 is the standard production value. Verify with ulimit -n, /proc/sys/fs/file-max, /proc/<pid>/limits, and :erlang.system_info(:port_limit)/(:port_count). Containers do not inherit the host ulimit.",
+  "keywords": ["beam", "erlang", "file-descriptors", "ulimit", "vm-args", "docker", "ecs", "ranch", "emfile"],
+  "entities": ["BEAM", "Ranch", "Linux", "docker-compose", "ECS", "beam.smp"],
+  "see_also": [],
+  "source": "inbox/articles/Beam in the Wild 3 Three Limits, One Fix. Why Raising ulimit Is Not Enough.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "\nNew connections stop arriving when the file descriptor budget runs out. Everything else looks normal — existing users, CPU, memory, `:observer`. The default budget on most Linux systems is 1,024 (`ulimit -n`). When it runs out, Ranch logs `{:error, :emfile}` and new connections are silently turned away.\n\nThree limits form the effective ceiling, and all three must move together:\n\n1. **Host OS ulimit** — set in `/etc/security/limits.conf` or systemd `LimitNOFILE`\n2. **Container ulimit** — set in `docker-compose.yml` or ECS task definition\n3. **BEAM `+Q`** — set in `vm.args`\n\nThe effective limit is always `min(ulimit -n, +Q)`. Raising only one leaves the others as the ceiling.\n"
+    },
+    {
+      "section": "Production Configuration",
+      "content": "## Production Configuration\n\n65,536 is the standard production value. Both the OS and the BEAM handle it comfortably on any modern server.\n\n```\n# /etc/security/limits.conf (or systemd: LimitNOFILE=65536)\n* soft nofile 65536\n* hard nofile 65536\n```\n```\n# vm.args\n+Q 65536\n```\n\n### Docker\n\n```yaml\n# docker-compose.yml\nservices:\n  app:\n    ulimits:\n      nofile:\n        soft: 65536\n        hard: 65536\n```\n\n### ECS\n\n```json\n\"ulimits\": [\n  {\n    \"name\": \"nofile\",\n    \"softLimit\": 65536,\n    \"hardLimit\": 65536\n  }\n]\n```\n"
+    },
+    {
+      "section": "Verification",
+      "content": "## Verification\n\n```bash\n# Check the OS limit\nulimit -n\n\n# Check the system-wide ceiling on Linux\ncat /proc/sys/fs/file-max\n\n# Find the BEAM process ID\npgrep beam.smp\n\n# Check its limits\ncat /proc/<pid>/limits | grep \"open files\"\n\n# From inside a running BEAM node\n:erlang.system_info(:port_limit)   # the +Q ceiling\n:erlang.system_info(:port_count)   # current usage\n```\n\nIf `port_limit` is lower than `ulimit`, `+Q` was not set. If `port_limit` is correct but connections are still refused, the container's `ulimit` was not set.\n"
+    },
+    {
+      "section": "Key Point",
+      "content": "## Key Point\n\nWhen connections are refused and everything else looks normal, check all three layers. Containers do not inherit the host's `ulimit` — each container gets its own resource limits, and the default is usually whatever the base image ships with.\n"
+    }
+  ]
+}

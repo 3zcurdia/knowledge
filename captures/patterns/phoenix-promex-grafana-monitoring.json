@@ -1,0 +1,41 @@
+{
+  "id": "captures/patterns/phoenix-promex-grafana-monitoring",
+  "path": "captures/patterns/phoenix-promex-grafana-monitoring.md",
+  "title": "Phoenix Monitoring with PromEx, Prometheus, and Grafana",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "PromEx is an Elixir wrapper that simplifies Prometheus metrics collection for Phoenix apps, providing plugins for VM stats, Phoenix requests, LiveView timing, Ecto queries, Oban jobs, Absinthe, and Broadway, plus auto-provisioned Grafana dashboards. The architecture consists of Prometheus scraping the app's /metrics endpoint, Grafana querying Prometheus for dashboards and alerting, and Loki with Promtail for structured log aggregation. Meta-monitoring tracks Prometheus itself via metrics like prometheus_tsdb_head_series and process_resident_memory_bytes. Custom plugins implement use PromEx.Plugin with metrics/1 and optional dashboard/0.",
+  "keywords": ["promex", "prometheus", "grafana", "phoenix", "elixir", "monitoring", "metrics", "loki"],
+  "entities": ["PromEx", "Prometheus", "Grafana", "Phoenix", "LiveView", "Ecto", "Oban", "Absinthe", "Broadway", "Loki", "Promtail"],
+  "see_also": [
+    "oban-pro-agentic-workflows.md"
+  ],
+  "source": "inbox/articles/Phoenix App Monitoring Grafana and PromEx Real-Time Setup.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "PromEx is an Elixir wrapper that simplifies Prometheus metrics collection for Phoenix apps. It provides plugins for VM stats, Phoenix requests, LiveView timing, Ecto queries, Oban jobs, and more, with auto-provisioned Grafana dashboards.\n\n"
+    },
+    {
+      "section": "Setup",
+      "content": "## Setup\n\nAdd PromEx to `mix.exs`, enable it in the supervision tree, then generate config:\n```bash\nmix prom_ex.gen.config --datasource YOUR_PROMETHEUS_DATASOURCE_ID\n```\n\n"
+    },
+    {
+      "section": "Built-in Plugins",
+      "content": "## Built-in Plugins\n\n- **Application** — dependency counts, Git info, uptime\n- **Beam** — schedulers, GC pauses, run-queue lengths\n- **Phoenix** — HTTP request counts, durations, channel joins\n- **PhoenixLiveView** — mount/handle_event timings and error counts\n- **Ecto** — query timings, pool checkout waits\n- **Oban** — job queue depth, execution and failure rates\n- **Absinthe** — GraphQL execution timings\n- **Broadway** — message throughput, batch latency\n\n"
+    },
+    {
+      "section": "Custom Plugins",
+      "content": "## Custom Plugins\n\nDefine a module with `use PromEx.Plugin`, implement `metrics/1` to emit gauges/counters/histograms, and optionally `dashboard/0` for auto-provisioned Grafana dashboards.\n\n"
+    },
+    {
+      "section": "Architecture",
+      "content": "## Architecture\n\nPrometheus scrapes the app's `/metrics` endpoint and stores time series. Grafana connects to Prometheus for dashboards, alerting, and exploration. Loki + Promtail handle structured log aggregation.\n\n"
+    },
+    {
+      "section": "Meta-Monitoring",
+      "content": "## Meta-Monitoring\n\nMonitor Prometheus itself by exporting its `/metrics` to a secondary scraper. Track `prometheus_tsdb_head_series`, `process_resident_memory_bytes`, and `prometheus_rule_evaluation_failures_total`.\n\n"
+    }
+  ]
+}

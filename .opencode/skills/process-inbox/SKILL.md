@@ -3,8 +3,9 @@ name: process-inbox
 description: |
   Triage and normalize exported conversations sitting in inbox/ into the categorized
   knowledge base. Reads inbox/chats/, inbox/agents/, and inbox/articles/, extracts substantive topics,
-  rewrites each as a one-topic markdown file under the right category, and removes the
-  source. Interactive: proposes title/category/filename per topic and asks before writing.
+  and rewrites each as a one-topic markdown file under the right category, paired with a
+  sibling .json structured-data file that a RAG indexer consumes. Removes the source.
+  Interactive: proposes title/category/filename per topic and asks before writing.
   Use ONLY when the working directory is the knowledge base root containing AGENTS.md and
   inbox/.   Fire when the user says "process inbox", "triage inbox", "process chats",
   "normalize inbox", or runs "/process-inbox".
@@ -15,7 +16,9 @@ user_invocable: true
 
 Work through every file in `inbox/chats/`, `inbox/agents/`, and `inbox/articles/`, distilling each into one
 or more normalized, one-topic markdown files routed to the correct category directory.
-Interactive: every proposed output is shown for confirmation before it is written.
+Each markdown file is paired with a sibling `.json` structured-data file that a RAG
+indexer consumes for retrieval (summary, keywords, section-level chunks). Interactive:
+every proposed output pair is shown for confirmation before it is written.
 
 ## Invocation
 
@@ -72,10 +75,27 @@ treat each as a separate output (the KB convention is one topic per file).
 
 ### 2a — Read & segment
 
-Read the source. Delegate analysis to the `text-analyst` subagent for:
+Read the source. Delegate analysis to the `text-analyst` subagent. For each topic the
+subagent must return all of:
+
 - **Topic segmentation**: identify distinct topics / conversational threads
 - **Key idea extraction**: extract substantive content while stripping noise
-- **Category suggestion**: get a suggested KB route for each topic
+- **Category suggestion**: a suggested KB route (one of the routes in Categorization
+  heuristics) for each topic
+- **Summary**: a one-paragraph retrieval-tuned abstract of the topic. This is *not* a
+  copy of the markdown intro — it should be written to maximize semantic match for the
+  kinds of questions a RAG reader would ask about this topic. Keep under ~120 words.
+- **Keywords**: a list of 3–10 lowercase terms useful as retrieval filters (e.g.
+  `["glm-5.2", "benchmark", "pricing"]`). Favor specific tokens over generic words.
+- **Entities**: a list of proper nouns / product names / identifiers as they appear
+  verbatim in the body (e.g. `["GLM-5.2", "Claude Opus 4.8"]`).
+- **Chunks**: the normalized body split into `## ` sections. Each chunk is an object
+  `{ "section": "<H2 heading text>", "content": "<section body verbatim>" }` where
+  `content` includes the `## ` line and everything up to the next `## ` (or end of the
+  body, excluding the `## See also` section and the provenance footer). Code blocks,
+  tables, and exact values inside `content` are preserved verbatim. If the body has no
+  `## ` headings, emit a single chunk with `"section": ""` and the whole body (minus
+  footer / See also) as `content`.
 
 A single source may yield 0, 1, or many topics.
 
@@ -88,13 +108,22 @@ For each topic, compute:
 
 - **Title**: concise, descriptive, in English.
 - **Category**: one of the routes below, with a one-line rationale.
+- **Type**: the route label (`decisions`, `numbers`, `observations`, `patterns`,
+  `projects`, or `notes`).
 - **Filename**: kebab-case, `.md`, derived from the title (e.g. `api-rate-limit-quota.md`).
-- **Destination**: `<category-dir>/<filename>`.
+- **Destination**: `<category-dir>/<filename>` (the markdown path).
+- **JSON path**: the destination with the extension swapped to `.json`
+  (e.g. `captures/numbers/api-rate-limit-quota.json`). The JSON uses the same basename as
+  the `.md` so the pair travels together; the collision suffix is applied to the `.md`
+  first and mirrored onto the `.json`.
 - **Body**: the normalized markdown (see Normalization rules).
+- **Structured data**: the JSON object built from the subagent output per the schema in
+  Normalization rules → Structured companion.
 
-Collision handling: if the destination path already exists, do not overwrite. Suffix the
-filename with `-2`, `-3`, … until free. If a near-identical file already exists, offer to
-skip instead of duplicating.
+Collision handling: if the destination `.md` path already exists, do not overwrite. Suffix
+the filename with `-2`, `-3`, … until free. The `.json` companion takes the same suffixed
+basename. If a near-identical file already exists, offer to skip instead of duplicating —
+skipping skips both the `.md` and the `.json` atomically.
 
 Directory creation: `mkdir -p` the destination directory before writing if it does not
 exist (this matters for `projects/<name>/`).
@@ -109,10 +138,15 @@ Source : <source path>  (topic <i> of <n>)
 Title  : <proposed title>
 Route  : <category>  — <one-line rationale>
 File   : <destination path>
+JSON   : <json companion path>
 ┄┄┄ Preview (first ~20 lines) ┄┄┄
 <normalized body head>
+┄┄┄ Summary ┄┄┄
+<one-paragraph summary>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Confirming writes both the `.md` and the `.json` atomically — they share one prompt.
 
 Choice menu:
 
@@ -128,8 +162,15 @@ Default (pressing enter) = `1 Write`.
 
 ### 2d — Write
 
-On `Write` / `Edit` / `Recategorize` (after corrections), write the destination file with
-the normalized body. Confirm the path was written, then continue to the next topic.
+On `Write` / `Edit` / `Recategorize` (after corrections), write the destination `.md`
+file with the normalized body, then write the sibling `.json` file with the structured
+data (2-space indented, trailing newline).
+
+Confirm with a single line: `wrote <md path> (+ json)`.
+
+Write ordering: write the `.md` first. If the `.json` write fails after the `.md`
+succeeded, leave the `.md` in place (it is still valid prose), warn the user that the
+companion is missing, and **do not delete the source** (so the run can be retried).
 
 After every topic from a source file has been handled (written or skipped), apply the
 source-deletion rule (see below).
@@ -153,13 +194,15 @@ Done. Inbox processed.
     captures/patterns/     : N
     projects/              : N
     notes/                 : N
+  JSON companions          : N   (paired with the files above)
   Topics skipped           : N
   Sources deleted          : N
   Sources kept (all-skipped): N
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-If no files were written at all, say so and remind the user the inbox is untouched.
+If no files were written at all, say so, note that no `.json` companions were written
+either, and remind the user the inbox is untouched.
 
 ---
 
@@ -174,6 +217,7 @@ came from:
 | Metrics, quotas, figures, benchmarks, capacity limits, exact numbers    | `captures/numbers/`       |
 | A factual finding about how something behaves or works (observed)       | `captures/observations/`  |
 | A recurring approach, technique, best-practice, "how we do X"           | `captures/patterns/`      |
+| A foundational principle, law, mental model, or definition             | `captures/concepts/`      |
 | Tied to a named project or initiative (and not a decision)              | `projects/<project>/`     |
 | General reference, explanation, how-to (the default catch-all)          | `notes/`                  |
 
@@ -182,6 +226,7 @@ came from:
 - **numbers/** — quantitative facts: metrics, quotas, limits, benchmarks, sizes.
 - **observations/** — qualitative findings: behaviors, states, "we noticed that …".
 - **patterns/** — reusable approaches: techniques, conventions, "how we handle …".
+- **concepts/** — foundational principles, laws, mental models, definitions.
 
 Precedence when a topic fits more than one row:
 
@@ -225,6 +270,44 @@ Provenance footer: append a single line at the end of every written file:
 
 This survives the source-file deletion and keeps the note traceable.
 
+### Structured companion (JSON)
+
+Every written `.md` is paired with a sibling `.json` of the same basename. The JSON is the
+data a RAG indexer reads; it is model-agnostic (no embeddings here — the indexer chooses
+the embedder). Schema (field order is fixed so re-runs produce stable diffs):
+
+```json
+{
+  "id": "<destination path without extension, e.g. captures/numbers/foo>",
+  "path": "<destination .md path, e.g. captures/numbers/foo.md>",
+  "title": "<the # Title, verbatim>",
+  "category": "<full destination dir, e.g. captures/numbers>",
+  "type": "<decisions|numbers|observations|patterns|concepts|projects|notes>",
+  "summary": "<one-paragraph retrieval-tuned abstract from the subagent>",
+  "keywords": ["<3–10 lowercase terms>"],
+  "entities": ["<proper nouns / identifiers, verbatim>"],
+  "see_also": ["<relative .md paths from See also, no link text>"],
+  "source": "<original inbox path, matches the provenance footer>",
+  "processed_at": "<YYYY-MM-DD, matches the provenance footer>",
+  "chunks": [
+    {
+      "section": "<H2 heading text, or empty string for a single-chunk body>",
+      "content": "<section body verbatim, including the ## line>"
+    }
+  ]
+}
+```
+
+Notes:
+
+- `see_also` is an array of relative paths (relative to the `.md` location) with no link
+  text. If the markdown has no `## See also` section, emit an empty array.
+- `id` is the `path` with its extension removed. It is stable only as long as the path is
+  unchanged; treat renames as a new id (the indexer can re-key on `path`).
+- The `## See also` section and the provenance footer are **excluded** from `chunks` —
+  they are metadata, not retrievable content.
+- Chunk bodies preserve code blocks, tables, and exact values verbatim.
+
 ---
 
 ## Source-deletion rule
@@ -249,6 +332,13 @@ List every deleted source in the final summary.
 - **Filename collision**: suffix `-2`, `-3`, … never overwrite an existing file.
 - **Destination directory missing** (e.g. `projects/new-thing/`): `mkdir -p` it first.
 - **Empty inbox**: report and stop; do not error.
+- **JSON write fails after `.md` write**: leave the `.md` in place, warn that the
+  companion is missing, keep the source file (so the run can be retried), and continue.
+- **`.md` exists but `.json` missing (or vice versa)** on a re-run: still apply the
+  collision rule to the `.md`; if the user chooses Write, sync the missing half of the
+  pair. If the user skips, leave the orphan half untouched and warn.
+- **Re-processed source**: if the resulting `.md` path collides and is skipped, no `.json`
+  is written either — the pair is atomic.
 
 ---
 
@@ -260,6 +350,8 @@ List every deleted source in the final summary.
 - Does not translate English content; translates non-English content to English.
 - Does not auto-write without confirmation — every topic is shown first.
 - Does not touch `.keep` files or dotfiles.
+- Does not generate embeddings — the JSON stays model-agnostic. A separate indexer reads
+  `**/*.json` and chooses the embedder.
 
 ---
 

@@ -1,0 +1,42 @@
+{
+  "id": "notes/ford-10r80-transmission-fluid-service",
+  "path": "notes/ford-10r80-transmission-fluid-service.md",
+  "title": "Ford 10R80 10-Speed Automatic Transmission Fluid Service",
+  "category": "notes",
+  "type": "notes",
+  "summary": "Maintenance notes for the Ford 10R80 10-speed automatic transmission (paired with the 5.0 V8 in 2018+ F-150), often labeled lifetime fluid but in practice serviceable every 30,000–60,000 miles, sooner under towing, hills, or hard use. Fluid must be MERCON ULV (Ultra Low Viscosity) only. A drain & fill replaces roughly 40–60% of fluid and is the safer recommended method, while a full flush replaces ~100% but is risky with old/dirty fluid. Fluid level must be checked at operating temperature (~190°F) with the vehicle level; DIY drain & fill costs about $80–150 (6–8 quarts at $10–15/quart) versus $200–400 at a shop. Symptoms include rough shifting, delayed engagement, unknown service history, or mileage over 60,000.",
+  "keywords": ["ford", "10r80", "transmission", "fluid-service", "mercon-ulv", "f-150", "maintenance"],
+  "entities": ["Ford", "10R80", "F-150", "5.0 V8", "MERCON ULV"],
+  "see_also": [
+    "../captures/numbers/ford-5-0-coyote-v8-specs.md",
+    "../captures/observations/ford-easy-fuel-capless-system.md"
+  ],
+  "source": "inbox/chats/ford-f150.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "The 10R80 transmission (paired with 5.0 V8 in 2018+ F-150) is often labeled\n\"lifetime fluid\" but in practice should be serviced regularly.\n\n"
+    },
+    {
+      "section": "Recommended Interval",
+      "content": "## Recommended Interval\n\n- Every 30,000–60,000 miles (sooner if towing, hills, or hard use)\n\n"
+    },
+    {
+      "section": "Fluid Specification",
+      "content": "## Fluid Specification\n\n**MERCON ULV (Ultra Low Viscosity)** only.\n\n"
+    },
+    {
+      "section": "Service Methods",
+      "content": "## Service Methods\n\n| Method       | Fluid Replaced | Risk                        |\n|-------------|---------------|-----------------------------|\n| Drain & Fill | ~40–60%       | Safer, recommended          |\n| Full flush  | ~100%         | Risky if fluid is old/dirty |\n\n"
+    },
+    {
+      "section": "Critical Details",
+      "content": "## Critical Details\n\n- Fluid level must be checked at operating temperature (~190°F)\n- Vehicle must be level when filling\n- Overfilling or underfilling causes shifting problems\n- DIY drain & fill: ~$80–150 (6–8 quarts at $10–15/quart)\n- Shop service: $200–400\n\n"
+    },
+    {
+      "section": "Signs Service is Needed",
+      "content": "## Signs Service is Needed\n\n- Rough shifting\n- Delayed engagement\n- Unknown service history\n- Over ~60,000 miles\n\n"
+    }
+  ]
+}

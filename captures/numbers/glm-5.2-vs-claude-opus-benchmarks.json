@@ -1,0 +1,39 @@
+{
+  "id": "captures/numbers/glm-5.2-vs-claude-opus-benchmarks",
+  "path": "captures/numbers/glm-5.2-vs-claude-opus-benchmarks.md",
+  "title": "GLM-5.2 vs Claude Opus 4.8: Benchmark Comparison",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "Head-to-head benchmarks of GLM-5.2 (open MIT weights) versus Claude Opus 4.8 on a 3D platformer build task and standard suites (AIME 2026, SWE-bench Pro, NL2Repo, HLE, MCP-Atlas, Tool-Decathlon). GLM-5.2 cost a fifth as much ($5.39 vs ~$21.92) but Opus finished in half the time with a cleaner, multimodal-capable result. Per-1M-token pricing, build task metrics, and benchmark scores are tabulated.",
+  "keywords": ["glm-5.2", "claude opus", "benchmarks", "llm", "pricing", "multimodal", "swe-bench"],
+  "entities": ["GLM-5.2", "Claude Opus 4.8", "AIME 2026", "SWE-bench Pro", "NL2Repo", "HLE", "MCP-Atlas", "Tool-Decathlon"],
+  "see_also": [],
+  "source": "inbox/articles/GLM-5.2 vs Claude Opus.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Head-to-head comparison of GLM-5.2 (open weights, MIT) and Claude Opus 4.8 on a 3D platformer build task and standard benchmarks.\n"
+    },
+    {
+      "section": "Build Task Results",
+      "content": "## Build Task Results\n\n| Metric | GLM-5.2 | Opus 4.8 |\n|---|---|---|\n| Wall-clock time | 1h 10m 40s | **33m 30s** |\n| Output tokens | 131,000 | 216,809 |\n| Cost | **$5.39** | ~$21.92 |\n\nOpus finished in half the time with a cleaner, more correct game. GLM-5.2 cost a fifth as much.\n"
+    },
+    {
+      "section": "Pricing (per 1M tokens)",
+      "content": "## Pricing (per 1M tokens)\n\n| | Input | Cache read | Output |\n|---|---|---|---|\n| Claude Opus 4.8 | $5 | $0.50 | $25 |\n| GLM-5.2 | $1.4 | $0.26 | $4.4 |\n"
+    },
+    {
+      "section": "Key Benchmarks",
+      "content": "## Key Benchmarks\n\n| Benchmark | GLM-5.2 | Opus 4.8 |\n|---|---|---|\n| AIME 2026 | **99.2** | 95.7 |\n| SWE-bench Pro | 62.1 | **69.2** |\n| NL2Repo | 48.9 | **69.7** |\n| HLE (w/ tools) | 54.7 | **57.9** |\n| MCP-Atlas | 76.8 | **77.8** |\n| Tool-Decathlon | 48.2 | **59.9** |\n"
+    },
+    {
+      "section": "Key Difference",
+      "content": "## Key Difference\n\nGLM-5.2 is text-only (no image input). Opus is multimodal — can read screenshots for self-verification. This mattered for visual tasks where GLM-5.2's self-check missed missing textures and debug overlays.\n"
+    },
+    {
+      "section": "Verdict",
+      "content": "## Verdict\n\nUse GLM-5.2 when cost and openness matter for text/logic work. Use Opus when correctness, polish, and visual judgment matter. GLM-5.2 earns a permanent spot as the cheapest frontier-adjacent model with weights no vendor can take away.\n"
+    }
+  ]
+}

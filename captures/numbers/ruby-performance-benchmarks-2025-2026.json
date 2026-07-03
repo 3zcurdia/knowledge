@@ -1,0 +1,43 @@
+{
+  "id": "captures/numbers/ruby-performance-benchmarks-2025-2026",
+  "path": "captures/numbers/ruby-performance-benchmarks-2025-2026.md",
+  "title": "Ruby Performance Benchmarks: 2025-2026 PR Roundup",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "Measured speedups from Ruby performance PRs landed in 2025-2026, grouped by area: strings and text (String#scrub up to 45.55x, String#gsub! allocation drop from 100,041 to 40 bytes), files and directories (File.join up to 18.81x, File.extname up to 6.17x), GC and object allocation (~10-15% faster Object.allocate), concurrency (Mutex#synchronize ~1.54x, Thread::Queue ~23% faster), BigDecimal (NTT multiplication up to 800,000x), and JIT (YJIT/ZJIT improvements).",
+  "keywords": ["ruby", "performance", "benchmarks", "yjit", "zjit", "bigdecimal", "gc", "strings", "file"],
+  "entities": ["YJIT", "ZJIT", "BigDecimal", "String#scrub", "String#gsub!", "File.join", "File.extname", "Dir.scan", "Mutex#synchronize", "Thread::Queue", "TypedData_Get_Struct"],
+  "see_also": [],
+  "source": "inbox/articles/Small PRs, big speedups the Ruby performance work you almost missed.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Concrete benchmark numbers from Ruby performance PRs (2025-2026). Every PR below ships a measured improvement.\n"
+    },
+    {
+      "section": "Strings & Text",
+      "content": "## Strings & Text\n\n- `String#scrub` ASCII fast path: up to 45.55x faster on English HTML\n- `String#codepoints` ASCII hot path: ~1.9x faster on mixed ASCII\n- `String#gsub!` no-match optimization: 2.33x faster, allocation drops from 100,041 to 40 bytes\n"
+    },
+    {
+      "section": "Files & Directories",
+      "content": "## Files & Directories\n\n- `File.join` common case: up to 18.81x faster for many-string joins\n- `File.extname`: up to 6.17x faster on long paths\n- `File.expand_path` single-byte fast path: 2.67x faster\n- `Dir.scan` yields entry type: 2.12x faster recursive directory walks\n- `Dir.pwd` cached: up to 1.33x faster on Linux\n"
+    },
+    {
+      "section": "GC & Object Allocation",
+      "content": "## GC & Object Allocation\n\n- Clear page bits in one shot: ~14% off object-new\n- Move allocation into gc.c: ~10-15% faster `Object.allocate`\n- Remove class alloc check: ~10% faster `Object.new`\n"
+    },
+    {
+      "section": "Concurrency",
+      "content": "## Concurrency\n\n- `TypedData_Get_Struct` fast path: `Mutex#synchronize` ~1.54x faster\n- `Thread::Queue` ring buffer: ~23% faster\n- Hot thread scheduler priority: 1.455s → 0.231s (2-core)\n"
+    },
+    {
+      "section": "BigDecimal",
+      "content": "## BigDecimal\n\n- NTT multiplication: up to 800,000x faster (270 days → 29 seconds)\n- `BigDecimal#to_s`: ~2.6x faster small, ~3.8x large\n"
+    },
+    {
+      "section": "JIT",
+      "content": "## JIT\n\n- YJIT `RCLASS_EXT_WRITABLE` fix: ~1.5x faster\n- ZJIT `getivar` shape-guard failure: 22.5% → 3.0% side exits\n"
+    }
+  ]
+}

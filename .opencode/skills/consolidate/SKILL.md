@@ -38,7 +38,7 @@ If missing, stop and tell the user this skill only runs inside the knowledge rep
 Build the scan list:
 
 1. Search these directories for `.md` files:
-   - `captures/**` (including `numbers/`, `observations/`, `patterns/`)
+   - `captures/**` (including `numbers/`, `observations/`, `patterns/`, `concepts/`)
    - `decisions/**`
    - `notes/**`
    - `projects/**` (including subdirectories)

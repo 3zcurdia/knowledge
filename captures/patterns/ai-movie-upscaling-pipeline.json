@@ -1,0 +1,45 @@
+{
+  "id": "captures/patterns/ai-movie-upscaling-pipeline",
+  "path": "captures/patterns/ai-movie-upscaling-pipeline.md",
+  "title": "AI Movie Upscaling Pipeline for Local Hardware",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Pattern for upscaling and restoring movies (e.g., DVD to 1080p) on local hardware, anchored on the insight that upscaling is not restoration: denoise before upscaling, then optionally reintroduce grain to avoid the plastic AI look. Targets an RTX 5060 Ti 16GB + 32GB RAM + 2TB SSD rig where VRAM is the bottleneck. Pipeline stages (decode with ffmpeg, pre-process denoise via hqdn3d/SCUNet/Neat Video, upscale with Real-ESRGAN/ESRGAN/RIFE+ESRGAN, optional GFPGAN/CodeFormer face restoration, reassemble with libx264 CRF 18 and remux audio) with FPS and total-time estimates from 2 hours to 4 days for a 2-hour film.",
+  "keywords": ["ai upscaling", "video restoration", "ffmpeg", "real-esrgan", "gfpgan", "dvd", "movies", "rtx", "denoise"],
+  "entities": ["Real-ESRGAN", "ESRGAN", "RIFE", "GFPGAN", "CodeFormer", "FFmpeg", "VapourSynth", "Video2X", "Hybrid", "SCUNet", "Neat Video", "hqdn3d", "RTX 5060 Ti", "libx264", "ncnn Vulkan"],
+  "see_also": [
+    "../../notes/qwen-3-6-model-hardware-fit-guide.md"
+  ],
+  "source": "inbox/chats/ai-upscale-movie.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "A systematic approach for upscaling and restoring movies (e.g., DVD to 1080p) using\nAI on local hardware. The key insight: **upscaling ≠ restoration** — you must denoise\nbefore upscaling, then optionally reintroduce grain to avoid the \"plastic AI look.\"\n"
+    },
+    {
+      "section": "Hardware Requirements",
+      "content": "## Hardware Requirements\n\n- **GPU**: RTX 5060 Ti 16GB VRAM (VRAM is the bottleneck, not CPU)\n- **RAM**: 32GB sufficient\n- **Storage**: 2TB SSD — intermediate frames can consume 300–800GB for a 2-hour movie\n"
+    },
+    {
+      "section": "Pipeline Stages",
+      "content": "## Pipeline Stages\n\n### Stage 1 — Decode & Prepare\n\nExtract frames losslessly with ffmpeg:\n\n```\nffmpeg -i input.mkv -qscale:v 1 frames/frame_%06d.png\n```\n\nAvoid compression artifacts stacking by using lossless extraction.\n\n### Stage 2 — Pre-processing\n\nDVD sources have noise, compression artifacts, and edge ringing. Denoising is\ncritical before upscaling — otherwise AI amplifies the garbage.\n\nOptions:\n- ffmpeg denoise (`hqdn3d`)\n- AI denoise: SCUNet / Neat Video\n\n### Stage 3 — Upscaling\n\nBest local options:\n\n| Tool | Speed | Quality |\n|------|-------|---------|\n| Real-ESRGAN (ncnn Vulkan) | Fast | Good |\n| ESRGAN variants (custom models) | Medium | Better |\n| Video diffusion / temporal models (RIFE + ESRGAN combo) | Slow | Best |\n\nExample Real-ESRGAN:\n\n```\nrealesrgan-ncnn-vulkan -i frames -o upscaled -n realesrgan-x4plus\n```\n\n### Stage 4 — Face / Detail Restoration (Optional)\n\n- **GFPGAN**: Face restoration\n- **CodeFormer**: Better control\n\n### Stage 5 — Reassemble Video\n\n```\nffmpeg -framerate 24 -i upscaled/frame_%06d.png -c:v libx264 -crf 18 output.mp4\n```\n\nAdd original audio:\n\n```\nffmpeg -i output.mp4 -i input.mkv -c copy -map 0:v -map 1:a final.mkv\n```\n"
+    },
+    {
+      "section": "Processing Time Estimates (2-hour movie, 24 fps, ~172,800 frames)",
+      "content": "## Processing Time Estimates (2-hour movie, 24 fps, ~172,800 frames)\n\n| Pipeline | Estimated FPS | Total Time |\n|----------|---------------|------------|\n| Real-ESRGAN (fast) | 10–25 fps | 2–5 hours |\n| High-quality (diffusion / multi-pass) | 1–5 fps | 10–48 hours |\n| Heavy temporal models | 0.5–2 fps | 1–4 days |\n"
+    },
+    {
+      "section": "Recommended Tool Stack",
+      "content": "## Recommended Tool Stack\n\n- FFmpeg\n- Real-ESRGAN (ncnn Vulkan version)\n- GFPGAN\n- VapourSynth (for advanced pipelines)\n- Video2X (open-source wrapper)\n- Hybrid (GUI + VapourSynth)\n"
+    },
+    {
+      "section": "Storage Management",
+      "content": "## Storage Management\n\n1 movie → ~200k PNGs → 300–800 GB temporary. Use JPG at high quality instead of\nPNG or process in chunks to reduce space usage.\n"
+    },
+    {
+      "section": "Key Workflow for DVD Sources",
+      "content": "## Key Workflow for DVD Sources\n\n1. Denoise first\n2. Upscale\n3. Optionally reintroduce grain\n4. Avoid amplifying DVD artifacts into the final output\n"
+    }
+  ]
+}

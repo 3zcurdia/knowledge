@@ -1,0 +1,31 @@
+{
+  "id": "captures/patterns/elixir-testing-philosophy",
+  "path": "captures/patterns/elixir-testing-philosophy.md",
+  "title": "Elixir Testing Philosophy: Test What Matters",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Elixir testing philosophy emphasizes using IEx for tight prototyping feedback while relying on ExUnit tests as executable documentation for long-term maintainability. The core principle is to test contracts at module boundaries rather than implementation details. Trivial tests of pure functions like ttl/1 have negative ROI; private functions that feel complex enough to test are a design smell; integration tests at module boundaries matter most because they implicitly validate the building blocks. Coverage is a vanity metric, not the goal; what matters is testing where regressions are most likely and costly. Tests age and rot, so prune them diligently. Difficulty writing a test signals the software design needs refactoring. Libraries have a public API and an internal API; tests should guard the public contract.",
+  "keywords": ["elixir", "testing", "exunit", "iex", "philosophy", "integration-tests", "coverage", "design-feedback"],
+  "entities": ["Elixir", "IEx", "ExUnit"],
+  "see_also": [],
+  "source": "inbox/articles/Things I've realized about testing Elixir code.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "\nTesting in Elixir benefits from the tight feedback loop of IEx for prototyping, but ExUnit tests become inevitable for long-term maintainability. The key insight is to test contracts at module boundaries rather than implementation details.\n"
+    },
+    {
+      "section": "Key Principles",
+      "content": "## Key Principles\n\n- **IEx is essential for spot-checking** — it's the tightest feedback loop available, but cannot be automated or serve as documentation.\n- **ExUnit tests are executable documentation** — they capture how the system behaves so maintainers don't have to figure things out from scratch.\n- **Trivial tests have negative ROI** — testing simple pure functions like `ttl/1` wastes time without reducing risk.\n- **Private functions don't need direct tests** — if a private function feels complex enough to test, that's a design smell.\n- **Integration tests matter most** — confidence at module boundaries implicitly validates the building blocks.\n- **Coverage is not the goal** — 100% coverage is a vanity metric; what matters is testing where regressions are most likely and costly.\n- **Tests age and rot** — prune them diligently as the codebase evolves.\n"
+    },
+    {
+      "section": "Two APIs: Public and Internal",
+      "content": "## Two APIs: Public and Internal\n\nMost libraries have two APIs: the public contract users depend on, and the internal API modules use to communicate with each other. ExUnit tests should guard the public-facing contract; internal correctness is implicitly validated by those tests.\n"
+    },
+    {
+      "section": "Testing as Design Feedback",
+      "content": "## Testing as Design Feedback\n\nIf writing a test feels like pulling teeth, it's a sign the software design needs refactoring. Tests should feel natural; difficulty testing signals too many responsibilities in a function.\n"
+    }
+  ]
+}

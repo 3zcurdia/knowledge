@@ -1,0 +1,31 @@
+{
+  "id": "captures/patterns/custom-html-elements-llm-chat",
+  "path": "captures/patterns/custom-html-elements-llm-chat.md",
+  "title": "Custom HTML Elements in LLM Chat Responses",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "ChatGPT embeds structured UI components (product carousels, quick replies) inside Markdown chat responses by using custom Unicode delimiters (U+E200, U+E201, U+E202) within Server-Sent Events streams. The same pattern is buildable with Phoenix LiveView, MDEx, and Web Components: instruct the model in the API prompt about available custom element syntax (e.g. <quick-reply>), configure MDEx with sanitize options that add the custom tag to the allow-list, define an HTMLElement Web Component that handles clicks and submits the chat form, and render the markdown body with MDEx.to_html! piped through raw. LLMs consistently use custom HTML elements when given clear syntax instructions, enabling rich responses like carousels, comparison tables, and expandable sections.",
+  "keywords": ["llm", "chatgpt", "custom-html-elements", "web-components", "phoenix", "liveview", "mdex", "rich-ui", "server-sent-events"],
+  "entities": ["ChatGPT", "Phoenix LiveView", "MDEx", "Web Components", "HTMLElement"],
+  "see_also": [],
+  "source": "inbox/articles/Teaching LLMs new UI tricks.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "\nChatGPT uses custom Unicode delimiters (`U+E200`, `U+E201`, `U+E202`) to embed structured UI components (e.g. product carousels) inside Markdown responses. The same approach can be built with Phoenix LiveView, MDEx, and Web Components.\n"
+    },
+    {
+      "section": "How ChatGPT Does It",
+      "content": "## How ChatGPT Does It\n\nResponses arrive as Server-Sent Events. A carousel is JSON delimited by special Unicode characters that serve as custom syntax markers. The LLM emits these markers inline with normal Markdown text.\n"
+    },
+    {
+      "section": "Building Custom Elements in LiveView",
+      "content": "## Building Custom Elements in LiveView\n\n### 1. Tell the model about available syntax\n\nInclude custom element instructions in the API prompt:\n\n```elixir\ninstructions: \"\"\"\nYou have access to the following custom syntax. ALWAYS use\nit to the fullest advantage to provide delightful\nrich UI to the user.\n\n# Quick Reply\n\nUse this custom tag to suggest a concise reply\nthe user can send next. Use multiple quick replies\nand keep each one short: 2-4 words.\n\n## Example\n\n<quick-reply>Tell me more</quick-reply>\n\"\"\"\n```\n\n### 2. Configure MDEx to allow the custom tag\n\n```elixir\ndefmodule BigTalk.Markdown do\n  def parser() do\n    MDEx.new(\n      streaming: true,\n      render: [unsafe: true],\n      sanitize: sanitize_options()\n    )\n  end\n\n  def sanitize_options() do\n    MDEx.Document.default_sanitize_options()\n    |> Keyword.merge(add_tags: [\"quick-reply\"])\n  end\nend\n```\n\n### 3. Define a Web Component\n\n```javascript\nclass QuickReply extends HTMLElement {\n  constructor() {\n    super()\n    this.handleClick = this.handleClick.bind(this)\n  }\n\n  connectedCallback() {\n    this.addEventListener(\"click\", this.handleClick)\n  }\n\n  disconnectedCallback() {\n    this.removeEventListener(\"click\", this.handleClick)\n  }\n\n  handleClick(event) {\n    event.preventDefault()\n    this.submitReply()\n  }\n\n  submitReply() {\n    const message = this.textContent.trim()\n    const form = document.getElementById(\"chat-composer-form\")\n    const input = form?.querySelector(\"[name='chat[message]']\")\n    if (!message || !form || !input) return\n\n    input.value = message\n    input.dispatchEvent(new Event(\"input\", {bubbles: true}))\n    input.dispatchEvent(new Event(\"change\", {bubbles: true}))\n\n    if (form.requestSubmit) {\n      form.requestSubmit()\n    } else {\n      form.dispatchEvent(new SubmitEvent(\"submit\",\n        {bubbles: true, cancelable: true}\n      ))\n    }\n  }\n}\n\nif (!customElements.get(\"quick-reply\")) {\n  customElements.define(\"quick-reply\", QuickReply)\n}\n```\n\n### 4. Render in the template\n\n```heex\n<article>\n  {MDEx.to_html!(message.body) |> raw()}\n</article>\n```\n"
+    },
+    {
+      "section": "Key Insight",
+      "content": "## Key Insight\n\nLLMs are competent at consistently using custom HTML elements when provided with clear syntax instructions. The approach works for more complex elements too — carousels, comparison tables, expandable sections. Equip the model with a menu of custom elements and let it choose the most expressive one for each response.\n"
+    }
+  ]
+}

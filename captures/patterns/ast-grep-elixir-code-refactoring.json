@@ -1,0 +1,35 @@
+{
+  "id": "captures/patterns/ast-grep-elixir-code-refactoring",
+  "path": "captures/patterns/ast-grep-elixir-code-refactoring.md",
+  "title": "AST-Grep: Structural Code Find-and-Replace for Elixir",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "AST-grep performs find-and-replace over source code by matching abstract syntax tree patterns instead of text regex, enabling structural refactors that are far more precise than sed. For Elixir, it supports relational rules (precedes, follows, inside, has), multi-metavariables like $$$ALL_PARAMS, expandEnd to extend fixes, YAML block chomping to control trailing newlines, constraints to filter by AST node kind, and composite any rules for alternatives. A worked rule converts `conn = get(conn, ...)` followed by an `assert` into a pipe chain. Run via ast-grep scan with --update-all for fixes, or without it for CI checks.",
+  "keywords": ["ast-grep", "elixir", "refactoring", "structural-search", "code-transform", "yaml-rules", "sed-alternative"],
+  "entities": ["AST-grep", "Elixir", "sed", "YAML"],
+  "see_also": [],
+  "source": "inbox/articles/Cleaning up code using ast-grep.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "\nAST-grep finds and replaces code based on abstract syntax tree (AST) patterns rather than text regex, making it far more expressive than `sed` for source code transformations.\n"
+    },
+    {
+      "section": "Example: Converting `conn = get(conn, ...)` to Pipe Syntax",
+      "content": "## Example: Converting `conn = get(conn, ...)` to Pipe Syntax\n\nRule using `precedes` for relational matching:\n```yaml\nid: conn-pipe-syntax-1\nlanguage: elixir\nrule:\n  pattern: conn = $METHOD(conn, $$$ALL_PARAMS)\n  precedes:\n    pattern: assert $RESPONSE_FUNCTION(conn, $STATUS)\nfix:\n  template: |-\n    conn\n    |> $METHOD($$$ALL_PARAMS)\n    |> $RESPONSE_FUNCTION($STATUS)\n  expandEnd:\n    pattern: |\n      assert $RESPONSE_FUNCTION(conn, $STATUS)\n```\n"
+    },
+    {
+      "section": "Key Features",
+      "content": "## Key Features\n\n- **Relational rules:** `precedes`, `follows`, `inside`, `has` for multi-node patterns\n- **Multi metavariables:** `$$$ALL_PARAMS` matches zero or more arguments\n- **`expandEnd`:** extend fix to remove additional matched code\n- **YAML block chomping (`|-`):** prevent trailing newlines in replacements\n- **`constraints`:** filter by AST node type (e.g. `kind: identifier`)\n- **Composite rules:** `any:` for matching multiple pattern alternatives\n"
+    },
+    {
+      "section": "Usage",
+      "content": "## Usage\n\n```bash\n# Apply all fixes\nast-grep scan --rule rules.yaml --update-all .\n\n# Check only (CI)\nast-grep scan --rule rules.yaml\n```\n"
+    },
+    {
+      "section": "Tips",
+      "content": "## Tips\n\n- Use the online playground to debug rules with AST visualization\n- Pattern matching ignores whitespace/newlines — focus on structure\n- Start with specific patterns, then parameterize with metavariables\n"
+    }
+  ]
+}

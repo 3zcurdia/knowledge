@@ -1,0 +1,26 @@
+{
+  "id": "captures/numbers/ford-5-0-coyote-v8-specs",
+  "path": "captures/numbers/ford-5-0-coyote-v8-specs.md",
+  "title": "2018 Ford F-150 5.0 Coyote V8 Engine Specifications",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "Specifications for the 2018 Ford F-150 5.0L Coyote V8: 395 hp and 400 lb-ft torque, naturally aspirated, paired with the 10R80 10-speed automatic transmission. Compares output against a Toyota Hilux 2.8 diesel and Toyota RAV4 (2018 and 2019+ gas), showing the F-150 5.0 leads in horsepower while the Hilux diesel can approach its torque at lower RPM.",
+  "keywords": ["ford", "f-150", "coyote", "v8", "specs", "horsepower", "torque", "10r80"],
+  "entities": ["Ford F-150", "Coyote V8", "10R80", "Toyota Hilux", "Toyota RAV4"],
+  "see_also": [
+    "../../notes/ford-10r80-transmission-fluid-service.md",
+    "../observations/ford-easy-fuel-capless-system.md"
+  ],
+  "source": "inbox/chats/ford-f150.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "- **Output**: 395 hp / 400 lb-ft\n- **Configuration**: Naturally aspirated 5.0L V8\n- **Transmission**: 10R80 10-speed automatic\n"
+    },
+    {
+      "section": "Comparison with Similar Vehicles",
+      "content": "## Comparison with Similar Vehicles\n\n| Vehicle                       | HP    | Torque        |\n|-------------------------------|-------|---------------|\n| 2018 F-150 5.0 V8             | 395   | 400 lb-ft     |\n| Toyota Hilux 2.8 diesel       | ~201  | 310–369 lb-ft |\n| 2018 Toyota RAV4              | 176   | 172 lb-ft     |\n| 2019+ Toyota RAV4 (gas)       | 203   | 184 lb-ft     |\n\nThe F-150 5.0 wins in horsepower against both. The Hilux diesel can come close in\ntorque, but at much lower RPM.\n"
+    }
+  ]
+}

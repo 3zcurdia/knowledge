@@ -1,0 +1,38 @@
+{
+  "id": "captures/patterns/reqllm-llm-plugins-elixir",
+  "path": "captures/patterns/reqllm-llm-plugins-elixir.md",
+  "title": "ReqLLM: Composable LLM Interactions via Req Plugins",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "ReqLLM is an Elixir library bringing Req's middleware-driven approach to LLM interactions via a unified plugin architecture where each AI provider is implemented as a standard Req plugin. It supports 45 providers and 665+ models synced from models.dev with cost, context, and capability metadata, exposing typed structs (Context, Message, ContentPart, StreamChunk, Tool, Response), built-in streaming, automatic cost tracking, and secure key management via JidoKeys/Dotenvy. Providers implement ReqLLM.Plugin with attach/2 and parse/2, allowing full middleware composition (rate limiting, retries, caching, custom headers). Two levels of control: high-level generate_text helpers and low-level Req plugin API.",
+  "keywords": ["reqllm", "elixir", "llm", "req", "plugins", "middleware", "ai-providers", "streaming"],
+  "entities": ["ReqLLM", "Req", "JidoKeys", "Dotenvy", "models.dev", "Context", "Message", "ContentPart", "StreamChunk", "Tool", "Response", "ReqLLM.Plugin", "anthropic:claude-3-sonnet", "openai:gpt-4"],
+  "see_also": [
+    "oban-pro-agentic-workflows.md",
+    "../observations/agentic-systems-database-state.md"
+  ],
+  "source": "inbox/articles/Introducing ReqLLM Req Plugins for LLM Interactions.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "ReqLLM is an Elixir library that brings Req's middleware-driven approach to LLM interactions through a unified, plugin-based architecture. Each AI provider is implemented as a standard Req plugin.\n\n"
+    },
+    {
+      "section": "Features",
+      "content": "## Features\n\n- **45 providers and 665+ models** synced from models.dev with cost/context/capability metadata\n- **Typed structs:** `Context`, `Message`, `ContentPart`, `StreamChunk`, `Tool`, `Response`\n- **Built-in streaming** with structured `StreamChunk` metadata\n- **Automatic cost tracking** using up-to-date pricing data\n- **Secure key management** via JidoKeys/Dotenvy\n\n"
+    },
+    {
+      "section": "Usage",
+      "content": "## Usage\n\n```elixir\n# Simple text generation\n{:ok, text} = ReqLLM.generate_text!(\"anthropic:claude-3-sonnet\", \"Hello world\")\n\n# Structured data with validation\n{:ok, person} = ReqLLM.generate_object!(\"openai:gpt-4\", \"Generate a person\", schema)\n\n# Tool calling\n{:ok, response} = ReqLLM.generate_text(\"anthropic:claude-3-sonnet\", \"Weather?\", tools: [weather_tool])\n```\n\n"
+    },
+    {
+      "section": "Architecture",
+      "content": "## Architecture\n\nEach provider implements `ReqLLM.Plugin` with `attach/2` (configure request) and `parse/2` (normalize response). This enables full Req middleware composition — rate limiting, retries, caching, custom headers — applied to LLM requests.\n\n"
+    },
+    {
+      "section": "Two Levels of Control",
+      "content": "## Two Levels of Control\n\nHigh-level helpers (`generate_text/3`) and low-level Req plugin API for advanced use cases with custom middleware.\n\n"
+    }
+  ]
+}

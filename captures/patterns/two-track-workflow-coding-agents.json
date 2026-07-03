@@ -1,0 +1,43 @@
+{
+  "id": "captures/patterns/two-track-workflow-coding-agents",
+  "path": "captures/patterns/two-track-workflow-coding-agents.md",
+  "title": "Two-Track Workflow for Coding Agents",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "A practical workflow running two coding agents in parallel—one for specifications, one for implementation—built on the premise that human attention, not agent count, is the bottleneck. The spec track requires continuous human attention: brainstorm, iterate questions and answers, produce a functional PRD plus a technical design and broken-down engineering tasks. The implementation track runs with low human attention: hand over the spec and plan, let the agent implement autonomously, then review. Only two agents because specs need continuous attention, specs bottleneck implementation, verification needs a human touch, and UX is not delegable. Grounded in theory of constraints, Kanban, and dual-track development. Tools: Tidewave and Superpowers.",
+  "keywords": ["coding-agents", "workflow", "specification", "implementation", "parallel", "kanban", "theory-of-constraints", "dual-track"],
+  "entities": ["Tidewave", "Superpowers", "Marty Cagan", "Phoenix", "Rails"],
+  "see_also": [],
+  "source": "inbox/articles/You don't need ten agents. You need two tracks..md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "A practical workflow using two agents in parallel: one for specifications, one for implementation. Built on the principle that human attention is the bottleneck, not agent count.\n\n"
+    },
+    {
+      "section": "The Two Tracks",
+      "content": "## The Two Tracks\n\n### Spec Track (high human attention)\n\n1. Brainstorm feature idea with the agent — it asks questions, reads the codebase, steps through requirements\n2. Agent creates a technical design and implementation plan from the functional spec\n3. Output: complete functional spec (PRD) + technical design + broken-down engineering tasks\n\nThe spec track requires continuous human attention. You cannot simply give the agent a feature name and expect a well-thought-out spec — the agent needs to ask questions, you answer, review, iterate.\n\n### Implementation Track (low human attention)\n\n1. Give the agent the spec and implementation plan\n2. Agent works autonomously on implementation\n3. Human reviews when tasks complete, or at the end\n\nUnlike the spec track, the implementation agent has all the input it needs to work independently for a while. While it implements, you start the next spec.\n\n"
+    },
+    {
+      "section": "Why Only Two?",
+      "content": "## Why Only Two?\n\n- **Spec track needs continuous attention** — hard to parallelize (can't write two specs simultaneously)\n- **Specs are the bottleneck** — implementation agents can only go as fast as you provide inputs\n- **Verification requires human touch** — code review, functional testing, UI iteration\n- **You can't delegate UX** — building a great product is subjective and opinionated\n\n"
+    },
+    {
+      "section": "The Cycle",
+      "content": "## The Cycle\n\n1. Start spec for feature A (high attention)\n2. Hand spec to implementation agent (low attention)\n3. Start spec for feature B while agent implements A\n4. Review implementation of A, start next implementation\n5. Repeat\n\n"
+    },
+    {
+      "section": "Target Audience",
+      "content": "## Target Audience\n\nMostly valuable for builders who hold product decisions and code simultaneously: solo devs, indie hackers, technical founders. Developers with a PM-provided spec can still benefit by creating technical designs in parallel with implementation.\n\n"
+    },
+    {
+      "section": "Theoretical Foundations",
+      "content": "## Theoretical Foundations\n\n- **Theory of constraints**: a system can only go as fast as its bottleneck\n- **Kanban**: \"Stop starting, start finishing\" — finish and review before starting more\n- **Dual-Track Development**: popularized by Marty Cagan — spec and implementation as parallel tracks\n\n"
+    },
+    {
+      "section": "Tools Used",
+      "content": "## Tools Used\n\n- [Tidewave](https://tidewave.ai/): agentic dev environment for Phoenix and Rails\n- [Superpowers](https://github.com/obra/superpowers): agent skills for creating specs and implementation plans\n\n"
+    }
+  ]
+}

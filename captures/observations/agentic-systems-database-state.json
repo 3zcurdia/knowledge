@@ -1,0 +1,34 @@
+{
+  "id": "captures/observations/agentic-systems-database-state",
+  "path": "captures/observations/agentic-systems-database-state.md",
+  "title": "Agentic Systems Are Just Database State and Processes",
+  "category": "captures/observations",
+  "type": "observations",
+  "summary": "Observation that agentic AI concepts (memory, instruction routing, retrieval, context engineering) collapse to plain processes plus database state. The Burn demo app implements this with Phoenix + Elixir on the BEAM, standard Postgres tables (Users, Threads, Events, Facts, no extensions/vectors), Phoenix.Sync to stream data to backend agents and a TanStack DB reactive frontend. The LLM instruction is a functional representation of database state shared by UI, agent loop, and context engineering.",
+  "keywords": ["agentic", "agents", "database", "phoenix", "elixir", "beam", "context engineering", "retrieval"],
+  "entities": ["Phoenix", "Elixir", "BEAM", "Postgres", "Phoenix.Sync", "TanStack DB", "Anthropic API", "DynamicSupervisor", "Burn"],
+  "see_also": [
+    "../patterns/oban-pro-agentic-workflows.md",
+    "../patterns/reqllm-llm-plugins-elixir.md"
+  ],
+  "source": "inbox/articles/Bringing agents back down to earth.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Agentic AI concepts — memory, instruction routing, retrieval, context engineering — all collapse to processes and database state. You can build agentic systems with a database, standard web tooling, and real-time sync.\n"
+    },
+    {
+      "section": "Core Insight",
+      "content": "## Core Insight\n\nAgents are processes that instruct LLMs to make tool calls. Agentic memory is where you store data those instructions are based on. Retrieval is querying that data. Context engineering retrieves and formats information for the instruction.\n"
+    },
+    {
+      "section": "Architecture (Burn Demo App)",
+      "content": "## Architecture (Burn Demo App)\n\n- **Backend:** Phoenix + Elixir on the BEAM. Agents subscribe to events, instruct the LLM via Anthropic API, handle tool calls, and loop.\n- **Data model:** Standard Postgres tables — Users, Threads, Events, Facts. No extensions or vectors.\n- **Sync:** Phoenix.Sync syncs data from Postgres into both backend (for agents) and frontend (for users). DynamicSupervisor manages agent processes that scale with database contents.\n- **Frontend:** TanStack DB collections with live queries provide reactive UI updates.\n"
+    },
+    {
+      "section": "Key Pattern",
+      "content": "## Key Pattern\n\nThe instruction sent to the LLM is a functional representation of database state. The UI, agent control flow, and context engineering are all driven by the same data model.\n"
+    }
+  ]
+}

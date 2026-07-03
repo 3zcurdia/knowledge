@@ -1,0 +1,39 @@
+{
+  "id": "captures/patterns/elixir-authorization-permit-library",
+  "path": "captures/patterns/elixir-authorization-permit-library.md",
+  "title": "Authorization in Elixir with the Permit Library",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "The Permit library provides attribute-based access control (ABAC) for Elixir applications with integrations for Ecto, Phoenix controllers, LiveView, and Absinthe. It compares the four authorization paradigms (ACL with ETS O(1) lookups but combinatorial explosion, RBAC with auditable roles but role creep, ABAC with flexible attribute conditions, and PBAC policy-as-code like Bodyguard, Ash policies, OPA) and treats ABAC as the universal model: ACL, RBAC, and ReBAC all reduce to Permit's attribute-condition rules. Four libraries form the stack: permit, permit_ecto, permit_phoenix, permit_absinthe. DSL-free syntax inspired by Ruby's CanCan uses only positive declarations. permit_ecto generates Ecto queries from conditions via accessible_by; permit_phoenix implements a load-and-authorize plug pattern with a customizable handle_unauthorized callback and LiveView hooks on handle_event and handle_params.",
+  "keywords": ["elixir", "authorization", "permit", "abac", "rbac", "acl", "pbac", "ecto", "phoenix", "absinthe"],
+  "entities": ["Permit", "Elixir", "Ecto", "Phoenix", "Absinthe", "CanCan", "Bodyguard", "Ash", "OPA", "ETS"],
+  "see_also": [],
+  "source": "inbox/articles/Authorization in Elixir Case Studies and the Permit Library.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "\nThe Permit library provides attribute-based access control (ABAC) for Elixir applications, with integrations for Ecto, Phoenix controllers, LiveView, and Absinthe.\n"
+    },
+    {
+      "section": "Authorization Paradigms",
+      "content": "## Authorization Paradigms\n\n- **ACL:** Who can do what on what. O(1) lookups with ETS, but combinatorial explosion.\n- **RBAC:** Roles → permissions. Auditable, but role creep with dozens of near-duplicates.\n- **ABAC:** Action allowed if attribute conditions are met. Flexible but needs careful testing.\n- **PBAC:** Policy-as-code (Bodyguard, Ash policies, OPA). Readable but steeper learning curve.\n"
+    },
+    {
+      "section": "Permit Architecture",
+      "content": "## Permit Architecture\n\nFour libraries: base `permit`, `permit_ecto`, `permit_phoenix`, `permit_absinthe`. DSL-free syntax inspired by Ruby's CanCan, with only positive declarations (no `cannot`).\n\nPermission definitions in a single module generate `read`, `create`, `update` etc. functions based on actions. Conditions are keyword lists; `can` constructs a permission check struct.\n"
+    },
+    {
+      "section": "Ecto Integration",
+      "content": "## Ecto Integration\n\nGenerates Ecto queries from conditions. `accessible_by` fetches only authorized records. Supports `ilike` syntax converted to regex for in-memory checks or SQL queries.\n"
+    },
+    {
+      "section": "Phoenix Integration",
+      "content": "## Phoenix Integration\n\n\"Load and authorize\" pattern: controller plugs load and authorize records before action handlers. Customizable `handle_unauthorized` callback (defaults to redirect). LiveView hooks into `handle_event` and `handle_params` on mount.\n"
+    },
+    {
+      "section": "ABAC as Universal Model",
+      "content": "## ABAC as Universal Model\n\nACL, RBAC, and ReBAC are all reducible to Permit's ABAC model. Rules can be based on specific user IDs (ACL), roles (RBAC), or relationship entities (ReBAC).\n"
+    }
+  ]
+}

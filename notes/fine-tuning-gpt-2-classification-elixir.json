@@ -1,0 +1,39 @@
+{
+  "id": "notes/fine-tuning-gpt-2-classification-elixir",
+  "path": "notes/fine-tuning-gpt-2-classification-elixir.md",
+  "title": "Fine-Tuning GPT-2 for Classification in Elixir",
+  "category": "notes",
+  "type": "notes",
+  "summary": "A walkthrough of fine-tuning a pretrained GPT-2 model for SMS spam classification in Elixir, covering data preparation, model modification, and training. Classification fine-tuning targets a narrower task and needs a smaller dataset than instruction fine-tuning. The UCI SMS spam dataset is balanced by undersampling ham, then split into train/val/test; LlmScratch.FineTuneDataLoader uses an MT19937 PRNG for deterministic shuffling matching pandas' random_state. Messages are padded with GPT-2's end-of-text token (50256) via LlmScratch.SpamDataset tokenized with Tiktoken. The pretrained 50,257-vocab output head is replaced with a 2-class head, then the output head, final normalization, and last transformer block are unfrozen for training; EMLX provides Apple GPU support.",
+  "keywords": ["gpt-2", "fine-tuning", "classification", "elixir", "spam-detection", "emachine-learning", "emlx"],
+  "entities": ["GPT-2", "UCI SMS", "LlmScratch.FineTuneDataLoader", "MT19937", "pandas", "LlmScratch.SpamDataset", "Tiktoken", "EMLX", "Apple"],
+  "see_also": [],
+  "source": "inbox/articles/Fine-tuning for classification  Karlo Šmid Blog.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "",
+      "content": "A walkthrough of fine-tuning a pretrained GPT-2 model for SMS spam classification in Elixir, covering data preparation, model modification, and training.\n\n"
+    },
+    {
+      "section": "Classification vs Instruction Fine-Tuning",
+      "content": "## Classification vs Instruction Fine-Tuning\n\nClassification fine-tuning targets a narrower task (e.g. spam detection) and needs a smaller dataset than instruction fine-tuning, which teaches models to perform tasks from prompts.\n\n"
+    },
+    {
+      "section": "Data Preparation",
+      "content": "## Data Preparation\n\nThe UCI SMS spam dataset is downloaded, balanced by undersampling ham records, and split into train/validation/test sets. The `LlmScratch.FineTuneDataLoader` module handles downloading, loading, balancing, label mapping, and deterministic shuffling using an MT19937 PRNG to match pandas' `random_state` behavior.\n\n"
+    },
+    {
+      "section": "Data Loaders",
+      "content": "## Data Loaders\n\nVariable-length messages are padded to the longest sequence in the batch using GPT-2's end-of-text token ID (50256). The `LlmScratch.SpamDataset` module reads CSVs, tokenizes with Tiktoken, and pads/truncates to a fixed max length.\n\n"
+    },
+    {
+      "section": "Model Modification",
+      "content": "## Model Modification\n\nThe pretrained GPT-2 output head (50,257 vocab) is replaced with a 2-class classification head. The model is frozen, then selective layers are unfrozen for training: the output head, final normalization, and last transformer block.\n\n"
+    },
+    {
+      "section": "Training",
+      "content": "## Training\n\nThe classifier head is trained while most model layers remain frozen. Loss and accuracy are tracked across epochs. EMLX provides Apple GPU support.\n\n"
+    }
+  ]
+}

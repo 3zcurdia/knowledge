@@ -1,0 +1,31 @@
+{
+  "id": "notes/programming-language-syntax-comparison-resources",
+  "path": "notes/programming-language-syntax-comparison-resources.md",
+  "title": "Programming Language Syntax Comparison Resources",
+  "category": "notes",
+  "type": "notes",
+  "summary": "Curated list of websites and tools for comparing programming language syntax side by side. Covers Learn X in Y Minutes single-file overviews, Rosetta Code task implementations across hundreds of languages, Hyperpolyglot side-by-side reference sheets, DevDocs, Devhints, QuickRef, OverAPI, cheatsheets.zip, plus interactive runners Replit and Exercism. Maps common developer questions (writing X in different languages, jumping from C to Swift, comparing algorithm implementations) to the most useful resource, and notes the gap that no single site offers a polished side-by-side syntax and algorithm comparison across all languages.",
+  "keywords": ["programming languages", "syntax comparison", "rosetta code", "learn x in y minutes", "hyperpolyglot", "cheat sheets", "exercism", "replit"],
+  "entities": ["Learn X in Y Minutes", "Rosetta Code", "Hyperpolyglot", "Programiz", "DevDocs", "Devhints", "QuickRef", "OverAPI", "cheatsheets.zip", "Replit", "Exercism"],
+  "see_also": [],
+  "source": "inbox/chats/lang-compare.md",
+  "processed_at": "2026-07-02",
+  "chunks": [
+    {
+      "section": "Primary Resources",
+      "content": "## Primary Resources\n\n- <https://learnxinyminutes.com/> — Single-file language overviews with comments.\n  Best for learning a new language when you already know one.\n- <https://rosettacode.org/> — Same programming task implemented in hundreds of\n  languages. Largest collection of idiomatic algorithm implementations.\n- <https://hyperpolyglot.org/> — Side-by-side reference sheets (C vs Rust, Python vs\n  JS, etc.). Designed for \"I know X, show me Y.\"\n- <https://programiz.com/> — Beginner-friendly tutorials with good UI.\n"
+    },
+    {
+      "section": "Reference & Cheat Sheets",
+      "content": "## Reference & Cheat Sheets\n\n- <https://devdocs.io/> — Unified documentation browser for many languages and\n  frameworks.\n- <https://devhints.io/> — Nice-looking cheat sheets per language.\n- <https://quickref.me/> — Modern interface, lots of language cheat sheets.\n- <https://overapi.com/> — Aggregates cheat sheets for many languages.\n- <https://cheatsheets.zip/> — Concise cheat sheets for languages and tools.\n"
+    },
+    {
+      "section": "Interactive",
+      "content": "## Interactive\n\n- <https://replit.com/> — Run code in dozens of languages directly in the browser.\n- <https://exercism.org/> — Same exercises in many languages; good for comparing\n  idiomatic solutions.\n"
+    },
+    {
+      "section": "Usage Pattern",
+      "content": "## Usage Pattern\n\n- **\"How do I write X in different languages?\"** → Rosetta Code\n- **\"I know C, show me Swift\"** → Hyperpolyglot or Learn X in Y Minutes\n- **\"Compare algorithm implementations\"** → Rosetta Code (open two tabs)\n- **No single site offers a polished side-by-side syntax and algorithm comparison\n  across all languages** — this is a known gap in developer tooling.\n"
+    }
+  ]
+}
