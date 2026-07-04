@@ -25,4 +25,8 @@ Semiconductor advancement has slowed industry-wide since ~2010. Intel's Pat Gels
 
 The ITRS produced its final roadmap in 2016, shifting from Moore's law scaling to a "More than Moore" strategy driven by application needs.
 
+## See also
+
+- [MOSFET scaling — process node timeline](mosfet-scaling-process-nodes.md)
+
 > Source: inbox/articles/Moore's law.md · processed 2026-07-03

@@ -30,4 +30,8 @@ Historical record of MOSFET transistor gate lengths used in semiconductor device
 | 2025 | 2 nm |
 | ~2027 | 1 nm (projected) |
 
+## See also
+
+- [Moore's law](moores-law.md)
+
 > Source: inbox/articles/Moore's law.md · processed 2026-07-03

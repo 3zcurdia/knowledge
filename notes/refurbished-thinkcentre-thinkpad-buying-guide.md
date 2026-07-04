@@ -93,4 +93,9 @@ When Windows 11 support is not required, Linux opens up more budget options:
 4. ThinkPad T480 (i5-8350U) — best-value business laptop
 5. ThinkPad T14 Gen 2 (Ryzen 5 Pro 5650U) — best balance of portability and power
 
+## See also
+
+- [Intel Processor Naming Conventions](intel-processor-naming-conventions.md)
+- [NAS CPU Comparison for Home Media Servers](nas-cpu-comparison-home-media-server.md)
+
 > Source: inbox/chats/intel-gens.md · processed 2026-07-02

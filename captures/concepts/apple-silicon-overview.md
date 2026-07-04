@@ -8,4 +8,11 @@ Apple announced the Macs' transition to its own chips at WWDC 2020, and began re
 
 Apple fully controls the integration of Apple silicon in the company's hardware and software products. Johny Srouji, the senior vice president for Apple's hardware technologies, is in charge of the silicon design. Apple is a fabless manufacturer; production of the chips is outsourced to contract foundries including TSMC and Samsung.
 
+## See also
+
+- [Apple A-Series SoCs](apple-a-series-socs.md)
+- [Apple M-Series SoCs](apple-m-series-socs.md)
+- [Apple A-Series SoC Specifications](../numbers/apple-a-series-specs.md)
+- [Apple M-Series SoC Specifications](../numbers/apple-m-series-specs.md)
+
 > Source: inbox/articles/Apple_silicon.md · processed 2026-07-03

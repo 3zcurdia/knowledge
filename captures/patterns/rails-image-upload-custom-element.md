@@ -28,4 +28,8 @@ Outside a form (explicit ID):
 - `form` attribute enables use outside the form element.
 - For `has_one_attached`, submitting an empty file input removes the attachment.
 
+## See also
+
+- [Custom HTML Elements in LLM Chat Responses](custom-html-elements-llm-chat.md)
+
 > Source: inbox/articles/Reusable drag-and-drop image preview in Rails.md · processed 2026-07-02

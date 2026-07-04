@@ -93,6 +93,7 @@ These are market-position equivalents, not exact performance matches.
 ## See also
 
 - [NAS CPU Comparison for Home Media Servers](nas-cpu-comparison-home-media-server.md)
+- [Refurbished ThinkCentre and ThinkPad Buying Guide](refurbished-thinkcentre-thinkpad-buying-guide.md)
 
 > Source: inbox/chats/intel-gens.md · processed 2026-07-02
 > Merged: notes/intel-vs-amd-cpu-generation-timeline.md · 2026-07-02

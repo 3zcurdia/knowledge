@@ -81,4 +81,11 @@ Up to 6 "super" cores, up to 12 performance cores, up to 20 GPU cores, and 16 Ne
 ### Apple M5 Max
 6 "super" cores, 12 performance cores, up to 40 GPU cores, and 16 Neural Engine cores. Supports up to 128 GB RAM with up to 614 GB/s memory bandwidth. Operates at about 4.61 GHz. Apple claimed CPU 2.5x faster than M1 Max, GPU 2.2x faster.
 
+## See also
+
+- [Apple Silicon Overview](apple-silicon-overview.md)
+- [Apple A-Series SoCs](apple-a-series-socs.md)
+- [Apple M-Series SoC Specifications](../numbers/apple-m-series-specs.md)
+- [Apple A-Series SoC Specifications](../numbers/apple-a-series-specs.md)
+
 > Source: inbox/articles/Apple_silicon.md · processed 2026-07-03

@@ -108,4 +108,8 @@ if (!customElements.get("quick-reply")) {
 
 LLMs are competent at consistently using custom HTML elements when provided with clear syntax instructions. The approach works for more complex elements too — carousels, comparison tables, expandable sections. Equip the model with a menu of custom elements and let it choose the most expressive one for each response.
 
+## See also
+
+- [Reusable Drag-and-Drop Image Upload Custom Element in Rails](rails-image-upload-custom-element.md)
+
 > Source: inbox/articles/Teaching LLMs new UI tricks.md · processed 2026-07-02

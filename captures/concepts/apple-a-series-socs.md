@@ -76,4 +76,11 @@ Built on TSMC's N3E process with 2 high-performance and 4 high-efficiency cores.
 ### Apple A19 and A19 Pro
 Built on TSMC's N3P process. The A19 has 5-core graphics; A19 Pro has 6-core graphics. Also used in the Studio Display (2026) and Studio Display XDR.
 
+## See also
+
+- [Apple Silicon Overview](apple-silicon-overview.md)
+- [Apple M-Series SoCs](apple-m-series-socs.md)
+- [Apple A-Series SoC Specifications](../numbers/apple-a-series-specs.md)
+- [Apple M-Series SoC Specifications](../numbers/apple-m-series-specs.md)
+
 > Source: inbox/articles/Apple_silicon.md · processed 2026-07-03
