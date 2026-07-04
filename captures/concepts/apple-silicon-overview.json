@@ -1,0 +1,19 @@
+{
+  "id": "captures/concepts/apple-silicon-overview",
+  "path": "captures/concepts/apple-silicon-overview.md",
+  "title": "Apple Silicon Overview",
+  "category": "captures/concepts",
+  "type": "concepts",
+  "summary": "Apple silicon refers to Apple's custom-designed ARM-based system-on-chip (SoC) and system-in-package (SiP) processors used across Mac, iPhone, iPad, Apple Watch, AirPods, HomePod, and Vision Pro. The first chip was the A4 in 2010; the Mac transition began at WWDC 2020 with M1 and completed in June 2023. Apple controls hardware-software integration and outsources fabrication to TSMC and Samsung.",
+  "keywords": ["apple-silicon", "soc", "sip", "arm", "tsmc", "m1", "a4", "fabless"],
+  "entities": ["Apple Inc.", "Johny Srouji", "TSMC", "Samsung", "Apple M1", "Apple A4", "WWDC 2020"],
+  "see_also": [],
+  "source": "inbox/articles/Apple_silicon.md",
+  "processed_at": "2026-07-03",
+  "chunks": [
+    {
+      "section": "",
+      "content": "# Apple Silicon Overview\n\nApple silicon is a series of system on a chip (SoC) and system in a package (SiP) integrated circuits designed by Apple Inc., mainly using the ARM CPU architecture. They are used in nearly all of the company's devices including Mac, iPhone, iPad, Apple TV, Apple Watch, AirPods, AirTag, HomePod, and Apple Vision Pro.\n\nThe first Apple-designed system-on-a-chip was the Apple A4, introduced in 2010 with the first-generation iPad and later used in the iPhone 4, fourth generation iPod Touch and second generation Apple TV.\n\nApple announced the Macs' transition to its own chips at WWDC 2020, and began referring to its chips as Apple silicon. The first Macs with Apple silicon, built with the Apple M1 chip, were unveiled on November 10, 2020. The Mac lineup completed its transition to Apple chips in June 2023.\n\nApple fully controls the integration of Apple silicon in the company's hardware and software products. Johny Srouji, the senior vice president for Apple's hardware technologies, is in charge of the silicon design. Apple is a fabless manufacturer; production of the chips is outsourced to contract foundries including TSMC and Samsung."
+    }
+  ]
+}

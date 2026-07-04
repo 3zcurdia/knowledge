@@ -1,0 +1,30 @@
+{
+  "id": "captures/numbers/damascus-steel-mechanical-properties",
+  "path": "captures/numbers/damascus-steel-mechanical-properties.md",
+  "title": "Damascus Steel Mechanical Properties",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "Mechanical testing of Damascus steel swords shows yield strength of 740 MPa (vs 550 MPa for hot-rolled 1.0% carbon steel), tensile strength of 1070 MPa (vs 965 MPa), and Rockwell hardness of 62-67. Folding studies with 1075/15N20 steel show 250-fold samples achieve impact toughness of 5.49 J/cm² vs 4.36 J/cm² for 54-fold samples, and maximum strength of 860 MPa vs 750 MPa. Band orientation significantly affects impact strength — perpendicular impacts are stronger due to crack deflection at lamination interfaces.",
+  "keywords": ["damascus-steel", "mechanical-properties", "yield-strength", "tensile-strength", "hardness", "folding", "impact-toughness", "lamination"],
+  "entities": ["Verhoeven", "Peterson", "Baker", "1075 steel", "15N20 steel", "Rockwell"],
+  "see_also": [
+    "../concepts/damascus-steel-history.md",
+    "damascus-steel-metallurgy.md"
+  ],
+  "source": "inbox/articles/Damascus_steel.md",
+  "processed_at": "2026-07-03",
+  "chunks": [
+    {
+      "section": "Characterization",
+      "content": "## Characterization\n\nVerhoeven, Peterson, and Baker completed mechanical characterization of a Damascus sword, performing tensile testing as well as hardness testing. The Damascus steel was somewhat comparable to hot-rolled steel bars with 1.0 wt% carbon with regards to mechanical properties. The average yield strength of 740 MPa was higher than the hot-rolled steel yield strength of 550 MPa, and the average tensile strength of 1070 MPa was higher than the hot-rolled steel tensile strength of 965 MPa.\n\nThese results are likely due to the finer pearlite spacing in the Damascus steel, refining the microstructure. The elongation and reduction in area were also slightly higher than the averages for hot-rolled steel. Rockwell hardness measurements of the Damascus steel ranged from 62 to 67. These mechanical properties were consistent with those expected for the material's constituent steels, falling between the upper and lower bounds set by the original steels."
+    },
+    {
+      "section": "Folding Effects",
+      "content": "## Folding Effects\n\nA study investigated the properties of Damascus steel produced from 1075 steel and 15N20 steel, which have approximately equal carbon content, but 15N20 steel notably contains 2 wt% nickel. The 1075 steel is known for high strength but low toughness (pearlitic microstructure), and the 15N20 steel is known for high toughness (ferritic microstructure).\n\nCharpy V-notch impact tests showed that the 54-fold samples had an impact toughness of 4.36 J/cm², while the 250-fold samples had an impact toughness of 5.49 J/cm². Tensile testing showed that the yield strengths and elongations of both samples were similar, at approximately 475 MPa and 3.2%, respectively. However, the maximum strength of the 54-fold samples was notably lower than that of the 250-fold samples (750 MPa vs. 860 MPa). The folding process significantly affects the mechanical properties of the steel, with toughness increasing as the number of folds increases. This effect is likely due to the thinning and refinement of the microstructure; to achieve optimal properties, the steel should be folded a few hundred times.\n\nFurther studies of Damascus steel made from other steels showed similar results, confirming that increasing the number of folds increases impact strength and toughness, and that this effect extends to higher temperatures. The properties of the Damascus steel lie between those of the two constituent steels, which is consistent with composite material properties."
+    },
+    {
+      "section": "Lamination and Banding Effects",
+      "content": "## Lamination and Banding Effects\n\nThe processing and design of the laminations and bands can significantly affect mechanical properties. Regardless of tempering temperature and the liquid in which the steel is quenched, the impact strength of Damascus steel, when the impact is perpendicular to the band orientation, is significantly higher than when the impact is parallel to the band orientation.\n\nThis is due to the failure and fracture mechanisms in Damascus steel, where cracks propagate fastest along the interfaces between the two constituent steels. When impact is directed parallel to the bands, cracks can propagate easily along the lamination interfaces. When impact is directed perpendicular to the bands, the lamination interfaces are effectively protected, deflecting the cracks and increasing the energy required for cracks to propagate through the material. Band orientation should be chosen to protect against deformation and increase toughness."
+    }
+  ]
+}
