@@ -1,0 +1,51 @@
+{
+  "id": "captures/observations/beam-outperforms-mri-path-tracing",
+  "path": "captures/observations/beam-outperforms-mri-path-tracing.md",
+  "title": "Why BEAM (Elixir) outperforms MRI (Ruby) on path tracing",
+  "category": "captures/observations",
+  "type": "observations",
+  "summary": "Two direct ports of Ray Tracing in One Weekend — exray (Elixir) and raytrace-ruby (Ruby) — run the same random-sphere scene in 42:38 vs 1:47:36 wall time, a ~2.5x user-CPU gap with zero algorithmic differences. The cause is purely runtime: BEAM does float math on tagged immediates and handles many small short-lived structs (vectors, colors, hit records) far more cheaply than MRI, which boxes every float and pays full allocation/GC cost per scalar. :rand.uniform/0 being a C BIF helps too; the reduce_while closest-hit early exit is the standard algorithm and appears in both. The 103% CPU reading is GC/scheduler overhead, not parallelism. The real wins remain BVH and Task.async_stream.",
+  "keywords": [
+    "beam",
+    "mri",
+    "elixir",
+    "ruby",
+    "path-tracer",
+    "float-arithmetic",
+    "allocation",
+    "performance"
+  ],
+  "entities": [
+    "BEAM",
+    "MRI",
+    "Exray",
+    "raytrace-ruby",
+    "Ray Tracing in One Weekend",
+    ":rand.uniform",
+    "Enum.reduce_while",
+    "Task.async_stream"
+  ],
+  "see_also": [
+    "../concepts/bounding-volume-hierarchy-raytracing.md"
+  ],
+  "source": "inbox/chats/session-ses_0b6d.md",
+  "processed_at": "2026-07-09",
+  "chunks": [
+    {
+      "section": "",
+      "content": "# Why BEAM (Elixir) outperforms MRI (Ruby) on path tracing\n\nBoth the Ruby (`raytrace-ruby`) and Elixir (`exray`) implementations are direct\nports of the path tracer from *Ray Tracing in One Weekend* (Shirley). On the\nsame random-sphere scene:\n\n- Ruby (`ruby main.rb`): 6421.98s user, 99% CPU, **1:47:36.91 total**\n- Elixir (`mix run render.exs`): 2562.20s user, 103% CPU, **42:38.08 total**\n\nThat is roughly a **2.5x speedup in user CPU** and **2.4x in wall time** with\n**no algorithmic optimization** in the Elixir codebase. The gap is entirely a\nruntime characteristic story."
+    },
+    {
+      "section": "Why the gap exists",
+      "content": "## Why the gap exists\n\nPath tracing is a worst-case-friendly workload for the kind of code each\nruntime is slow at. It is roughly 99% floating-point arithmetic plus constant\nsmall-object churn (vectors, colors, hit records, ray structs) per pixel, per\nsample, per bounce. The runtime differences that matter:\n\n- **Float arithmetic.** BEAM does float math on native tagged immediates with\n  fast paths for the common scalar operations (add, multiply, sqrt, dot\n  product). MRI/CRuby boxes floats in heap-allocated `RFloat` objects and\n  dispatches every operation through a generic numeric path.\n- **Small-struct allocation.** The hot loop allocates a fresh `%Vector{}`,\n  `%Color{}`, `%Ray{}`, and `%HitRecord{}` on every bounce. BEAM's allocator\n  handles many small, short-lived terms cheaply; MRI pays full object-allocation\n  and GC-tracking cost for each one.\n- **Random number generation.** BEAM exposes `:rand.uniform/0` as a C BIF — a\n  single native call per sample. The Ruby version typically goes through more\n  Ruby-level code on every call.\n- **Closest-hit early exit.** Both implementations use a `reduce_while`-style\n  loop that prunes with the closest-so-far `t_max` so a sphere behind a nearer\n  hit is never tested. This is just the standard algorithm, not an\n  optimization, but it shows up identically in both.\n- **GC and scheduling overhead.** The Elixir run shows 103% CPU (vs Ruby's\n  99%), which is BEAM's GC + scheduler, not real parallelism — the render loop\n  is fully sequential."
+    },
+    {
+      "section": "What is *not* the reason",
+      "content": "## What is *not* the reason\n\n- No BVH, no spatial acceleration, no SIMD, no NIFs.\n- No `Task.async_stream` over scanlines or pixels.\n- No compile-time specialization of the inner loop.\n- No persistent data structure tricks.\n\nThe Elixir and Ruby ports are algorithmically identical. If you ported the same\ncode to Python/CPython you would see a similar gap for the same reasons; the\nunderlying workload is dominated by float math and small-allocation churn, and\nBEAM is materially better at that profile than MRI."
+    },
+    {
+      "section": "What would actually move the needle",
+      "content": "## What would actually move the needle\n\nBoth implementations are O(objects x pixels x samples x depth) and equally\nnaive. The two real levers for a much larger speedup are:\n\n- A **BVH (bounding-volume hierarchy)** over the spheres, turning the per-ray\n  work from O(N) to ~O(log N).\n- **`Task.async_stream`** over scanlines or pixel blocks, exploiting BEAM's\n  preemptive scheduler for multi-core parallelism."
+    }
+  ]
+}

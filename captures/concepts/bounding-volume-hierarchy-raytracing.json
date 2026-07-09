@@ -1,0 +1,46 @@
+{
+  "id": "captures/concepts/bounding-volume-hierarchy-raytracing",
+  "path": "captures/concepts/bounding-volume-hierarchy-raytracing.md",
+  "title": "Bounding Volume Hierarchy (BVH) for ray tracing",
+  "category": "captures/concepts",
+  "type": "concepts",
+  "summary": "A Bounding Volume Hierarchy (BVH) is a tree of axis-aligned bounding boxes over scene primitives, used to accelerate ray-primitive intersection. For each ray, traversal visits a node only if the ray hits its bounding box (a cheap slab test), so most subtrees are skipped. This turns per-ray work from O(N) (testing every primitive) to roughly O(log N), which is the single biggest algorithmic speedup in a path tracer because ray tracing spends the vast majority of its time on ray-miss tests. The tree is built once at scene load (typically longest-axis median split, O(N log^2 N)) and is introduced in Ray Tracing in One Weekend as the canonical optimization. A BVH slots into Exray as a new Exray.Hittable implementation — the existing HittableList and render code do not need to change.",
+  "keywords": [
+    "bvh",
+    "bounding-volume-hierarchy",
+    "ray-tracing",
+    "path-tracer",
+    "acceleration-structure",
+    "aabb"
+  ],
+  "entities": [
+    "BVH",
+    "Bounding Volume Hierarchy",
+    "AABB",
+    "Exray.HittableList",
+    "Ray Tracing in One Weekend"
+  ],
+  "see_also": [
+    "../observations/beam-outperforms-mri-path-tracing.md"
+  ],
+  "source": "inbox/chats/session-ses_0b6d.md",
+  "processed_at": "2026-07-09",
+  "chunks": [
+    {
+      "section": "",
+      "content": "# Bounding Volume Hierarchy (BVH) for ray tracing\n\nA **Bounding Volume Hierarchy (BVH)** is a tree of axis-aligned bounding boxes\n(AABBs) built over the primitives in a scene. Each interior node stores a box\nthat tightly contains its children's boxes; the leaves hold the actual\nprimitives (e.g. spheres, triangles). Construction is a one-time cost at scene\nsetup; the tree is then queried per ray."
+    },
+    {
+      "section": "How it accelerates intersection",
+      "content": "## How it accelerates intersection\n\nFor each ray, traversal visits a node only if the ray hits its bounding box\nfirst — a cheap, branch-free slab test. If the ray misses the box, the entire\nsubtree is skipped without testing any of its children. Instead of testing the\nray against every primitive in the scene linearly, a ray touches on the order\nof `log N` boxes on average, where `N` is the primitive count.\n\nConcretely, a naive scene of `N` primitives costs **O(N) per ray**; a BVH\nbrings this to roughly **O(log N) per ray** for typical scenes."
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n\nRay tracers spend the vast majority of their time testing rays against\nprimitives that the ray ultimately misses. Even though each sphere-test is\ncheap (a few multiplies and a square root), the aggregate cost dominates: a\nsingle pixel samples the scene dozens or hundreds of times, and a 400x600\nimage at 50 samples per pixel is on the order of 10 million ray-sphere tests\neven for a modest scene.\n\nBVH is the single biggest algorithmic win in a path tracer for that reason: it\nturns the dominant per-ray cost from linear to logarithmic, with no change to\nthe visual result."
+    },
+    {
+      "section": "Construction",
+      "content": "## Construction\n\nA typical BVH is built once at scene load time by:\n\n- Picking a split axis (often the longest axis of the current node's bounding\n  box).\n- Sorting primitives by their centroid along that axis.\n- Splitting at the median so the tree stays balanced.\n\nThis is `O(N log^2 N)` worst case, but it is amortized over the entire render\nand is essentially free compared to per-pixel work. *Ray Tracing in One\nWeekend* introduces a BVH as its final chapter precisely because it is the\nbiggest single speedup available without changing the rendering model."
+    }
+  ]
+}
