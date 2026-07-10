@@ -1,6 +1,6 @@
-# Nyx PC Build — Hardware Parts List
+# Omarchy PC Build — Hardware Parts List
 
-Complete parts list for the Nyx desktop build. Public build: <https://pcpartpicker.com/b/XjH2FT>. Build assembled before end of 2025; per-part prices are omitted because they no longer reflect real expense. Approximate total paid was ~$1100 USD.
+Complete parts list for the Omarchy desktop build. Public build: <https://pcpartpicker.com/b/XjH2FT>. Build assembled before end of 2025; per-part prices are omitted because they no longer reflect real expense. Approximate total paid was ~$1100 USD.
 
 | Type | Item |
 | :---- | :---- |
@@ -18,4 +18,4 @@ Complete parts list for the Nyx desktop build. Public build: <https://pcpartpick
 - [Qwen 3.6 Model Hardware Fit Guide](../../notes/qwen-3-6-model-hardware-fit-guide.md)
 - [AI Movie Upscaling Pipeline for Local Hardware](../../captures/patterns/ai-movie-upscaling-pipeline.md)
 
-> Source: inbox/agents/nyx-hardware-parts.md · processed 2026-07-02
+> Source: inbox/agents/omarchy-pc-hardware-parts.md · processed 2026-07-02
