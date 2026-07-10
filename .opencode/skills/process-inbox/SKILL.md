@@ -20,6 +20,10 @@ Each markdown file is paired with a sibling `.json` structured-data file that a 
 indexer consumes for retrieval (summary, keywords, section-level chunks). Interactive:
 every proposed output pair is shown for confirmation before it is written.
 
+## Trigger phrases
+
+"process inbox" / "triage inbox" / "process chats" / "normalize inbox" / `/process-inbox`
+
 ## Invocation
 
 ```
@@ -41,6 +45,24 @@ knowledge repo.
 
 ---
 
+## Quality bar
+
+Distill, don't transcribe. Drop greetings, disclaimers, "as an AI" lines, and unresolved
+chitchat. A topic that is entirely unresolved questions with no takeaway is skipped, not
+filed. If you find yourself rewriting the source instead of restructuring it, stop — you
+are summarizing, not normalizing. Preserve code, commands, URLs, and exact values verbatim.
+
+---
+
+## Tag convention
+
+Every written output carries **exactly three tags** — no more, no fewer. Tags are lowercase
+frontmatter-style identifiers that filter retrieval (e.g. `["glm-5.2", "benchmark", "pricing"]`).
+Favor specific tokens over generic words; `"ai"` is too broad, `"claude-code"` is too narrow.
+Tags are surfaced in the interactive prompt and may be edited before Write.
+
+---
+
 ## Step 0.5 — PDF preprocessing
 
 If there are `.pdf` files anywhere in `inbox/`, automatically run:
@@ -57,12 +79,9 @@ up automatically.
 
 ## Step 1 — Collect inbox files
 
-Build the work list:
-
-1. Search the requested scope (`inbox/chats/**`, `inbox/agents/**`, `inbox/articles/**`, or the whole `inbox/**`
-   when no scope is given) for readable text files: `.md`, `.txt`, and extensionless text.
-2. Exclude `.keep`, any dotfiles, and `.pdf` files (see PDF preprocessing below).
-3. Sort alphabetically by path.
+Build the work list. Scan the requested scope (`inbox/chats/**`, `inbox/agents/**`,
+`inbox/articles/**`, or the whole `inbox/**`) for `.md`, `.txt`, and extensionless text. Skip
+`.keep`, dotfiles, and `.pdf` (handled in Step 0.5). Sort by path.
 
 If the list is empty, print "Inbox is empty — nothing to process." and stop.
 
@@ -152,7 +171,7 @@ Choice menu:
 
 ```
 1. Write as proposed
-2. Edit            — change title, filename, or body
+2. Edit            — change title, filename, tags, or body
 3. Recategorize    — pick a different route
 4. Skip topic
 5. Skip rest of file

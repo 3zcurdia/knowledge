@@ -1,0 +1,30 @@
+{
+  "id": "captures/observations/local-llm-inference-framework-over-ram",
+  "path": "captures/observations/local-llm-inference-framework-over-ram.md",
+  "title": "Local LLM Inference Depends More on Framework Than Raw RAM",
+  "category": "captures/observations",
+  "type": "observations",
+  "summary": "A 22B-parameter LLM ran in production on a Linux PC with a 16GB VRAM GPU while the same model failed to load on a Mac Mini with 24GB of RAM, exposing that inference-stack optimizations dominate raw memory size for local AI deployment. Hardware-sizer intuition (more RAM = more capable) fails because the real constraints are framework support for the model architecture and quantization tier, not the memory spec on the sticker. CUDA-first stacks like vLLM and SGLang ship broader support faster than Metal/MLX paths.",
+  "keywords": ["local-llm", "inference", "framework", "vram", "ram", "apple-silicon", "cuda", "metal", "mlx", "quantization", "vllm", "sglang"],
+  "entities": ["vLLM", "SGLang", "MLX", "llama.cpp", "CUDA", "Metal"],
+  "see_also": [
+    "local-ai-default-architecture.md",
+    "../../notes/top-use-cases-for-local-llms.md"
+  ],
+  "source": "jarvis/01-captures/observations/Local LLM inference depends more on framework than raw RAM.md",
+  "processed_at": "2026-07-09",
+  "chunks": [
+    {
+      "section": "",
+      "content": "A 22B-parameter LLM ran in production on a Linux PC with a 16GB VRAM GPU while the exact same model failed to load on a Mac Mini with 24GB of RAM, revealing that inference-stack optimizations matter more than raw memory specs for local AI deployment.\n"
+    },
+    {
+      "section": "What happened",
+      "content": "## What happened\n\nSame model, two machines:\n\n- **Linux PC, 16GB VRAM GPU** — model loaded and ran in production.\n- **Mac Mini, 24GB unified RAM** — model failed to load.\n\nThe Mac Mini had more total memory. It still could not run the model. The difference was the inference framework: CUDA-optimized stacks (vLLM, SGLang) had mature quantization and PagedAttention support for the Linux path; the Apple Silicon path relied on MLX or llama.cpp, which at the time handled this model shape less efficiently.\n"
+    },
+    {
+      "section": "The lesson",
+      "content": "## The lesson\n\nWhen sizing hardware for local LLM deployment, raw VRAM/unified-memory size is a necessary but not sufficient condition. Two more variables dominate:\n\n- **Framework support** — does the inference stack have working kernels for this model architecture and quantization? CUDA-first stacks typically ship wider support faster than Metal/MLX.\n- **Quantization tier** — the same \"22B\" model can be 4-bit, 8-bit, or full precision. Memory requirement is not a function of parameter count alone.\n\nSpecs on a sticker tell you almost nothing. Compatibility between model + framework + quantization tells you everything.\n"
+    }
+  ]
+}

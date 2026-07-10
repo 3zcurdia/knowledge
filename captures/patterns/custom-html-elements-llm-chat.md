@@ -111,5 +111,8 @@ LLMs are competent at consistently using custom HTML elements when provided with
 ## See also
 
 - [Reusable Drag-and-Drop Image Upload Custom Element in Rails](rails-image-upload-custom-element.md)
+- [ReqLLM: Composable LLM Interactions via Req Plugins](reqllm-llm-plugins-elixir.md)
+- [Agentic Systems Are Just Database State and Processes](../observations/agentic-systems-database-state.md)
+- [Agentic Workflows with Oban Pro: Cascades, Human-in-the-Loop, Grafting](oban-pro-agentic-workflows.md)
 
 > Source: inbox/articles/Teaching LLMs new UI tricks.md · processed 2026-07-02

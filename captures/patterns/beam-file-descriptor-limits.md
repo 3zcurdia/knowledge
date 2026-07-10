@@ -74,4 +74,9 @@ If `port_limit` is lower than `ulimit`, `+Q` was not set. If `port_limit` is cor
 
 When connections are refused and everything else looks normal, check all three layers. Containers do not inherit the host's `ulimit` — each container gets its own resource limits, and the default is usually whatever the base image ships with.
 
+## See also
+
+- [Avoiding Double Mount in Phoenix LiveView](avoiding-double-mount-phoenix-liveview.md)
+- [Distributed ML Inference on BEAM with Nx.Serving](distributed-ml-inference-beam-nx-serving.md)
+
 > Source: inbox/articles/Beam in the Wild 3 Three Limits, One Fix. Why Raising ulimit Is Not Enough.md · processed 2026-07-02

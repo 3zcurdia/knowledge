@@ -13,4 +13,9 @@ Complete parts list for the Nyx desktop build. Public build: <https://pcpartpick
 | **Case** | [Lian Li A3-mATX MicroATX Mini Tower Case](https://pcpartpicker.com/product/CjFmP6/lian-li-a3-matx-microatx-mini-tower-case-a3-matx-x) |
 | **Power Supply** | [ADATA XPG CORE Reactor 650 650 W 80+ Gold Certified Fully Modular ATX Power Supply](https://pcpartpicker.com/product/wkWBD3/adata-xpg-core-reactor-650-w-80-gold-certified-fully-modular-atx-power-supply-corereactor650g-bkcus) |
 
+## See also
+
+- [Qwen 3.6 Model Hardware Fit Guide](../../notes/qwen-3-6-model-hardware-fit-guide.md)
+- [AI Movie Upscaling Pipeline for Local Hardware](../../captures/patterns/ai-movie-upscaling-pipeline.md)
+
 > Source: inbox/agents/nyx-hardware-parts.md · processed 2026-07-02

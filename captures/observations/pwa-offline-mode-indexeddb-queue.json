@@ -1,0 +1,34 @@
+{
+  "id": "captures/observations/pwa-offline-mode-indexeddb-queue",
+  "path": "captures/observations/pwa-offline-mode-indexeddb-queue.md",
+  "title": "PWA Offline Mode: IndexedDB Queue Over Native Asset Handling",
+  "category": "captures/observations",
+  "type": "observations",
+  "summary": "A lunch-break PWA chose a stripped-down offline page plus an IndexedDB write-and-queue pattern over trying to match native-app local asset handling, because PWAs cannot get full filesystem access from the browser sandbox. The two-tier model is a cached HTML shell for offline rendering and an IndexedDB queue that flushes on connectivity-resumed events. The trade-off accepts a degraded offline UX in return for skipping the native-shell engineering cost, App Store review, and dual-codebase maintenance — correct for a side project, wrong for a product where offline is the whole value proposition.",
+  "keywords": ["pwa", "offline-first", "indexeddb", "queue", "progressive-web-app", "connectivity", "background-sync", "native-app", "side-project"],
+  "entities": ["IndexedDB", "PWA", "App Store", "Background Sync API"],
+  "see_also": [
+    "../../notes/connections/2026-07-09-honesty-of-stale-data.md",
+    "postgis-daily-replication-over-live-proxy.md"
+  ],
+  "source": "jarvis/01-captures/observations/Offline mode PWA.md",
+  "processed_at": "2026-07-09",
+  "chunks": [
+    {
+      "section": "",
+      "content": "For a lunch-break PWA, a stripped-down offline page is served that stores photos in IndexedDB and queues them for upload when connectivity resumes, since PWAs cannot match native apps' local asset handling.\n"
+    },
+    {
+      "section": "The constraint",
+      "content": "## The constraint\n\nPWAs run inside a browser sandbox. They do not get the full filesystem access that a native iOS or Android app gets. Trying to make a PWA behave like a native app for offline file handling means fighting the platform.\n"
+    },
+    {
+      "section": "What I chose instead",
+      "content": "## What I chose instead\n\nA deliberate two-tier model:\n\n1. **Offline page** — a minimal, cached HTML/CSS/JS shell that renders when the network is unavailable. Not a full app replica; just enough to acknowledge the user, show pending state, and let them queue work.\n2. **IndexedDB queue** — every photo the user adds while offline is written to IndexedDB, not to disk directly. A background sync registration (when the browser supports it) or a connectivity-listener flushes the queue once the network returns.\n"
+    },
+    {
+      "section": "The trade-off",
+      "content": "## The trade-off\n\nThis pattern accepts that the offline experience is degraded on purpose. The PWA will never feel as fast or as native as a properly installed app. In return, you skip the engineering cost of building a native shell, the App Store review cycle, and the maintenance of two codebases.\n\nFor a side project with a single developer, that trade is correct. For a product whose offline UX is the whole value proposition, it is not — go native.\n"
+    }
+  ]
+}

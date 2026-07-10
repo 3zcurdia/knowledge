@@ -20,4 +20,10 @@ Most libraries have two APIs: the public contract users depend on, and the inter
 
 If writing a test feels like pulling teeth, it's a sign the software design needs refactoring. Tests should feel natural; difficulty testing signals too many responsibilities in a function.
 
+## See also
+
+- [The Joy of Simpler Systems](../observations/joy-of-functional-languages.md)
+- [InVision AI: Adopting Elixir to Simplify System Architecture](../observations/invision-elixir-adoption.md)
+- [Simplified DDD in Elixir with Ecto](simplified-ddd-elixir-ecto.md)
+
 > Source: inbox/articles/Things I've realized about testing Elixir code.md · processed 2026-07-02

@@ -262,5 +262,9 @@ create unique_index(:teams_agents, [:agent_id, :team_id])
 ## See also
 
 - [Distributed Systems Lessons from LiveView: State Ownership and Eventual Consistency](../../captures/patterns/liveview-distributed-systems-lessons.md)
+- [Simplified DDD in Elixir with Ecto](../../captures/patterns/simplified-ddd-elixir-ecto.md)
+- [Agentic Workflows with Oban Pro: Cascades, Human-in-the-Loop, Grafting](../../captures/patterns/oban-pro-agentic-workflows.md)
+- [Phoenix Monitoring with PromEx, Prometheus, and Grafana](../../captures/patterns/phoenix-promex-grafana-monitoring.md)
+- [Authorization in Elixir with the Permit Library](../../captures/patterns/elixir-authorization-permit-library.md)
 
 > Source: inbox/chats/sevice-desk-design.md · processed 2026-07-02

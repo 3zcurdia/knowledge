@@ -96,5 +96,6 @@ PNG or process in chunks to reduce space usage.
 ## See also
 
 - [Qwen 3.6 Model Hardware Fit Guide](../../notes/qwen-3-6-model-hardware-fit-guide.md)
+- [Nyx PC Build — Hardware Parts List](../../projects/nyx/hardware-parts.md)
 
 > Source: inbox/chats/ai-upscale-movie.md · processed 2026-07-02

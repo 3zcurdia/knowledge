@@ -49,4 +49,10 @@ Note: AMD "F" series processors (e.g., Ryzen 5 7500F) do not have integrated gra
 - **Core Counts**: Both manufacturers have significantly increased core counts over the years. Intel introduced hybrid architecture (P-cores and E-cores) in the 12th Gen, while AMD has maintained homogeneous core complexes until recent mobile/hybrid announcements.
 - **Naming**: Intel has recently shifted from "Core i3/i5/i7/i9" to "Core 3/5/7" and "Core Ultra 5/7/9". AMD continues with Ryzen 3/5/7/9.
 
+## See also
+
+- [Intel Processor Naming Conventions](../../notes/intel-processor-naming-conventions.md)
+- [MOSFET scaling — process node timeline](mosfet-scaling-process-nodes.md)
+- [Moore's law](moores-law.md)
+
 > Source: inbox/chats/cpu-gens.md · processed 2026-07-09

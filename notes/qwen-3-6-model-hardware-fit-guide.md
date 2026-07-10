@@ -46,5 +46,7 @@ documentation) dramatically improves accuracy for Elixir development.
 - [Top Use Cases for Local LLMs](top-use-cases-for-local-llms.md)
 - [LLM Benchmark Prompts for Text Processing](../captures/patterns/llm-benchmark-prompts-text-processing.md)
 - [AI Movie Upscaling Pipeline for Local Hardware](../captures/patterns/ai-movie-upscaling-pipeline.md)
+- [Nyx PC Build — Hardware Parts List](../projects/nyx/hardware-parts.md)
+- [Local LLM Inference Depends More on Framework Than Raw RAM](../captures/observations/local-llm-inference-framework-over-ram.md)
 
 > Source: inbox/chats/local-models.md · processed 2026-07-02

@@ -127,4 +127,10 @@ If the ML node is unreachable, `batched_run` exits with `:noproc`. This is caugh
 
 What it does not cost: no API definition, no serialization layer, no service mesh, no second language, no second repo. The calling code changes by zero lines between "all local" and "model on the Mac."
 
+## See also
+
+- [Agentic Workflows with Oban Pro: Cascades, Human-in-the-Loop, Grafting](oban-pro-agentic-workflows.md)
+- [ReqLLM: Composable LLM Interactions via Req Plugins](reqllm-llm-plugins-elixir.md)
+- [Agentic Systems Are Just Database State and Processes](../observations/agentic-systems-database-state.md)
+
 > Source: inbox/articles/Splitting an ML model and a web app across two BEAM nodes — the technical blueprint.md · processed 2026-07-02

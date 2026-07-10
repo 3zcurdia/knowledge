@@ -1,0 +1,34 @@
+{
+  "id": "notes/connections/2026-07-09-honesty-of-stale-data",
+  "path": "notes/connections/2026-07-09-honesty-of-stale-data.md",
+  "title": "The Honesty of Stale Data",
+  "category": "notes/connections",
+  "type": "notes",
+  "summary": "Type A connection between two observations about accepting stale or queued data instead of paying the continuous cost of real-time synchronization. On the backend, a PostGIS database is replicated daily instead of running live proxy calculations; on the frontend, photos are dumped into IndexedDB and queued for upload instead of demanding native-level local asset handling. The shared principle: admitting that \"eventually consistent\" is not a bug but a deliberate, honest trade-off, and refusing to pretend that real-time is free. The connection is non-obvious because one note reads like a backend performance optimization and the other like a PWA workaround for limited connectivity, but they are the same architectural decision from opposite ends of the stack. The hook: the best architecture is the one that honestly admits when \"fresh enough\" is all you need.",
+  "keywords": ["eventual-consistency", "stale-data", "architecture", "honest-tradeoffs", "offline-first", "postgis", "pwa", "indexeddb", "real-time", "synchronization"],
+  "entities": ["PostGIS", "IndexedDB", "PWA"],
+  "see_also": [
+    "../../captures/observations/pwa-offline-mode-indexeddb-queue.md",
+    "../../captures/observations/postgis-daily-replication-over-live-proxy.md"
+  ],
+  "source": "jarvis/02-connections/The Honesty of Stale Data.md",
+  "processed_at": "2026-07-09",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Both captures describe the same architectural decision from opposite ends of the stack: choosing to accept a window of stale or queued data rather than paying the continuous cost of real-time synchronization. On the backend, a PostGIS database is replicated daily instead of running live proxy calculations on every request. On the frontend, photos are dumped into IndexedDB and queued for upload instead of demanding native-level local asset handling. The principle is identical — admitting that \"eventually consistent\" is not a bug but a deliberate, honest trade-off.\n"
+    },
+    {
+      "section": "Bridge",
+      "content": "## Bridge\n\nRefusing to pretend that real-time is free. Whether the cost is a live spatial query on every map pan or a write to local disk on every photo capture, the cost is real, and the answer is to push the work onto a slower schedule and admit the lag.\n"
+    },
+    {
+      "section": "Hook",
+      "content": "## Hook\n\n> The best architecture is not the one that gives users the freshest data. It is the one that honestly admits when \"fresh enough\" is all you need.\n"
+    },
+    {
+      "section": "Why this is not obvious",
+      "content": "## Why this is not obvious\n\nOne note reads like a backend performance optimization, the other like a PWA workaround for limited connectivity. They live in completely different problem spaces. But both are actually about the same thing: refusing to pretend that real-time is free.\n"
+    }
+  ]
+}

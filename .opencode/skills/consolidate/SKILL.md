@@ -14,6 +14,10 @@ user_invocable: true
 Scan all categorized directories for duplicates, overlapping content, and missing
 cross-references. Present each finding interactively with options to merge, link, or skip.
 
+## Trigger phrases
+
+"consolidate" / "consolidate kb" / "review kb" / "find duplicates" / "merge notes" / `/consolidate`
+
 ## Invocation
 
 ```
@@ -33,17 +37,19 @@ If missing, stop and tell the user this skill only runs inside the knowledge rep
 
 ---
 
+## Quality bar
+
+Surface only findings that would genuinely surprise the user. Obvious overlaps, near-identical
+titles, and trivially linkable pairs don't qualify. Push back on weak findings instead of
+padding the list. If you find yourself reaching for "these are related" without a concrete
+reason, stop — skip the finding.
+
+---
+
 ## Step 1 — Collect KB files
 
-Build the scan list:
-
-1. Search these directories for `.md` files:
-   - `captures/**` (including `numbers/`, `observations/`, `patterns/`, `concepts/`)
-   - `decisions/**`
-   - `notes/**`
-   - `projects/**` (including subdirectories)
-2. Exclude `.keep`, dotfiles, and the `inbox/` directory entirely.
-3. Sort alphabetically by path.
+Build the scan list. Walk `captures/**`, `decisions/**`, `notes/**`, `projects/**` for `.md`
+files. Skip `inbox/`, `.keep`, and dotfiles. Sort by path.
 
 If fewer than 2 files are found, print "KB has fewer than 2 files — nothing to consolidate." and stop.
 
@@ -51,32 +57,23 @@ If fewer than 2 files are found, print "KB has fewer than 2 files — nothing to
 
 ## Step 2 — Analyze for issues
 
-For each file, extract:
-- Title (from the `# Title` heading)
-- Key topics and concepts mentioned
-- Existing `## See also` cross-references
-
-Then detect three types of issues:
+For each file, extract title, key topics/concepts, and existing `## See also` links. Then
+detect three issue types:
 
 ### 2a — Duplicates
 
-Files with:
-- Near-identical titles (e.g., "API Rate Limits" vs "API Rate Limit Quotas")
-- Heavily overlapping content (same core information, different wording)
+Near-identical titles or heavily overlapping content with the same core information in
+different words.
 
 ### 2b — Overlaps
 
-Files covering related sub-topics that would benefit from consolidation:
-- One file is a subset of another
-- Multiple files cover different aspects of the same topic
-- Files that should logically be sections of a single document
+One file is a subset of another; multiple files cover different aspects of the same topic;
+files that should logically be sections of a single document.
 
 ### 2c — Missing cross-references
 
-Files that:
-- Reference the same concepts, tools, or projects but don't link to each other
-- Cover related topics (e.g., a decision and the pattern it established)
-- Are mentioned in each other's content but lack a `## See also` link
+Files that reference the same concepts, tools, or projects without linking to each other;
+a decision and the pattern it established; mentions in body text with no `## See also` link.
 
 ---
 

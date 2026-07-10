@@ -20,4 +20,12 @@ Invision AI replaced a fragmented stack of C++, Go, Python, and JavaScript with 
 
 Single person implemented a production-ready web app in 2 months with tests, concurrency, and full-stack features. Migration from C++/Go/Python stack nearly complete.
 
+## See also
+
+- [Elixir Testing Philosophy](../patterns/elixir-testing-philosophy.md)
+- [Simplified DDD in Elixir with Ecto](../patterns/simplified-ddd-elixir-ecto.md)
+- [Agentic Workflows with Oban Pro: Cascades, Human-in-the-Loop, Grafting](../patterns/oban-pro-agentic-workflows.md)
+- [Distributed Systems Lessons from LiveView: State Ownership and Eventual Consistency](../patterns/liveview-distributed-systems-lessons.md)
+- [The Joy of Simpler Systems](joy-of-functional-languages.md)
+
 > Source: inbox/articles/Elixir A Journey to Simplifying System Architecture.md · processed 2026-07-02

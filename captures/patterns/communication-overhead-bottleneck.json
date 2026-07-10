@@ -1,0 +1,33 @@
+{
+  "id": "captures/patterns/communication-overhead-bottleneck",
+  "path": "captures/patterns/communication-overhead-bottleneck.md",
+  "title": "Communication Overhead Is the Real Bottleneck",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "AI makes developers write code faster, but software's real bottleneck has always been communication overhead that scales quadratically with team size — and AI does not change that math. With n engineers there are up to n × (n-1) / 2 pairwise channels (4 → 6, 12 → 66, 50 → 1,225), so adding a tenth engineer to a five-person team roughly doubles the coordination surface. This is why small teams consistently outperform large corporations regardless of tooling. The compounding lever is not individual throughput but coordination cost, and the things that move that needle are small sharp scope, clear ownership boundaries, and decision-making latency — not how fast each engineer types.",
+  "keywords": ["communication-overhead", "conways-law", "team-scaling", "organizational-design", "ai-coding", "coordination", "team-size", "decision-making", "small-teams", "productivity"],
+  "entities": ["Conway"],
+  "see_also": [
+    "../concepts/conways-law.md"
+  ],
+  "source": "jarvis/01-captures/patterns/Communication overhead is the real bottleneck not coding speed.md",
+  "processed_at": "2026-07-09",
+  "chunks": [
+    {
+      "section": "",
+      "content": "AI makes developers write code faster, but software's real bottleneck has always been communication overhead that scales quadratically with team size. This is why small teams consistently outperform large corporations regardless of tooling.\n"
+    },
+    {
+      "section": "The pattern",
+      "content": "## The pattern\n\nCoding speed is not the bottleneck. Communication is.\n\nWhen team size grows, the number of communication channels grows faster than the team. With `n` engineers there are up to `n × (n-1) / 2` pairwise channels. A team of 4 has 6 channels; a team of 12 has 66; a team of 50 has 1,225. The growth is polynomial in n, not linear. Adding a tenth engineer to a five-person team roughly doubles the communication surface, not the headcount.\n\nThis is why small teams ship. They have fewer meetings, fewer handoffs, fewer sync points, fewer stakeholders to align. Their coordination cost is small, so almost all of their effort turns into output.\n"
+    },
+    {
+      "section": "Why AI does not change the math",
+      "content": "## Why AI does not change the math\n\nAI coding tools increase the rate at which an individual engineer can produce code. That is the variable on the left side of the productivity equation. The variable on the right side — coordination, alignment, review, integration, deployment — does not change, or changes much less.\n\nIf a team's bottleneck was coding speed, AI is transformative. If a team's bottleneck was communication (and for most non-trivial teams, it is), AI is incremental: the team writes code faster and then spends the same time arguing about what the code should do, who owns which piece, and how to merge it.\n"
+    },
+    {
+      "section": "The implication for team design",
+      "content": "## The implication for team design\n\nThe compounding lever is not the throughput of an individual engineer. It is the cost of coordination across the team. The things that move that needle:\n\n- **Smaller, sharper scope.** A small team with a narrow product surface spends almost no time on inter-team handoffs. Most startup wins come from this, not from individual heroics.\n- **Clear ownership boundaries.** A modular architecture with one team per module has fewer cross-team dependencies. The architecture is the organization.\n- **Decision-making latency.** A team that can decide and ship in a day will beat a team that can decide and ship in a week, regardless of how much code each engineer writes per day. The ratio of decision time to coding time is the relevant metric.\n"
+    }
+  ]
+}

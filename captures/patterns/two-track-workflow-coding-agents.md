@@ -50,4 +50,10 @@ Mostly valuable for builders who hold product decisions and code simultaneously:
 - [Tidewave](https://tidewave.ai/): agentic dev environment for Phoenix and Rails
 - [Superpowers](https://github.com/obra/superpowers): agent skills for creating specs and implementation plans
 
+## See also
+
+- [Loop Engineering: Coding Agent Infrastructure](../observations/loop-engineering-agent-infrastructure.md)
+- [Loop Engineering: The Hype-Skepticism View](../observations/loop-engineering-hype-skepticism.md)
+- [AI Programming Boredom: The Passive Reviewer](../observations/ai-programming-boredom-passive-reviewer.md)
+
 > Source: inbox/articles/You don't need ten agents. You need two tracks..md · processed 2026-07-02
