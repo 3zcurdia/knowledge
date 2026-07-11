@@ -1,0 +1,23 @@
+{
+  "id": "captures/numbers/ray-tracing-performance-benchmarks",
+  "path": "captures/numbers/ray-tracing-performance-benchmarks.md",
+  "title": "Ray Tracing Performance Benchmarks — Ruby vs Elixir",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "Benchmark data comparing Ruby and Elixir implementations of Peter Shirley's \"Ray Tracing in One Weekend\" on an Apple M4 Pro (8+4 cores, 24 GB RAM). Ruby single-core renders in 1h 47m 37s; Elixir single-core takes 42m 38s (2.5× faster). Elixir parallel per-line achieves 2m 56s (37×), and parallel per-line with BVH acceleration reaches 9.2s (702×). The single-core advantage comes from BEAM's compact struct representation and per-process generational GC. Each Ruby Vector3D carries a full object header, while Elixir structs are compact tagged tuples — this compounds over ~225 billion allocations per render.",
+  "keywords": ["ray-tracing", "elixir", "ruby", "benchmark", "m4-pro", "path-tracing", "bvh", "parallelization", "beam-vm"],
+  "entities": ["Apple M4 Pro", "Ruby", "Elixir", "Peter Shirley", "Ray Tracing in One Weekend", "BEAM", "Vector3D", "BVHNode", "Task.async_stream"],
+  "see_also": [],
+  "source": "inbox/agents/exray-report.md",
+  "processed_at": "2026-07-11",
+  "chunks": [
+    {
+      "section": "",
+      "content": "All measurements on an **Apple M4 Pro** (8+4 cores, 24 GB RAM).\n\n| Implementation | Wall Time | CPU Util | Speedup vs Ruby |\n|---|---|---|---|\n| **Ruby** (single-core) | 1h 47m 37s | 99% | 1× |\n| **Elixir** single-core | 42m 38s | 103% | **2.5×** |\n| **Elixir** parallel per line | 2m 56s | 1054% | **37×** |\n| **Elixir** parallel per line + BVH | 9.2s | 1028% | **702×** |\n| **Elixir** parallel per tile (64×64) + BVH | 10.5s | 892% | **615×** |\n\nThe Ruby README warns that larger renders take \"a looooong time\" and their final 400×266 image took **~6 hours**. The Elixir single-core 400×225 render at 42 minutes is consistent with Ruby's 1h47m for the same scene (the Ruby benchmark likely ran the same random scene)."
+    },
+    {
+      "section": "## Why Elixir is Faster (even single-core)",
+      "content": "| Factor | Ruby | Elixir/Erlang | Impact |\n|---|---|---|---|\n| Object layout | `RClass` with ivar table, dynamic dispatch | Compact tuple/struct, pattern matching | ~2-3× less memory per allocation |\n| GC | Stop-the-world mark-sweep | Per-process generational, concurrent | No pause spikes during long renders |\n| Math calls | `Math.sqrt` (C), but through Ruby's method dispatch | `:math.sqrt` (Erlang NIF, direct) | Slightly faster FP ops |\n| Function dispatch | Dynamic method lookup with cache | Pattern matching + guard clauses | Comparable |\n| Operator overload | `v1 + v2` allocates new object | `Vector.add(v1, v2)` allocates new struct | Allocation cost similar |\n\nThe 2.5× single-core advantage comes primarily from **BEAM's per-process memory management** and **struct memory density**. Each `Vector3D` in Ruby carries a full Ruby object header, whereas an Elixir `%Vector{}` struct is a more compact tagged tuple under the hood. With ~225 billion allocations over a render, this difference compounds dramatically."
+    }
+  ]
+}

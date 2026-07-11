@@ -1,0 +1,27 @@
+{
+  "id": "captures/patterns/ray-tracing-optimization-patterns",
+  "path": "captures/patterns/ray-tracing-optimization-patterns.md",
+  "title": "Ray Tracing Optimization Patterns (BVH + Parallelization)",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Algorithmic optimization patterns for ray tracing: BVH acceleration and parallelization strategies. Ruby uses a linear O(N) scan over all objects for hit testing (~225 billion tests per render). Elixir builds a Bounding Volume Hierarchy on construction, achieving O(log N) via AABB slab-method pruning — a ~19× improvement. For parallelization, Elixir uses Task.async_stream with per-line or per-tile distribution, achieving 14× speedup. The tile-based approach uses an Erlang :array as a lock-free concurrent write buffer, allowing tasks to complete in any order. Image output differs: Ruby streams PPM incrementally while Elixir buffers in memory or :array before writing.",
+  "keywords": ["ray-tracing", "bvh", "parallelization", "task-async-stream", "erlang-array", "elixir", "bounding-volume-hierarchy", "concurrent", "ppm"],
+  "entities": ["BVHNode", "Task.async_stream", "PPM", "HittableList", "Nx", "EXLA", "Erlang :array"],
+  "see_also": [],
+  "source": "inbox/agents/exray-report.md",
+  "processed_at": "2026-07-11",
+  "chunks": [
+    {
+      "section": "## Scene Hit Testing (the main performance divider)",
+      "content": "**Ruby** (`world.rb` via `HittableList#hit?`): Linear scan over all objects — O(N) per ray.\nFor ~500 spheres at 100 spp × 400 × 225 pixels × 50 bounces = **~225 billion hit tests**,\neach doing a full linear scan.\n\n**Elixir** (`hittable_list.ex`): Eagerly builds a **Bounding Volume Hierarchy** on construction.\n```elixir\ndef new(objects \\ []) do\n  %__MODULE__{objects: objects, bvh: BVHNode.build(objects)}\nend\n```\n\nHit tests become O(log N) via `BVHNode` which prunes subtrees using AABB slab-method\nintersection (`aabb.ex:92-125`). This is the single largest optimization — ~19× improvement\non top of the parallel baseline.\n\n**Ruby has no BVH**. This is the biggest missed optimization, but not surprising for a\nreference implementation — the book introduces BVH in the second weekend."
+    },
+    {
+      "section": "## Parallelization",
+      "content": "**Ruby**: Strictly sequential. The `render` method iterates `(height-1).downto(0)` with\nnested `(0..width-1).each`, one pixel at a time. The README jokes about \"55 frames per\nfortnight.\"\n\n**Elixir**: Three levels of parallelism tested:\n\n1. **Per-line** (`Task.async_stream` over rows with `ordered: true`) — 42m → 2m56s (14×)\n2. **Per-tile** (`Task.async_stream` over 64×64 tiles with `ordered: false`,\n   `max_demand: System.schedulers_online()`) — similar speed, 13% less scheduler pressure\n3. **Nx/EXLA** (batched tensor kernels) — inconclusive, slower than tile-based scalar\n\nThe tile version uses an Erlang `:array` as a concurrent write buffer:\n```elixir\nEnum.reduce(tiles, {:array.new(size: w*h)}, fn {:ok, entries}, {done, buf} ->\n  Enum.reduce(entries, buf, fn {idx, str}, acc -> :array.set(idx, str, acc) end)\nend)\n```\nThis allows tasks to complete in any order without locks."
+    },
+    {
+      "section": "## Image Output",
+      "content": "**Ruby**: Opens a file at construction, writes PPM header, appends each pixel as it renders,\nthen closes. This means a partially rendered image is viewable, but I/O interleaves with\ncomputation.\n\n**Elixir** (scalar path): Builds a complete list of pixel strings in memory, then writes\neverything at once via `PPM.write/2`. The tile path writes into an `:array` buffer during\nrendering, converts to list, then writes."
+    }
+  ]
+}
