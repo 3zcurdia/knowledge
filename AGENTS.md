@@ -14,7 +14,9 @@ This is a markdown-only knowledge base. All content files use `.md` extension.
   - `agents/` — agent-generated content pending review
   - `articles/` — article clippings and external reads to process
   - `chats/` — conversation extracts to process
+  - `papers/` — academic papers and research articles to process
 - `notes/` — general notes and references
+  - `papers/` — processed academic papers (abstract, findings, conclusion, numbers)
 - `projects/` — project-specific knowledge
   - `prompts/` — reusable prompt templates and examples
 

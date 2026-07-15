@@ -1,28 +1,32 @@
 ---
 name: process-inbox
 description: |
-  Triage and normalize exported conversations sitting in inbox/ into the categorized
-  knowledge base. Reads inbox/chats/, inbox/agents/, and inbox/articles/, extracts substantive topics,
-  and rewrites each as a one-topic markdown file under the right category, paired with a
-  sibling .json structured-data file that a RAG indexer consumes. Removes the source.
+  Triage and normalize exported conversations and papers sitting in inbox/ into the
+  categorized knowledge base. Reads inbox/chats/, inbox/agents/, inbox/articles/, and
+  inbox/papers/, extracts substantive topics, and rewrites each as a one-topic markdown
+  file under the right category, paired with a sibling .json structured-data file that
+  a RAG indexer consumes. Removes the source. For papers, also extracts the abstract,
+  conclusion, and all quantitative data/metrics.
   Interactive: proposes title/category/filename per topic and asks before writing.
   Use ONLY when the working directory is the knowledge base root containing AGENTS.md and
   inbox/.   Fire when the user says "process inbox", "triage inbox", "process chats",
-  "normalize inbox", or runs "/process-inbox".
+  "process papers", "normalize inbox", or runs "/process-inbox".
 user_invocable: true
 ---
 
 # /process-inbox
 
-Work through every file in `inbox/chats/`, `inbox/agents/`, and `inbox/articles/`, distilling each into one
-or more normalized, one-topic markdown files routed to the correct category directory.
+Work through every file in `inbox/chats/`, `inbox/agents/`, `inbox/articles/`, and
+`inbox/papers/`, distilling each into one or more normalized, one-topic markdown files
+routed to the correct category directory. Papers get special handling: the abstract,
+conclusion, and all quantitative data are extracted and structured separately.
 Each markdown file is paired with a sibling `.json` structured-data file that a RAG
 indexer consumes for retrieval (summary, keywords, section-level chunks). Interactive:
 every proposed output pair is shown for confirmation before it is written.
 
 ## Trigger phrases
 
-"process inbox" / "triage inbox" / "process chats" / "normalize inbox" / `/process-inbox`
+"process inbox" / "triage inbox" / "process chats" / "process papers" / "normalize inbox" / `/process-inbox`
 
 ## Invocation
 
@@ -31,8 +35,9 @@ every proposed output pair is shown for confirmation before it is written.
 /process-inbox chats           # scope to inbox/chats/ only
 /process-inbox agents           # scope to inbox/agents/ only
 /process-inbox articles         # scope to inbox/articles/ only
+/process-inbox papers           # scope to inbox/papers/ only
 /process-inbox foo.md          # scope to one filename
-process inbox / triage inbox                      # natural-language triggers
+process inbox / triage inbox / process papers      # natural-language triggers
 ```
 
 ---
@@ -80,8 +85,8 @@ up automatically.
 ## Step 1 — Collect inbox files
 
 Build the work list. Scan the requested scope (`inbox/chats/**`, `inbox/agents/**`,
-`inbox/articles/**`, or the whole `inbox/**`) for `.md`, `.txt`, and extensionless text. Skip
-`.keep`, dotfiles, and `.pdf` (handled in Step 0.5). Sort by path.
+`inbox/articles/**`, `inbox/papers/**`, or the whole `inbox/**`) for `.md`, `.txt`, and
+extensionless text. Skip `.keep`, dotfiles, and `.pdf` (handled in Step 0.5). Sort by path.
 
 If the list is empty, print "Inbox is empty — nothing to process." and stop.
 
@@ -196,6 +201,91 @@ source-deletion rule (see below).
 
 ---
 
+## Step 2.5 — Paper-specific processing
+
+When a source file comes from `inbox/papers/`, the text-analyst subagent must
+additionally extract three paper-specific artifacts:
+
+**Abstract**: the paper's abstract verbatim. If the paper has no discernible
+abstract section, return `null` and note it in the rationale.
+
+**Conclusion**: the paper's conclusion or discussion section verbatim. If absent,
+return `null`.
+
+**Numbers / data**: all quantitative facts found in the paper — metrics,
+benchmarks, sample sizes, p-values, effect sizes, percentages, measurements,
+dates of experiments. Each item is an object:
+
+```json
+{
+  "metric": "<what was measured>",
+  "value": "<exact value>",
+  "context": "<short description of significance>"
+}
+```
+
+If no quantitative data is found, return an empty array `[]`.
+
+### Paper body format
+
+The normalized body for a paper follows this structure:
+
+```markdown
+# <paper title>
+
+## Abstract
+<extracted abstract text>
+
+## Findings
+<key findings and contributions, distilled into declarative prose>
+
+## Numbers
+
+| Metric | Value | Context |
+|--------|-------|---------|
+| ...    | ...   | ...     |
+
+## Conclusion
+<extracted conclusion text>
+
+## See also
+...
+
+> Source: <source path> · processed <YYYY-MM-DD>
+```
+
+- If the abstract is absent, omit the `## Abstract` section entirely.
+- If the conclusion is absent, omit the `## Conclusion` section entirely.
+- If no numbers are found, omit the `## Numbers` section entirely.
+
+### Number splitting
+
+Each row in the numbers table may qualify as a standalone quantitative fact that
+deserves its own entry in `captures/numbers/`. Propose each row that satisfies
+all three fields (metric, value, context) as a separate topic output using the
+same confirmation flow described in Step 2b–2d. The user can write, skip, or
+merge these split-off numbers.
+
+When a row is split into its own `captures/numbers/` entry:
+
+- The title is derived from the metric (e.g. "GPT-4 accuracy on MMLU").
+- The body is a concise one-paragraph note with the metric, value, and context.
+- The JSON companion follows the standard schema (no paper-specific fields).
+- A cross-reference back to the paper is added under `## See also`.
+
+Rows that are too trivial (label-less numbers, vague statements without a
+concrete metric) should NOT be proposed for splitting — only concrete,
+context-rich quantitative facts.
+
+### Categorization default
+
+Papers from `inbox/papers/` default to `notes/papers/` for the body output.
+Split numbers default to `captures/numbers/`. The standard precedence chain
+applies (`decisions/ > projects/ > captures/* > notes/`), but a paper is
+always filed under `notes/papers/` unless the user explicitly recategorizes.
+
+---
+
 ## Step 3 — Progress & summary
 
 After each source file, print `[<done>/<total> files done]`.
@@ -213,6 +303,7 @@ Done. Inbox processed.
     captures/patterns/     : N
     projects/              : N
     notes/                 : N
+    notes/papers/          : N
   JSON companions          : N   (paired with the files above)
   Topics skipped           : N
   Sources deleted          : N
@@ -237,6 +328,7 @@ came from:
 | A factual finding about how something behaves or works (observed)       | `captures/observations/`  |
 | A recurring approach, technique, best-practice, "how we do X"           | `captures/patterns/`      |
 | A foundational principle, law, mental model, or definition             | `captures/concepts/`      |
+| Academic paper, preprint, or technical report (from `inbox/papers/`)    | `notes/papers/`           |
 | Tied to a named project or initiative (and not a decision)              | `projects/<project>/`     |
 | General reference, explanation, how-to (the default catch-all)          | `notes/`                  |
 
@@ -254,7 +346,9 @@ decisions/  >  projects/  >  captures/*  >  notes/
 ```
 
 That is: a decision wins even if it mentions a project; a project-scoped non-decision
-beats a generic capture; `notes/` is always the fallback.
+beats a generic capture; `notes/` is always the fallback. Papers from `inbox/papers/`
+default to `notes/papers/` regardless of precedence (they are not decisions, projects,
+or generic captures).
 
 If you cannot confidently route a topic, default to `notes/` and say so in the rationale
 so the user can recategorize.
@@ -280,6 +374,13 @@ Content shaping:
 - **Drop**: greetings, pleasantries, "as an AI", disclaimers, meta-commentary, redundant
   back-and-forth, and unresolved chitchat.
 - A topic that is entirely unresolved questions with no takeaway is **skipped**, not filed.
+
+**Papers**: papers from `inbox/papers/` follow the format defined in Step 2.5
+(`# Title`, `## Abstract`, `## Findings`, `## Numbers`, `## Conclusion`,
+`## See also`). If the abstract or conclusion is not found by the subagent,
+omit that section entirely — do not write placeholder text in the body.
+The `## Numbers` section uses a markdown table with columns `| Metric | Value |
+Context |`. If no numbers are found, omit the section.
 
 Provenance footer: append a single line at the end of every written file:
 
@@ -313,6 +414,15 @@ the embedder). Schema (field order is fixed so re-runs produce stable diffs):
       "section": "<H2 heading text, or empty string for a single-chunk body>",
       "content": "<section body verbatim, including the ## line>"
     }
+  ],
+  "abstract": "<extracted abstract verbatim, or null>",
+  "conclusion": "<extracted conclusion verbatim, or null>",
+  "numbers": [
+    {
+      "metric": "<what was measured>",
+      "value": "<exact value>",
+      "context": "<short description of significance>"
+    }
   ]
 }
 ```
@@ -326,6 +436,10 @@ Notes:
 - The `## See also` section and the provenance footer are **excluded** from `chunks` —
   they are metadata, not retrievable content.
 - Chunk bodies preserve code blocks, tables, and exact values verbatim.
+- **Paper-only fields**: `abstract`, `conclusion`, and `numbers` are present only when the
+  source is from `inbox/papers/`. For all other sources, emit `null`, `null`, and `[]`
+  respectively (or omit the keys — indexers treat missing and null the same). Split-off
+  number entries in `captures/numbers/` do *not* carry these fields.
 
 ---
 
@@ -358,6 +472,8 @@ List every deleted source in the final summary.
   pair. If the user skips, leave the orphan half untouched and warn.
 - **Re-processed source**: if the resulting `.md` path collides and is skipped, no `.json`
   is written either — the pair is atomic.
+- **Paper with no abstract or conclusion**: omit the missing sections from the body and
+  JSON. The subagent returns `null` for that field. The body and JSON are still valid.
 
 ---
 
@@ -381,7 +497,9 @@ List every deleted source in the final summary.
 /process-inbox chats
 /process-inbox agents
 /process-inbox articles
+/process-inbox papers
 /process-inbox 2026-07-02-standup.md
 process inbox
 triage inbox
+process papers
 ```
