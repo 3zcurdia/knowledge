@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-KB_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+KB_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 INBOX_DIR="$KB_ROOT/inbox"
 
 if [[ ! -d "$INBOX_DIR" ]]; then
