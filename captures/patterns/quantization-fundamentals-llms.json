@@ -1,0 +1,35 @@
+{
+  "id": "captures/patterns/quantization-fundamentals-llms",
+  "path": "captures/patterns/quantization-fundamentals-llms.md",
+  "title": "Quantization Fundamentals for LLMs",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Quantization maps continuous floating-point values to discrete integers for model compression and faster inference. It converts weights from FP16/BFloat16 to INT8 or lower, enabling 80%+ memory reduction. Key approaches include post-training quantization (PTQ) applied after training and quantization-aware training (QAT) that simulates low precision during training. The process uses scale factors and zero points to map real values to integer buckets, with dequantization reversing the mapping. Matrix multiplication in integer space uses fixed-point arithmetic to avoid floating-point operations.",
+  "keywords": ["quantization", "llm", "int8", "float16", "inference", "training", "matrix-multiplication", "fixed-point"],
+  "entities": ["DeepSeek R1", "Llama 4", "Nvidia H100", "Google Coral Edge TPU", "IEEE 754", "BFloat16", "Unsloth", "GGUF", "GBQ", "AWQ", "PyTorch", "TensorFlow", "ONNX Runtime", "Nvidia TensorRT"],
+  "see_also": [],
+  "source": "inbox/articles/how-llms-survive-quantization.md",
+  "processed_at": "2026-07-14",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Quantization is the process of mapping a continuous space to a discrete one. In machine learning, it converts model weights and activations from real values (floating point) to integers, enabling smaller models, less memory usage, and faster inference at the cost of some precision."
+    },
+    {
+      "section": "Why Quantize",
+      "content": "Modern LLMs are massive — DeepSeek R1 has 671 billion parameters, consuming ~720 GB in FP16. Quantization can shrink this footprint by over 80% down to ~131 GB, fitting across two Nvidia H100 GPUs. It also enables deployment on edge devices like Google Coral Edge TPU that don't support floating-point operations.\n\nInteger operations are fundamentally more efficient: adding two integers is a trivial bitwise XOR with carryover, completing in a single clock cycle on modern CPUs. Floating-point addition requires aligning exponents, adding significands, and normalizing — taking 3-4 clock cycles."
+    },
+    {
+      "section": "When to Quantize",
+      "content": "Two major milestones exist in a model's lifetime: training and inference.\n\n- **Training** historically used FP32, now mostly FP16/BFloat16. Recent LLMs (DeepSeek R1, Llama 4) train in FP8, though the mechanics are not well understood publicly.\n- **Inference** (forward pass only) is more resilient to precision loss. People have successfully run inference at 8-bit, 4-bit, or even 1-bit precision.\n\nKey approaches:\n- **Post-training quantization (PTQ)**: Quantize after training, before deployment. Most open-weight LLMs use this — Meta/DeepSeek publish FP models, communities quantize them (suffixes like GGUF, GBTQ, AWQ).\n- **Quantization-aware training (QAT)**: Build models with foresight that they'll be quantized. Tweaks training for resilience to precision loss. Required for extreme quantization (4-bit or lower). Used for famous 1-bit LLMs."
+    },
+    {
+      "section": "How Quantization Works",
+      "content": "## Quantization Scheme\n\nThe formula converting floats to integers is the quantization scheme. For symmetric clipping ranges (e.g., -1 to 1):\n\n1. Compute scale `s` as the ratio between the real range length and integer range length\n2. Quantize: `q = round(r / s)` where `r` is the real value\n\nFor asymmetric ranges (caused by ReLU, etc.), a **zero point** `z` acts as an offset:\n- `z = round(-alpha / s) + q_min`\n- Quantized value: `q = round(r / s) + z`\n\n## Dequantization (Reverse)\n\nMap quantized values back to approximate real values: `r_approx = s * (q - z)`\n\n## Quantized Matrix Multiplication\n\nFor multiplying quantized operands Q1 and Q2:\n1. Quantize operands\n2. Apply integer multiplication function\n3. Dequantize result\n\nThe scale `s` only needs to be applied once per output row, not every entry. On modern GPUs, float and int multiplications can be similarly fast, making memory bandwidth the real bottleneck — where quantization provides its primary gain.\n\n## Fixed Point Arithmetic\n\nTo avoid floating-point multiplication by scale `s`:\n- Express `s = 2^(-k) * s0` where `s0 > 0.5`\n- Store `s0` as fixed-point number\n- Multiplication becomes integer multiply + bit shifts\n- Decomposition can be precomputed before deployment\n\n## Quantization Granularity\n\nIn practice, multiple sets of quantization constants (s, z) are used — per layer, per matrix, or per matrix row. This applies to both weights and activations."
+    },
+    {
+      "section": "Key Frameworks",
+      "content": "Most ML frameworks (PyTorch, TensorFlow) offer built-in quantization support. Inference engines like ONNX Runtime and Nvidia TensorRT apply aggressive hardware-specific optimizations."
+    }
+  ]
+}
