@@ -1,0 +1,259 @@
+#!/usr/bin/env bash
+# scripts/preprocess-videos — transcribe video/audio in inbox/ to markdown for process-inbox
+#
+# Pipeline per file: ffmpeg demuxes to 16 kHz mono PCM wav, whisper-cli transcribes
+# to plain text, output is wrapped in markdown with a provenance footer, the source
+# media is deleted on success. Mirrors scripts/preprocess-pdfs.
+#
+# Whisper model: $WHISPER_MODEL overrides the default (ggml-base.bin). Models live in
+# $HOME/.cache/whisper-cpp/ and are auto-downloaded from Hugging Face on first use.
+
+set -euo pipefail
+
+KB_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+INBOX_DIR="$KB_ROOT/inbox"
+
+if [[ ! -d "$INBOX_DIR" ]]; then
+    echo "Error: $INBOX_DIR does not exist"
+    exit 1
+fi
+
+# Files we accept. Case is handled by find -iname below.
+VIDEO_EXTS='mp4 mov mkv webm m4v avi flv mp3 m4a wav'
+
+WHISPER_MODEL="${WHISPER_MODEL:-ggml-base.bin}"
+WHISPER_CACHE="${WHISPER_CACHE:-$HOME/.cache/whisper-cpp}"
+WHISPER_MODEL_URL_BASE="https://huggingface.co/ggerganov/whisper.cpp/resolve/main"
+
+# ---------------------------------------------------------------------------
+# OS / package manager detection
+# ---------------------------------------------------------------------------
+detect_pkg_manager() {
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        echo "brew"
+        return
+    fi
+    if [[ -r /etc/os-release ]]; then
+        # shellcheck disable=SC1091
+        . /etc/os-release
+        case "${ID:-}${ID_LIKE:-}" in
+            *debian*|*ubuntu*) echo "apt" ;;
+            *fedora*|*rhel*|*centos*) echo "dnf" ;;
+            *arch*) echo "pacman" ;;
+            *suse*|*opensuse*) echo "zypper" ;;
+            *) echo "" ;;
+        esac
+        return
+    fi
+    # Fallback: probe the binary
+    for pm in apt-get dnf pacman zypper; do
+        if command -v "$pm" >/dev/null 2>&1; then
+            echo "$pm"
+            return
+        fi
+    done
+    echo ""
+}
+
+# ---------------------------------------------------------------------------
+# Install helpers
+# ---------------------------------------------------------------------------
+pkg_install() {
+    local pm="$1"; shift
+    case "$pm" in
+        brew)
+            brew install "$@"
+            ;;
+        apt)
+            if command -v sudo >/dev/null 2>&1; then
+                sudo apt-get update && sudo apt-get install -y "$@"
+            else
+                apt-get update && apt-get install -y "$@"
+            fi
+            ;;
+        dnf)
+            if command -v sudo >/dev/null 2>&1; then
+                sudo dnf install -y "$@"
+            else
+                dnf install -y "$@"
+            fi
+            ;;
+        pacman)
+            if command -v sudo >/dev/null 2>&1; then
+                sudo pacman -Sy --noconfirm "$@"
+            else
+                pacman -Sy --noconfirm "$@"
+            fi
+            ;;
+        zypper)
+            if command -v sudo >/dev/null 2>&1; then
+                sudo zypper install -y "$@"
+            else
+                zypper install -y "$@"
+            fi
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+# ---------------------------------------------------------------------------
+# Pre-flight: verify whisper + ffmpeg + model
+# ---------------------------------------------------------------------------
+echo "==> Pre-flight: verifying whisper-cpp, ffmpeg, and model '$WHISPER_MODEL'"
+
+PM="$(detect_pkg_manager)"
+if [[ -z "$PM" ]]; then
+    echo "Error: could not detect a supported package manager (brew/apt/dnf/pacman/zypper)."
+    echo "Install whisper-cpp and ffmpeg manually, then re-run."
+    exit 1
+fi
+
+# whisper-cli (binary name from the whisper-cpp project, used on both mac and linux)
+if ! command -v whisper-cli >/dev/null 2>&1; then
+    echo "whisper-cli not found; attempting install via $PM"
+    if ! pkg_install "$PM" whisper-cpp; then
+        echo "Error: failed to install whisper-cpp via $PM."
+        echo "Install it manually (https://github.com/ggerganov/whisper.cpp) and re-run."
+        exit 1
+    fi
+fi
+if ! command -v whisper-cli >/dev/null 2>&1; then
+    echo "Error: whisper-cli still not found after install."
+    exit 1
+fi
+
+# ffmpeg
+if ! command -v ffmpeg >/dev/null 2>&1; then
+    echo "ffmpeg not found; attempting install via $PM"
+    if ! pkg_install "$PM" ffmpeg; then
+        echo "Error: failed to install ffmpeg via $PM."
+        echo "Install it manually and re-run."
+        exit 1
+    fi
+fi
+if ! command -v ffmpeg >/dev/null 2>&1; then
+    echo "Error: ffmpeg still not found after install."
+    exit 1
+fi
+
+# Model
+mkdir -p "$WHISPER_CACHE"
+MODEL_PATH="$WHISPER_CACHE/$WHISPER_MODEL"
+if [[ ! -f "$MODEL_PATH" ]]; then
+    echo "Downloading model $WHISPER_MODEL from Hugging Face..."
+    if ! curl -L --fail --silent --show-error -o "$MODEL_PATH.tmp" \
+        "$WHISPER_MODEL_URL_BASE/$WHISPER_MODEL"; then
+        echo "Error: failed to download $WHISPER_MODEL"
+        rm -f "$MODEL_PATH.tmp"
+        exit 1
+    fi
+    mv "$MODEL_PATH.tmp" "$MODEL_PATH"
+    echo "Saved to $MODEL_PATH"
+fi
+
+echo "==> Pre-flight OK"
+
+# ---------------------------------------------------------------------------
+# Per-file loop
+# ---------------------------------------------------------------------------
+found=0
+converted=0
+deleted=0
+skipped=0
+
+# Build a find expression using an array (avoids quoting headaches with eval).
+# Use a portable while-read loop since macOS bash 3.2 lacks mapfile.
+FIND_EXPR=()
+first=1
+for ext in $VIDEO_EXTS; do
+    if [[ $first -eq 1 ]]; then
+        FIND_EXPR+=( "-iname" "*.${ext}" )
+        first=0
+    else
+        FIND_EXPR+=( "-o" "-iname" "*.${ext}" )
+    fi
+done
+
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+while IFS= read -r -d '' media; do
+    found=$((found + 1))
+    basename="$(basename "$media")"
+    stem="${basename%.*}"
+    md_file="$(dirname "$media")/${stem}.md"
+
+    # Skip if a markdown already exists.
+    if [[ -f "$md_file" ]]; then
+        echo "Skipping: $media (already exists: ${stem}.md)"
+        skipped=$((skipped + 1))
+        continue
+    fi
+
+    echo "Transcribing: $media"
+
+    wav="$TMP_DIR/${stem}.wav"
+    txt="$TMP_DIR/${stem}.txt"
+
+    # 1. Demux to 16 kHz mono PCM wav (Whisper requirement).
+    if ! ffmpeg -y -i "$media" -ar 16000 -ac 1 -c:a pcm_s16le -loglevel error "$wav" 2>"$TMP_DIR/ffmpeg.err"; then
+        echo "Error: ffmpeg failed on $media"
+        [[ -s "$TMP_DIR/ffmpeg.err" ]] && sed 's/^/  /' "$TMP_DIR/ffmpeg.err"
+        continue
+    fi
+
+    # 2. Transcribe to plain text (no timestamps, auto language). We redirect
+    #    stdout to /dev/null because whisper-cli's --no-prints (-np) suppresses
+    #    the -of file output too, so we hide stdout by redirection instead.
+    #    Note: -otxt is required to actually write the .txt; -of alone just sets
+    #    the path prefix.
+    if ! whisper-cli \
+        -m "$MODEL_PATH" \
+        -f "$wav" \
+        -l auto \
+        -nt \
+        -otxt \
+        -of "${TMP_DIR}/${stem}" >/dev/null 2>"$TMP_DIR/whisper.err"; then
+        echo "Error: whisper-cli failed on $media"
+        [[ -s "$TMP_DIR/whisper.err" ]] && sed 's/^/  /' "$TMP_DIR/whisper.err"
+        continue
+    fi
+
+    if [[ ! -s "$txt" ]]; then
+        echo "Warning: $txt is empty, keeping source $media"
+        continue
+    fi
+
+    # 3. Wrap transcript in markdown with title and provenance footer.
+    # Title-case via awk (portable across BSD and GNU, no sed \u/\U gotchas).
+    title="$(echo "$stem" | tr '-' ' ' | tr '_' ' ' | awk '{
+        for (i=1; i<=NF; i++) {
+            $i = toupper(substr($i,1,1)) substr($i,2)
+        }
+        print
+    }')"
+    {
+        echo "# $title"
+        echo
+        cat "$txt"
+        echo
+        echo "> Source: inbox/${media#${INBOX_DIR}/} · processed $(date +%Y-%m-%d)"
+    } > "$md_file"
+
+    converted=$((converted + 1))
+
+    # 4. Delete source on success.
+    rm "$media"
+    deleted=$((deleted + 1))
+    echo "Wrote: $md_file"
+    echo "Deleted source: $media"
+done < <(find "$INBOX_DIR" -type f -not -name '.keep' \( "${FIND_EXPR[@]}" \) -print0 2>/dev/null)
+
+echo
+if [[ $found -eq 0 ]]; then
+    echo "No video/audio files found in inbox/."
+else
+    echo "Done. $found found, $converted transcribed, $deleted deleted, $skipped skipped."
+fi

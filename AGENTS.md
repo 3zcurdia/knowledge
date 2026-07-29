@@ -15,6 +15,7 @@ This is a markdown-only knowledge base. All content files use `.md` extension.
   - `articles/` — article clippings and external reads to process
   - `chats/` — conversation extracts to process
   - `papers/` — academic papers and research articles to process
+  - `video/` — video and audio files pending transcription (whisper-cpp)
 - `notes/` — general notes and references
   - `papers/` — processed academic papers (abstract, findings, conclusion, numbers)
 - `projects/` — project-specific knowledge

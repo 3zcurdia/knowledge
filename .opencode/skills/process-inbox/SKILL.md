@@ -2,31 +2,37 @@
 name: process-inbox
 description: |
   Triage and normalize exported conversations and papers sitting in inbox/ into the
-  categorized knowledge base. Reads inbox/chats/, inbox/agents/, inbox/articles/, and
-  inbox/papers/, extracts substantive topics, and rewrites each as a one-topic markdown
-  file under the right category, paired with a sibling .json structured-data file that
-  a RAG indexer consumes. Removes the source. For papers, also extracts the abstract,
-  conclusion, and all quantitative data/metrics.
+  categorized knowledge base. Reads inbox/chats/, inbox/agents/, inbox/articles/,
+  inbox/papers/, and inbox/video/, extracts substantive topics, and rewrites each as
+  a one-topic markdown file under the right category, paired with a sibling .json
+  structured-data file that a RAG indexer consumes. Removes the source. For papers,
+  also extracts the abstract, conclusion, and all quantitative data/metrics. For video
+  and audio, transcribes with whisper-cpp (ffmpeg + whisper-cli) into plain-text
+  markdown before the segmentation step.
   Interactive: proposes title/category/filename per topic and asks before writing.
   Use ONLY when the working directory is the knowledge base root containing AGENTS.md and
-  inbox/.   Fire when the user says "process inbox", "triage inbox", "process chats",
-  "process papers", "normalize inbox", or runs "/process-inbox".
+  inbox/. Fire when the user says "process inbox", "triage inbox", "process chats",
+  "process papers", "process video", "transcribe video", "process videos", "normalize
+  inbox", or runs "/process-inbox".
 user_invocable: true
 ---
 
 # /process-inbox
 
-Work through every file in `inbox/chats/`, `inbox/agents/`, `inbox/articles/`, and
-`inbox/papers/`, distilling each into one or more normalized, one-topic markdown files
-routed to the correct category directory. Papers get special handling: the abstract,
-conclusion, and all quantitative data are extracted and structured separately.
-Each markdown file is paired with a sibling `.json` structured-data file that a RAG
-indexer consumes for retrieval (summary, keywords, section-level chunks). Interactive:
-every proposed output pair is shown for confirmation before it is written.
+Work through every file in `inbox/chats/`, `inbox/agents/`, `inbox/articles/`,
+`inbox/papers/`, and `inbox/video/`, distilling each into one or more normalized,
+one-topic markdown files routed to the correct category directory. Papers get special
+handling: the abstract, conclusion, and all quantitative data are extracted and
+structured separately. Video and audio are preprocessed with `whisper-cpp` (via
+`ffmpeg` + `whisper-cli`) into plain-text transcripts before segmentation. Each
+markdown file is paired with a sibling `.json` structured-data file that a RAG indexer
+consumes for retrieval (summary, keywords, section-level chunks). Interactive: every
+proposed output pair is shown for confirmation before it is written.
 
 ## Trigger phrases
 
-"process inbox" / "triage inbox" / "process chats" / "process papers" / "normalize inbox" / `/process-inbox`
+"process inbox" / "triage inbox" / "process chats" / "process papers" / "process video" /
+"process videos" / "transcribe video" / "normalize inbox" / `/process-inbox`
 
 ## Invocation
 
@@ -36,8 +42,9 @@ every proposed output pair is shown for confirmation before it is written.
 /process-inbox agents           # scope to inbox/agents/ only
 /process-inbox articles         # scope to inbox/articles/ only
 /process-inbox papers           # scope to inbox/papers/ only
+/process-inbox video           # scope to inbox/video/ only
 /process-inbox foo.md          # scope to one filename
-process inbox / triage inbox / process papers      # natural-language triggers
+process inbox / triage inbox / process papers / process video / transcribe video      # natural-language triggers
 ```
 
 ---
@@ -82,11 +89,45 @@ up automatically.
 
 ---
 
+## Step 0.6 — Video & audio preprocessing
+
+If there are video or audio files anywhere in `inbox/`, automatically run:
+
+```bash
+scripts/preprocess-videos
+```
+
+The script:
+
+1. **Pre-flight** — verifies `whisper-cli` and `ffmpeg` are installed; if not, attempts
+   to install them via the detected package manager (Homebrew on macOS, apt / dnf /
+   pacman / zypper on Linux). Then verifies the Whisper model (`$WHISPER_MODEL`,
+   default `ggml-base.bin`) is present in `$WHISPER_CACHE` (default
+   `~/.cache/whisper-cpp/`); if missing, downloads it from Hugging Face
+   (`ggerganov/whisper.cpp`). The pre-flight aborts with a clear message if any of
+   these fail.
+2. **Per file** — demuxes the source to 16 kHz mono PCM WAV via `ffmpeg`, transcribes
+   to plain text via `whisper-cli -l auto -nt -np`, wraps the result in markdown with
+   a `# Title` heading and provenance footer, and deletes the source media on success.
+3. **Leaves failures in place** — files that fail to transcribe (corrupt, no audio
+   track, etc.) are kept and warned, so the user can re-run after fixing them.
+
+After it finishes, continue to Step 1; the newly created `.md` transcripts will be
+picked up automatically. To override the model for a single run
+(e.g. `ggml-small.bin`, `ggml-base.en.bin`):
+
+```bash
+WHISPER_MODEL=ggml-small.bin scripts/preprocess-videos
+```
+
+---
+
 ## Step 1 — Collect inbox files
 
 Build the work list. Scan the requested scope (`inbox/chats/**`, `inbox/agents/**`,
-`inbox/articles/**`, `inbox/papers/**`, or the whole `inbox/**`) for `.md`, `.txt`, and
-extensionless text. Skip `.keep`, dotfiles, and `.pdf` (handled in Step 0.5). Sort by path.
+`inbox/articles/**`, `inbox/papers/**`, `inbox/video/**`, or the whole `inbox/**`) for
+`.md`, `.txt`, and extensionless text. Skip `.keep`, dotfiles, `.pdf` (handled in
+Step 0.5), and video/audio files (handled in Step 0.6). Sort by path.
 
 If the list is empty, print "Inbox is empty — nothing to process." and stop.
 
@@ -474,6 +515,11 @@ List every deleted source in the final summary.
   is written either — the pair is atomic.
 - **Paper with no abstract or conclusion**: omit the missing sections from the body and
   JSON. The subagent returns `null` for that field. The body and JSON are still valid.
+- **Video file fails to transcribe** (no audio track, corrupt container, whisper
+  confidence too low): the preprocessor keeps the source, prints a warning, and moves
+  on. The next process-inbox run will retry it.
+- **whisper-cli or ffmpeg install fails** (no sudo, unsupported distro, no network):
+  the preprocessor aborts with install instructions. No source files are touched.
 
 ---
 
@@ -498,8 +544,11 @@ List every deleted source in the final summary.
 /process-inbox agents
 /process-inbox articles
 /process-inbox papers
+/process-inbox video
 /process-inbox 2026-07-02-standup.md
 process inbox
 triage inbox
 process papers
+process video
+transcribe inbox videos
 ```
