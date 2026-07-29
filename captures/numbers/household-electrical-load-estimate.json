@@ -1,0 +1,105 @@
+{
+  "id": "captures/numbers/household-electrical-load-estimate",
+  "path": "captures/numbers/household-electrical-load-estimate.md",
+  "title": "Household Electrical Load Estimate",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "Electrical load calculations for a residential property with an induction stove, listing typical running and peak power draw for each major appliance. Normal active usage is 2.5–4.5 kW, busy evening 5–8 kW, worst-case peak 9–13 kW plus homelab. Recommended service capacity is 12–15 kW (55–68 A at 220V), with the induction stove as the primary sizing driver. Includes per-appliance wattage ranges and startup surge estimates.",
+  "keywords": ["electrical load", "power consumption", "wattage", "induction stove", "residential", "circuit capacity", "ampacity", "homelab"],
+  "entities": ["RouteLLM"],
+  "see_also": [],
+  "source": "inbox/chats/conversation.md",
+  "processed_at": "2026-07-29",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Household power consumption estimates for a 2-bedroom house with 1 studio, kitchen, living room, 2 bathrooms, and various appliances including induction stove, dishwasher, garbage disposer, laundry center (gas dryer), French-door refrigerator, horizontal freezer, and homelab."
+    },
+    {
+      "section": "Appliance Load Table",
+      "content": "## Appliance Load Table\n\n| Load | Typical Running Power | Possible Peak |\n|------|----------------------|---------------|\n| PC | 300 W | 300–500 W |\n| Homelab | (add prior estimate) | (add prior estimate) |\n| French-door refrigerator + freezer | 150–300 W | 800–1,200 W startup |\n| Horizontal freezer | 80–180 W | 400–800 W startup |\n| Dishwasher | 1,200–1,800 W | 1,800 W |\n| Induction stove | 2,000–4,000 W typical cooking | 5,000–7,200 W maximum |\n| Garbage disposer | 500–800 W | 800–1,200 W startup |\n| Washer | 300–700 W | 700 W |\n| Gas dryer electrical load | 300–600 W | 600–900 W |\n| Lighting, Wi-Fi, TVs, chargers, kitchen appliances, etc. | 500–1,500 W | 1,500–2,500 W |\n| Studio equipment / additional electronics | 300–1,000 W | 1,000–1,500 W |"
+    },
+    {
+      "section": "Resulting Demand",
+      "content": "## Resulting Demand\n\n- Normal active usage: about 2.5–4.5 kW + homelab\n- Busy evening — cooking, dishwasher, laundry, PCs/homelab, lights: about 5–8 kW + homelab\n- Realistic worst-case simultaneous peak: about 9–13 kW + homelab\n- For example, if the homelab estimate was 600 W, plan for: Practical peak ≈ 10–14 kW"
+    },
+    {
+      "section": "Recommended Capacity",
+      "content": "## Recommended Capacity\n\nFor a house configured this way, particularly with an induction stove:\n\n- Minimum sensible electrical capacity: 12 kW\n- More comfortable / future-proof capacity: 15 kW\n\nAt 220 V, that corresponds roughly to:\n\n- 12 kW → 55 A\n- 15 kW → 68 A\n\nA 220 V, 60–80 A service would generally be the appropriate planning range, subject to local code and an electrician's load calculation.\n\nThe induction stove is the major driver. If it can be used at full output while the dishwasher is heating and laundry is running, undersizing the service can cause nuisance breaker trips. Refrigerators/freezers also have brief compressor startup surges, but these are usually not the main sizing issue.\n\nTo finalize this precisely, add the homelab's measured or estimated maximum draw to the numbers above, and use the nameplate ratings for the induction cooktop and dishwasher."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [
+    {
+      "metric": "PC running power",
+      "value": "300 W",
+      "context": "Typical running power for personal computer"
+    },
+    {
+      "metric": "French-door refrigerator + freezer running power",
+      "value": "150–300 W",
+      "context": "Typical running power; peak startup 800–1,200 W"
+    },
+    {
+      "metric": "Horizontal freezer running power",
+      "value": "80–180 W",
+      "context": "Typical running power; peak startup 400–800 W"
+    },
+    {
+      "metric": "Dishwasher running power",
+      "value": "1,200–1,800 W",
+      "context": "Typical running power"
+    },
+    {
+      "metric": "Induction stove typical cooking power",
+      "value": "2,000–4,000 W",
+      "context": "Maximum 5,000–7,200 W"
+    },
+    {
+      "metric": "Induction stove maximum power",
+      "value": "5,000–7,200 W",
+      "context": "Maximum draw during heavy cooking"
+    },
+    {
+      "metric": "Garbage disposer running power",
+      "value": "500–800 W",
+      "context": "Peak startup 800–1,200 W"
+    },
+    {
+      "metric": "Washer running power",
+      "value": "300–700 W",
+      "context": "Typical running power"
+    },
+    {
+      "metric": "Gas dryer electrical load",
+      "value": "300–600 W",
+      "context": "Peak 600–900 W; gas-fired so only motor/controls use electricity"
+    },
+    {
+      "metric": "Normal active usage",
+      "value": "2.5–4.5 kW + homelab",
+      "context": "Typical daily household load"
+    },
+    {
+      "metric": "Busy evening load",
+      "value": "5–8 kW + homelab",
+      "context": "Cooking, dishwasher, laundry, PCs/homelab, lights simultaneously"
+    },
+    {
+      "metric": "Worst-case simultaneous peak",
+      "value": "9–13 kW + homelab",
+      "context": "Realistic worst-case peak draw"
+    },
+    {
+      "metric": "Minimum sensible electrical capacity",
+      "value": "12 kW",
+      "context": "55 A at 220V"
+    },
+    {
+      "metric": "Future-proof electrical capacity",
+      "value": "15 kW",
+      "context": "68 A at 220V"
+    }
+  ]
+}
