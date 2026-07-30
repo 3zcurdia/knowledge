@@ -126,7 +126,7 @@ WHISPER_MODEL=ggml-small.bin scripts/preprocess-videos
 
 Build the work list. Scan the requested scope (`inbox/chats/**`, `inbox/agents/**`,
 `inbox/articles/**`, `inbox/papers/**`, `inbox/video/**`, or the whole `inbox/**`) for
-`.md`, `.txt`, and extensionless text. Skip `.keep`, dotfiles, `.pdf` (handled in
+`.md`, `.txt`, `.csv`, and extensionless text. Skip `.keep`, dotfiles, `.pdf` (handled in
 Step 0.5), and video/audio files (handled in Step 0.6). Sort by path.
 
 If the list is empty, print "Inbox is empty — nothing to process." and stop.

@@ -1,0 +1,45 @@
+{
+  "id": "captures/numbers/llm-benchmarks-5060-ti-vulcan",
+  "path": "captures/numbers/llm-benchmarks-5060-ti-vulcan.md",
+  "title": "LLM Benchmark Rankings — 5060 Ti 16GB (Vulcan)",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "RTX 5060 Ti 16GB (Vulcan) LLM inference benchmarks across 10 models at Q4/Q8 quantization. Text generation: Qwen3.5 0.8B leads at 302 t/s; Gemma 4 E2B fastest non-tiny model at 170 t/s. Prompt processing: Bonsai 27B dominates at 702–850 t/s across all context lengths. VRAM efficiency favors smaller quantized models — Bonsai 27B (3.54 GiB) outperforms Phi-4 (8.43 GiB) in both speed and memory.",
+  "keywords": ["llm", "benchmark", "5060-ti", "inference", "tokens-per-second", "vram", "quantization", "ggml"],
+  "entities": ["RTX 5060 Ti", "Qwen3.5", "Gemma 4", "Bonsai 27B", "Phi 4", "GPT OSS 20B", "nanbeige4.1"],
+  "see_also": ["captures/numbers/llm-benchmark-data-5060-ti.md"],
+  "source": "inbox/agents/llm-benchmarks-5060-ti-16gb-vulcan.csv",
+  "processed_at": "2026-07-30",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Summary of LLM inference benchmarks run on an RTX 5060 Ti 16GB (Vulcan). Models tested at Q4/Q8 quantizations across prompt processing (pp128, pp2048, pp8192) and text generation (tg256) benchmarks."
+    },
+    {
+      "section": "Text Generation Speed (tg256)",
+      "content": "| Model | VRAM | t/s | t/s per GiB |\n|-------|------|-----|-------------|\n| Qwen3.5 0.8B Q8 | 774 MiB | 302.05 | 0.39 |\n| gemma 4 E2B Q4 K M | 3.19 GiB | 169.92 | 0.053 |\n| nanbeige4.1 3b Q4 K M | 2.28 GiB | 151.71 | 0.067 |\n| gpt oss 20b MXFP4 | 11.28 GiB | 126.26 | 0.011 |\n| gemma 4 E4B Q4 K M | 4.97 GiB | 99.47 | 0.020 |\n| Qwen3.5 9B Q4 K M | 5.24 GiB | 68.91 | 0.013 |\n| gemma 4 E4B Q8 | 7.48 GiB | 68.84 | 0.009 |\n| Bonsai 27B Q1 | 3.54 GiB | 50.69 | 0.014 |\n| gemma 4 12B QAT Q4 | 6.50 GiB | 50.68 | 0.008 |\n| phi 4 Q4 K M | 8.43 GiB | 44.61 | 0.005 |"
+    },
+    {
+      "section": "Prompt Processing Speed (pp128)",
+      "content": "| Model | VRAM | t/s |\n|-------|------|-----|\n| Bonsai 27B Q1 | 3.54 GiB | 702.19 |\n| gemma 4 12B QAT Q4 | 6.50 GiB | 1693.71 |\n| phi 4 Q4 K M | 8.43 GiB | 1244.74 |\n| gpt oss 20b MXFP4 | 11.28 GiB | 1797.28 |\n| Qwen3.5 9B Q4 K M | 5.24 GiB | 2039.01 |\n| gemma 4 E4B Q4 K M | 4.97 GiB | 3391.50 |\n| gemma 4 E4B Q8 | 7.48 GiB | 3754.93 |\n| nanbeige4.1 3b Q4 K M | 2.28 GiB | 5276.65 |\n| gemma 4 E2B Q4 K M | 3.19 GiB | 5704.11 |\n| Qwen3.5 0.8B Q8 | 774 MiB | 11711.36 |"
+    },
+    {
+      "section": "Key Comparisons",
+      "content": "- **Bonsai 27B vs Phi 4**: Bonsai (3.54 GiB) is faster in both generation (50.69 vs 44.61 t/s) and prompt processing (702 vs 1245 pp128) while using less than half the VRAM.\n- **Gemma 4 E2B vs E4B**: The smaller E2B (3.19 GiB) generates text 71% faster than E4B (4.97 GiB) — 169.92 vs 99.47 t/s.\n- **Qwen3.5 9B vs Gemma 4 12B**: Near-identical text generation speed (~69 vs 51 t/s) but Qwen uses less VRAM (5.24 vs 6.50 GiB)."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [
+    {"metric": "Qwen3.5 0.8B text generation speed", "value": "302.05 t/s", "context": "Fastest tg256 on 5060 Ti at 774 MiB VRAM"},
+    {"metric": "Gemma 4 E2B text generation speed", "value": "169.92 t/s", "context": "Fastest non-tiny model for text generation, 3.19 GiB VRAM"},
+    {"metric": "nanbeige4.1 3b text generation speed", "value": "151.71 t/s", "context": "Third fastest tg256 at 2.28 GiB VRAM"},
+    {"metric": "gpt oss 20b text generation speed", "value": "126.26 t/s", "context": "Largest model tested, 11.28 GiB VRAM"},
+    {"metric": "Bonsai 27B prompt processing speed (pp128)", "value": "702.19 t/s", "context": "Fastest prompt processing among large models at 3.54 GiB"},
+    {"metric": "Qwen3.5 0.8B prompt processing speed (pp128)", "value": "11711.36 t/s", "context": "Fastest pp128 overall at 774 MiB"},
+    {"metric": "Bonsai 27B VRAM usage", "value": "3.54 GiB", "context": "27B parameter model quantized to Q1 fits in 3.54 GiB"},
+    {"metric": "Phi 4 VRAM usage", "value": "8.43 GiB", "context": "Smaller than Bonsai 27B but uses 2.4x more VRAM"},
+    {"metric": "Gemma 4 E2B vs E4B text generation", "value": "169.92 vs 99.47 t/s", "context": "Smaller E2B is 71% faster than E4B"},
+    {"metric": "Qwen3.5 9B vs Gemma 4 12B text generation", "value": "68.91 vs 50.68 t/s", "context": "Qwen faster with less VRAM (5.24 vs 6.50 GiB)"}
+  ]
+}
