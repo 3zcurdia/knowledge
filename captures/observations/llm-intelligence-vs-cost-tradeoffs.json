@@ -1,0 +1,46 @@
+{
+  "id": "captures/observations/llm-intelligence-vs-cost-tradeoffs",
+  "path": "captures/observations/llm-intelligence-vs-cost-tradeoffs.md",
+  "title": "LLM Intelligence vs Cost Tradeoffs",
+  "category": "captures/observations",
+  "type": "observations",
+  "summary": "Analysis of LLM intelligence vs cost tradeoffs using ArtificialAnalysis data. The article critiques AA's logarithmic cost axis and datacenter pricing for local models, then replots with linear costs and OpenRouter pricing. Key findings: immense cost gap between frontier Western models and cheaper Chinese alternatives; extra intelligence per dollar obeys diminishing returns; GLM-5.3-Flash at $0.023/task is 160x cheaper than Fable 5.1 and sufficient for 90% of needs. Hardware requirements table for local models from 128GB to 2TB RAM included.",
+  "keywords": ["llm", "intelligence index", "cost per task", "pareto frontier", "openrouter", "local models", "artificialanalysis", "diminishing returns"],
+  "entities": ["ArtificialAnalysis", "OpenRouter", "GLM-5.3", "GLM-5.3-Flash", "Fable 5.1", "Qwen3.8-Flash", "Kimi K3", "DeepSeek V4 Flash", "Ornith-1.5-35B-A3B"],
+  "see_also": [],
+  "source": "inbox/articles/intelligence-vs-cost.md",
+  "processed_at": "2026-09-09",
+  "chunks": [
+    {
+      "section": "",
+      "content": "# LLM Intelligence vs Cost Tradeoffs\n\nArtificialAnalysis publishes an Intelligence Index (mean of curated benchmarks) and tracks per-model benchmark costs. Their Intelligence vs Cost plot shows the Pareto frontier — the cheapest model achieving each intelligence score. Using expensive models for tasks a cheaper model handles wastes money."
+    },
+    {
+      "section": "Critique of AA's Plot",
+      "content": "## Critique of AA's Plot\n\nAA's visualization has three shortcomings:\n\n1. **Logarithmic cost axis** — hides the immensity of price differences between cheap and expensive models ($0.015 vs $3.69, a ~250x gap).\n2. **Official API pricing** — overstates cost for open-weights models available cheaper via third-party providers like OpenRouter.\n3. **Local models at datacenter pricing** — models runnable on consumer hardware appear at datacenter rates no real user would pay."
+    },
+    {
+      "section": "Author's Alternative Analysis",
+      "content": "## Author's Alternative Analysis\n\nThe author replots with a linear cost axis, uses OpenRouter cheapest pricing for open-weights models, prices sub-35B-parameter models at local electricity cost, and extrapolates GLM-5.3-Flash at high reasoning effort from AA max-effort scores crossed with Z.ai's coding scores.\n\nRule of thumb: 1-point intelligence difference is unlikely noticeable by most, while a 5-point gap is substantial. Intelligence score of 50 — rock bottom in the high-intelligence plot — is roughly what the smartest model in the world could deliver in February 2026 (Opus 4.6).\n\nPlots:\n- High Intelligence: https://openteams.com/wp-content/uploads/2026/09/high_intelligence-6-scaled.png\n- Low Cost: https://openteams.com/wp-content/uploads/2026/09/low_cost-6-scaled.png\n- All Models: https://openteams.com/wp-content/uploads/2026/09/all_models-6-scaled.png"
+    },
+    {
+      "section": "Cost Calculation for Local Models",
+      "content": "## Cost Calculation for Local Models\n\nCost per task for local models calculated as:\n\n- Output tokens per task from artificialanalysis.ai\n- Decode speed (tok/s) on local hardware — mostly RTX 3090 from 2020 (~$1,400 used today)\n- Delta between peak and idle energy draw\n- Electricity at $0.2049/kWh — US residential weighted average by population, May 2026\n- Add 15% for uncached input tokens and waiting for tool calls\n- Hardware priced at zero — RTX 3090 PC and 64GB Strix Halo are desirable gaming/work machines anyway\n\nNo material electricity cost difference between hardware platforms: Strix Halo draws less than RTX 3090 but is slower, so runs longer for same tasks."
+    },
+    {
+      "section": "Larger Local Models",
+      "content": "## Larger Local Models\n\nBeyond 64GB RAM, zero hardware cost stops being defensible — almost nobody needs that much RAM except for AI. Qwen3.8-Flash needs minimum 128GB Strix Halo.\n\n| Memory | Hardware | Models |\n|---|---|---|\n| 128 GB RAM | Strix Halo ($3,600), DGX Spark ($4,300), Mac Studio M5 Max ($5,100), MacBook Pro M5 Max ($7,150) | Qwen3.8-Flash, GLM-5.3-Flash (degraded), DeepSeek-V4-Flash (degraded) |\n| 256 GB RAM | 2x DGX Spark ($8,700), Mac Studio M5 Ultra ($11,300) | GLM-5.3-Flash, DeepSeek-V4-Flash |\n| 512 GB RAM | 2x Mac Studio M5 Ultra ($22,600) | GLM-5.3 |\n| 2 TB RAM | 2x TensTorrent Galaxy Blackhole ($320,000) | Kimi K3 |"
+    },
+    {
+      "section": "Key Model Comparisons",
+      "content": "## Key Model Comparisons\n\n| Model | Intelligence | Cost/Task | Notes |\n|---|---|---|---|\n| Fable 5.1 | 66 | $3.69 | Top-tier frontier model |\n| GLM-5.3 | 60 | $0.49 | 7.5x cheaper than Fable |\n| GLM-5.3-Flash (high) | 55 | $0.023 | 160x cheaper than Fable, sufficient for 90% of needs |\n| Qwen3.8-27B | 52 | $0.015 | Runnable on existing consumer hardware |"
+    },
+    {
+      "section": "Conclusion",
+      "content": "## Conclusion\n\nImmense cost difference between state-of-the-art Anthropic/OpenAI models and much cheaper Chinese models: former are too expensive even for large corporations, latter as cheap as a mobile subscription. Extra intelligence per dollar obeys diminishing returns — most users won't notice the difference between intelligence 60 and 66."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": []
+}
