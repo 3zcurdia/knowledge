@@ -7,7 +7,7 @@
   "summary": "Raw benchmark data file containing all 40 measurements (10 models × 4 tests) from the RTX 5060 Ti 16GB Vulcan inference run. Each row records model name, VRAM usage, test type, and throughput in tokens/second. Companion to the summary/analysis file.",
   "keywords": ["llm", "benchmark", "raw-data", "5060-ti", "inference", "tokens-per-second", "ggml", "quantization"],
   "entities": ["RTX 5060 Ti", "Qwen3.5", "Gemma 4", "Bonsai 27B", "Phi 4", "GPT OSS 20B", "nanbeige4.1"],
-  "see_also": ["captures/numbers/llm-benchmarks-5060-ti-vulcan.md"],
+  "see_also": [],
   "source": "inbox/agents/llm-benchmarks-5060-ti-16gb-vulcan.csv",
   "processed_at": "2026-07-30",
   "chunks": [

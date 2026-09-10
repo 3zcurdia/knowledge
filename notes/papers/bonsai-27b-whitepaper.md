@@ -96,4 +96,7 @@ The Bonsai methodology is architecture-agnostic and not tied to a single model f
 
 ## See also
 
+- [BitNet 1-bit LLM Architecture and Quantization-Aware Training](../../captures/patterns/bitnet-1bit-llm-architecture.md)
+- [Quantization Fundamentals for LLMs](../../captures/patterns/quantization-fundamentals-llms.md)
+
 > Source: inbox/papers/bonsai-27b-whitepaper.md · processed 2026-07-15

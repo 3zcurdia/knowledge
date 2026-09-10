@@ -15,6 +15,13 @@ Invision AI replaced a fragmented stack of C++, Go, Python, and JavaScript with 
 - **Oban** for job scheduling with queues, retries, and monitoring
 - **Telemetry** package for metrics export to Prometheus
 - **Ecto** for composable SQL queries
+- **Permit** for attribute-based access control (ABAC) with Ecto, Phoenix, LiveView, and Absinthe integrations
+
+## Authorization with Permit
+
+The Permit library provides ABAC for Elixir applications. Four libraries: base `permit`, `permit_ecto`, `permit_phoenix`, `permit_absinthe`. DSL-free syntax inspired by Ruby's CanCan, with only positive declarations (no `cannot`).
+
+ACL, RBAC, and ReBAC are all reducible to Permit's ABAC model. Rules can be based on specific user IDs (ACL), roles (RBAC), or relationship entities (ReBAC). Generates Ecto queries from conditions — `accessible_by` fetches only authorized records.
 
 ## Results
 
@@ -29,3 +36,4 @@ Single person implemented a production-ready web app in 2 months with tests, con
 - [The Joy of Simpler Systems](joy-of-functional-languages.md)
 
 > Source: inbox/articles/Elixir A Journey to Simplifying System Architecture.md · processed 2026-07-02
+> Merged: captures/patterns/elixir-authorization-permit-library.md · 2026-09-09
