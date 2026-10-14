@@ -1,0 +1,67 @@
+{
+  "id": "notes/recipes/ba-best-banana-bread",
+  "path": "notes/recipes/ba-best-banana-bread.md",
+  "title": "BA's Best Banana Bread",
+  "category": "notes/recipes",
+  "type": "recipes",
+  "summary": "Bon Appétit's BA's Best banana bread: a heavily tested test-kitchen recipe built for reliability. Core technique points: use very overripe, spotted bananas (starches turn sweet) so the bread has moisture and sweetness; prep a metal loaf pan (conducts heat better than glass for better browning), greased and lined with parchment with a generous overhang on the long sides; soften butter ahead (finger-impression test); cream half a stick of butter with dark brown sugar for a full 4 minutes to cut air into the batter and build rise; add yogurt/mascarpone, then 2 large eggs one at a time; never overmix once flour meets liquid; fold in bananas and nuts last; sprinkle raw sugar on top. Bake 60–65 minutes; cool in the pan 1 hour.",
+  "keywords": ["banana bread", "overripe bananas", "creaming", "metal loaf pan", "dark brown sugar", "parchment sling", "baking soda", "bake time", "raw sugar topping"],
+  "entities": ["Bon Appétit", "BA's Best", "Brad", "Fanny Farmer"],
+  "see_also": [
+    "homemade-pastrami-cure-smoke.md"
+  ],
+  "source": "inbox/video/How to Make Perfect Banana Bread Every Time ｜ Bon Appétit [uXAuzS8V9AY].md",
+  "processed_at": "2026-10-14",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Bon Appétit's BA's Best banana bread — tall, moist, tender, deeply banana-flavored, with even browning from a metal pan and a crunchy sugar-topped crust.\n\n**Cook:** 60–65 minutes"
+    },
+    {
+      "section": "Ingredients",
+      "content": "## Ingredients\n\n- Very overripe, heavily spotted bananas\n- 57 g (0.5 stick) butter, softened to room temperature\n- Dark brown sugar (light brown sugar works in a pinch)\n- All-purpose flour (up to half whole wheat works, with less rise)\n- Kosher salt\n- Baking soda\n- Plain yogurt (mascarpone as the recipe is written; sour cream also fine)\n- 2 large eggs\n- Walnuts or pecans (optional, folded in at the last stage)\n- Sugar in the Raw or granulated sugar, for sprinkling on top (optionally a little flaky salt)\n- Butter or cream cheese, for serving (optional)\n\n*Quantities for flour, sugar, salt, and baking soda are not stated in the video — do not guess them.*"
+    },
+    {
+      "section": "Steps",
+      "content": "## Steps\n\n1. **Soften the butter early** — Take the butter out of the fridge well before mixing so it whips correctly with the sugar. It's ready when you press it and your finger leaves an impression that holds without smushing out.\n2. **Prep a metal loaf pan** — Lightly grease a metal loaf pan (it conducts heat better than glass, giving better browning), then line it with parchment leaving a generous overhang on the long sides — this creates a sling to lift the loaf out later.\n3. **Whisk the dry ingredients** — Whisk together all-purpose flour, kosher salt, and baking soda, then set aside.\n4. **Mash the bananas** — Mash until the bananas turn shiny and softened, but you don't need them perfectly smooth. This fits neatly inside the creaming time.\n5. **Cream butter and sugar 4 minutes** — Beat the softened butter (57 g / half a stick) with dark brown sugar for a full 4 minutes — set a timer. The sugar crystals cut air into the butter, which is what gives the bread its rise. It's done when it's very aerated, paler, and has gained volume; a little graininess is fine.\n6. **Add the dairy** — Beat in plain yogurt (mascarpone as written, or sour cream).\n7. **Add eggs one at a time** — Beat in 2 large eggs individually. The batter may look broken or curdled (colder eggs, added liquid) — it recovers; keep going.\n8. **Fold in the flour gently** — Add the whisked dry ingredients and stop as soon as it's creamy. Once flour meets liquid you develop gluten, and overmixing makes a tough instead of tender loaf.\n9. **Fold in bananas and extras** — Fold in the mashed bananas; add any extras (walnuts, pecans) at this last stage.\n10. **Top with sugar** — Sprinkle Sugar in the Raw (or granulated sugar) over the batter for crunch and sparkle; add a little flaky salt if you like. This works for any loaf or pound cake.\n11. **Bake 60–65 minutes** — Bake until done; turning the pan sideways in the oven gives more even heat across the loaf (front-to-back oven hot spots). Cracks on top are normal: the loaf rises, pulls the batter apart, then settles back down as it falls.\n12. **Cool 1 hour in the pan** — Let it cool in the pan a full hour, then use the parchment sling to lift it out and invert onto a board. Without parchment, cut around the outside of the loaf while it's still warm.\n13. **Slice and serve** — Slice on a slight angle, not too thin or it crumbles. Next day, reheat slices on a low toaster setting and add butter or cream cheese so it melts in."
+    },
+    {
+      "section": "Notes & tips",
+      "content": "## Notes & tips\n\n- **Overripe bananas are mandatory:** when they're heavily spotted, the starches have turned sweet; underripe bananas leave the bread lacking moisture, sweetness, and banana flavor.\n- **Poor rise causes:** old baking soda, or impatient creaming (skipping the full 4 minutes) — the two reasons the baker's home loaves didn't rise well.\n- **Pan choice matters:** metal browns better than glass; the glass-pan loaf doesn't get as dark.\n- **Sugar swap:** light brown sugar works but loses some of the darker molasses richness of dark brown sugar.\n- **Flour swap:** half whole wheat flour is possible, but the loaf won't rise as much.\n- **Wet, rubbery, sand-like bottom:** a classic banana bread fault the test kitchen diagnosed as a moisture, leavener, and pan/oven temperature issue — solved in this recipe.\n- **Serving:** sliced with butter and salt; sweetness pairs well with something salty."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": "60–65 minutes",
+  "ingredients": [
+    { "group": null, "quantity": null, "unit": null, "original": null, "item": "very overripe, heavily spotted bananas", "preparation": "mashed" },
+    { "group": null, "quantity": "57", "unit": "g", "original": "0.5 stick", "item": "butter", "preparation": "softened to room temperature" },
+    { "group": null, "quantity": null, "unit": null, "original": null, "item": "dark brown sugar", "preparation": "light brown sugar works in a pinch" },
+    { "group": null, "quantity": null, "unit": null, "original": null, "item": "all-purpose flour", "preparation": "up to half whole wheat works, with less rise" },
+    { "group": null, "quantity": null, "unit": null, "original": null, "item": "kosher salt", "preparation": null },
+    { "group": null, "quantity": null, "unit": null, "original": null, "item": "baking soda", "preparation": null },
+    { "group": null, "quantity": null, "unit": null, "original": null, "item": "plain yogurt", "preparation": "mascarpone as the recipe is written; sour cream also fine" },
+    { "group": null, "quantity": "2", "unit": null, "original": null, "item": "large eggs", "preparation": null },
+    { "group": null, "quantity": null, "unit": null, "original": null, "item": "walnuts or pecans", "preparation": "optional, folded in at the last stage" },
+    { "group": null, "quantity": null, "unit": null, "original": null, "item": "Sugar in the Raw or granulated sugar", "preparation": "for sprinkling on top, optionally a little flaky salt" },
+    { "group": null, "quantity": null, "unit": null, "original": null, "item": "butter or cream cheese", "preparation": "for serving, optional" }
+  ],
+  "steps": [
+    { "number": 1, "instruction": "**Soften the butter early** — Take the butter out of the fridge well before mixing so it whips correctly with the sugar. It's ready when you press it and your finger leaves an impression that holds without smushing out." },
+    { "number": 2, "instruction": "**Prep a metal loaf pan** — Lightly grease a metal loaf pan (it conducts heat better than glass, giving better browning), then line it with parchment leaving a generous overhang on the long sides — this creates a sling to lift the loaf out later." },
+    { "number": 3, "instruction": "**Whisk the dry ingredients** — Whisk together all-purpose flour, kosher salt, and baking soda, then set aside." },
+    { "number": 4, "instruction": "**Mash the bananas** — Mash until the bananas turn shiny and softened, but you don't need them perfectly smooth. This fits neatly inside the creaming time." },
+    { "number": 5, "instruction": "**Cream butter and sugar 4 minutes** — Beat the softened butter (57 g / half a stick) with dark brown sugar for a full 4 minutes — set a timer. The sugar crystals cut air into the butter, which is what gives the bread its rise. It's done when it's very aerated, paler, and has gained volume; a little graininess is fine." },
+    { "number": 6, "instruction": "**Add the dairy** — Beat in plain yogurt (mascarpone as written, or sour cream)." },
+    { "number": 7, "instruction": "**Add eggs one at a time** — Beat in 2 large eggs individually. The batter may look broken or curdled (colder eggs, added liquid) — it recovers; keep going." },
+    { "number": 8, "instruction": "**Fold in the flour gently** — Add the whisked dry ingredients and stop as soon as it's creamy. Once flour meets liquid you develop gluten, and overmixing makes a tough instead of tender loaf." },
+    { "number": 9, "instruction": "**Fold in bananas and extras** — Fold in the mashed bananas; add any extras (walnuts, pecans) at this last stage." },
+    { "number": 10, "instruction": "**Top with sugar** — Sprinkle Sugar in the Raw (or granulated sugar) over the batter for crunch and sparkle; add a little flaky salt if you like. This works for any loaf or pound cake." },
+    { "number": 11, "instruction": "**Bake 60–65 minutes** — Bake until done; turning the pan sideways in the oven gives more even heat across the loaf (front-to-back oven hot spots). Cracks on top are normal: the loaf rises, pulls the batter apart, then settles back down as it falls." },
+    { "number": 12, "instruction": "**Cool 1 hour in the pan** — Let it cool in the pan a full hour, then use the parchment sling to lift it out and invert onto a board. Without parchment, cut around the outside of the loaf while it's still warm." },
+    { "number": 13, "instruction": "**Slice and serve** — Slice on a slight angle, not too thin or it crumbles. Next day, reheat slices on a low toaster setting and add butter or cream cheese so it melts in." }
+  ]
+}

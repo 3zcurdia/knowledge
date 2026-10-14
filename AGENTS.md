@@ -18,6 +18,7 @@ This is a markdown-only knowledge base. All content files use `.md` extension.
   - `video/` — video and audio files pending transcription (whisper-cpp)
 - `notes/` — general notes and references
   - `papers/` — processed academic papers (abstract, findings, conclusion, numbers)
+  - `recipies/` — processed recipes (metadata, metric ingredients with original units, clear steps, notes & tips)
 - `projects/` — project-specific knowledge
   - `prompts/` — reusable prompt templates and examples
 

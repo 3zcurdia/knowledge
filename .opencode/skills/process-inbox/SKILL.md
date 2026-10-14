@@ -6,14 +6,19 @@ description: |
   inbox/papers/, and inbox/video/, extracts substantive topics, and rewrites each as
   a one-topic markdown file under the right category, paired with a sibling .json
   structured-data file that a RAG indexer consumes. Removes the source. For papers,
-  also extracts the abstract, conclusion, and all quantitative data/metrics. For video
+  also extracts the abstract, conclusion, and all quantitative data/metrics. For
+  recipes (from any source — video transcripts, articles, chats), rebuilds the dish
+  into a clean recipe template — metadata, metric-first ingredients with the original
+  units kept for reference, step-by-step explanations with
+  doneness cues, tips — filed under notes/recipies/ with structured ingredients/steps
+  in the JSON. For video
   and audio, transcribes with whisper-cpp (ffmpeg + whisper-cli) into plain-text
   markdown before the segmentation step.
   Interactive: proposes title/category/filename per topic and asks before writing.
   Use ONLY when the working directory is the knowledge base root containing AGENTS.md and
   inbox/. Fire when the user says "process inbox", "triage inbox", "process chats",
-  "process papers", "process video", "transcribe video", "process videos", "normalize
-  inbox", or runs "/process-inbox".
+  "process papers", "process video", "transcribe video", "process videos", "process
+  recipes", "extract recipes", "normalize inbox", or runs "/process-inbox".
 user_invocable: true
 ---
 
@@ -23,7 +28,11 @@ Work through every file in `inbox/chats/`, `inbox/agents/`, `inbox/articles/`,
 `inbox/papers/`, and `inbox/video/`, distilling each into one or more normalized,
 one-topic markdown files routed to the correct category directory. Papers get special
 handling: the abstract, conclusion, and all quantitative data are extracted and
-structured separately. Video and audio are preprocessed with `whisper-cpp` (via
+structured separately. Recipes are detected by content in any source and rebuilt into
+a clean recipe template — metadata line, metric-first ingredients (original units kept
+in parentheses for reference), and clear step-by-step
+explanations with doneness cues — filed under `notes/recipies/` with structured
+ingredient and step data in the JSON. Video and audio are preprocessed with `whisper-cpp` (via
 `ffmpeg` + `whisper-cli`) into plain-text transcripts before segmentation. Each
 markdown file is paired with a sibling `.json` structured-data file that a RAG indexer
 consumes for retrieval (summary, keywords, section-level chunks). Interactive: every
@@ -32,7 +41,8 @@ proposed output pair is shown for confirmation before it is written.
 ## Trigger phrases
 
 "process inbox" / "triage inbox" / "process chats" / "process papers" / "process video" /
-"process videos" / "transcribe video" / "normalize inbox" / `/process-inbox`
+"process videos" / "transcribe video" / "process recipes" / "extract recipes" /
+"normalize inbox" / `/process-inbox`
 
 ## Invocation
 
@@ -174,7 +184,7 @@ For each topic, compute:
 - **Title**: concise, descriptive, in English.
 - **Category**: one of the routes below, with a one-line rationale.
 - **Type**: the route label (`decisions`, `numbers`, `observations`, `patterns`,
-  `projects`, or `notes`).
+  `concepts`, `projects`, `recipes`, or `notes`).
 - **Filename**: kebab-case, `.md`, derived from the title (e.g. `api-rate-limit-quota.md`).
 - **Destination**: `<category-dir>/<filename>` (the markdown path).
 - **JSON path**: the destination with the extension swapped to `.json`
@@ -327,6 +337,140 @@ always filed under `notes/papers/` unless the user explicitly recategorizes.
 
 ---
 
+## Step 2.6 — Recipe-specific processing
+
+When a topic is a **recipe** — a dish, bake, drink, or other preparation defined by an
+ingredient list plus a sequence of preparation steps — it is rebuilt into the recipe
+template below and filed under `notes/recipies/`. Recipes are detected by content in
+**any** inbox source: a cooking-video transcript, an article, a chat extract. A full
+recipe buried in a longer source is split out as its own topic; a passing mention of a
+dish is not a recipe — do not manufacture one.
+
+The text-analyst subagent must additionally extract three recipe-specific artifacts:
+
+**Metadata**: yield/servings, prep time, cook time, total time — each verbatim from the
+source (e.g. `"4 servings"`, `"12 cookies"`, `"15 min"`). Any field not stated in the
+source is `null`. Never estimate or invent times or yields.
+
+**Ingredients**: every ingredient as an object:
+
+```json
+{
+  "group": "<component name, e.g. \"For the sauce\"; null for single-component recipes>",
+  "quantity": "<metric quantity, e.g. \"30\">",
+  "unit": "<metric unit: g, kg, ml, l, ...>",
+  "original": "<source quantity + unit verbatim, e.g. \"2 tbsp\", or null when already metric or unconvertible>",
+  "item": "<e.g. \"olive oil\">",
+  "preparation": "<e.g. \"finely diced\", \"extra-virgin\"; null when none>"
+}
+```
+
+Units are **metric-first**: every convertible quantity is expressed in metric
+(`g`, `kg`, `ml`, `l`, `°C`), and the source's original quantity + unit is kept
+verbatim in `original` (and parenthesized in the body) purely for reference.
+Conversion is deterministic arithmetic on the stated value (see Conversion table) —
+it is never an invented value. Rules:
+
+- Only **numeric** quantities with a known unit are converted. Vague phrasing
+  ("a knob of butter", "a handful of basil", "to taste", "as needed") cannot be
+  converted — keep it verbatim in `quantity` (`unit` and `original` are `null`) and
+  write the body line naturally without a conversion parenthetical.
+- **Counts** ("1 onion", "2 eggs") are not units — no conversion, `original` is `null`.
+- If the source is **already metric**, `original` is `null` and nothing is
+  parenthesized in the body.
+- Round metric values to practical cooking precision (340 g not 340.2 g, 250 ml not
+  236.6 ml, oven temperatures to the nearest 5 °C).
+
+Conversion table:
+
+| Source unit        | Metric equivalent                     |
+| ------------------ | ------------------------------------- |
+| tsp                | 5 ml                                  |
+| tbsp               | 15 ml                                 |
+| cup (US)           | 240 ml                                |
+| fl oz              | 30 ml                                 |
+| pint / quart / gal | 475 ml / 950 ml / 3.8 l               |
+| oz                 | 28 g                                  |
+| lb                 | 450 g                                 |
+| inch               | 2.5 cm                                |
+| °F                 | (°F − 32) × 5/9, rounded to nearest 5 °C |
+
+**Steps**: every step as an object:
+
+```json
+{
+  "number": "<integer, ascending from 1>",
+  "instruction": "<the step text exactly as written in the body>"
+}
+```
+
+### Recipe body format
+
+The normalized body for a recipe follows this structure:
+
+```markdown
+# <recipe title>
+
+<one or two sentences: what the dish is and what it tastes like, distilled from the
+source's own description. Drop channel intros, sponsor segues, and "hey guys".>
+
+**Servings**: <yield> · **Prep**: <time> · **Cook**: <time>
+
+## Ingredients
+
+- <metric qty> <metric unit> (<original>) <item>, <preparation>
+
+## Steps
+
+1. **<Short action label>** — <clear explanation: what to do, at what heat and for how
+   long, and what to look for.>
+
+## Notes & tips
+
+- <substitutions, make-ahead, storage, scaling, common mistakes>
+
+## See also
+...
+
+> Source: <source path> · processed <YYYY-MM-DD>
+```
+
+Formatting rules:
+
+- **Metadata line** — include only the fields the source states, separated by ` · `
+  (add `**Total**` when the source gives it); omit the whole line when none are known.
+- **Ingredients** — one `- ` line per ingredient, metric-first with the original kept
+  in parentheses for reference — `- 30 ml (2 tbsp) olive oil, extra-virgin`,
+  `- 450 g (1 lb) ground beef`. Counts and vague phrasing get no parenthetical and are
+  written naturally — `- 1 onion, finely diced`, `- a knob of butter`, `- salt to
+  taste`. When the source is already metric, no parenthetical — `- 250 g flour`.
+  Multi-component recipes get `### <component>` subheadings
+  (e.g. `### For the dough`) inside the same section.
+- **Steps** — numbered from 1. Each step starts with a **bold three-to-five word action
+  label**, then an em-dash, then a full explanation. Each step must be reproducible on
+  its own: restate quantities, temperatures, and timings at the point of use even
+  though they also appear in Ingredients, and end with a doneness cue where one exists
+  ("...until the onions are translucent and sweet, 6–8 minutes"). Quantities and
+  temperatures in step text use the same metric-first convention — "pour in 240 ml
+  (1 cup) stock", "bake at 180 °C (350 °F)"; times stay as stated. Add a brief "why"
+  only where it prevents a real mistake ("don't let the garlic brown — it turns bitter").
+- **Steps order** — video narration jumps around; rebuild steps in actual cooking order
+  and fold asides, anecdotes, and taste-testing chatter out of the steps. The result is
+  clear written instruction, not a transcript.
+- **Notes & tips** — optional. Omit the section entirely when the source has no
+  substitutions, storage advice, make-ahead guidance, or common mistakes beyond the
+  steps themselves.
+
+### Categorization default
+
+Recipes are always filed under `notes/recipies/` (the KB's existing spelling)
+regardless of precedence — like papers, they are neither decisions, projects, nor
+generic captures — unless the user explicitly recategorizes. If a source mixes a recipe
+with unrelated takeaways (a metric, a decision), the recipe is its own topic and the
+remainder is filed separately at its normal route.
+
+---
+
 ## Step 3 — Progress & summary
 
 After each source file, print `[<done>/<total> files done]`.
@@ -345,6 +489,7 @@ Done. Inbox processed.
     projects/              : N
     notes/                 : N
     notes/papers/          : N
+    notes/recipies/        : N
   JSON companions          : N   (paired with the files above)
   Topics skipped           : N
   Sources deleted          : N
@@ -370,6 +515,7 @@ came from:
 | A recurring approach, technique, best-practice, "how we do X"           | `captures/patterns/`      |
 | A foundational principle, law, mental model, or definition             | `captures/concepts/`      |
 | Academic paper, preprint, or technical report (from `inbox/papers/`)    | `notes/papers/`           |
+| A recipe: ingredient list + preparation steps for a dish, bake, drink  | `notes/recipies/`         |
 | Tied to a named project or initiative (and not a decision)              | `projects/<project>/`     |
 | General reference, explanation, how-to (the default catch-all)          | `notes/`                  |
 
@@ -389,7 +535,8 @@ decisions/  >  projects/  >  captures/*  >  notes/
 That is: a decision wins even if it mentions a project; a project-scoped non-decision
 beats a generic capture; `notes/` is always the fallback. Papers from `inbox/papers/`
 default to `notes/papers/` regardless of precedence (they are not decisions, projects,
-or generic captures).
+or generic captures). Recipes likewise always file under `notes/recipies/` regardless
+of precedence (Step 2.6).
 
 If you cannot confidently route a topic, default to `notes/` and say so in the rationale
 so the user can recategorize.
@@ -423,6 +570,12 @@ omit that section entirely — do not write placeholder text in the body.
 The `## Numbers` section uses a markdown table with columns `| Metric | Value |
 Context |`. If no numbers are found, omit the section.
 
+**Recipes**: recipes follow the format defined in Step 2.6 (`# Title`, short
+description, metadata line, `## Ingredients`, `## Steps`, optional
+`## Notes & tips`, `## See also`). Omit the metadata line and the `## Notes & tips`
+section when the source does not support them — never invent times, yields,
+temperatures, or quantities.
+
 Provenance footer: append a single line at the end of every written file:
 
 ```
@@ -443,7 +596,7 @@ the embedder). Schema (field order is fixed so re-runs produce stable diffs):
   "path": "<destination .md path, e.g. captures/numbers/foo.md>",
   "title": "<the # Title, verbatim>",
   "category": "<full destination dir, e.g. captures/numbers>",
-  "type": "<decisions|numbers|observations|patterns|concepts|projects|notes>",
+  "type": "<decisions|numbers|observations|patterns|concepts|projects|recipes|notes>",
   "summary": "<one-paragraph retrieval-tuned abstract from the subagent>",
   "keywords": ["<3–10 lowercase terms>"],
   "entities": ["<proper nouns / identifiers, verbatim>"],
@@ -464,6 +617,25 @@ the embedder). Schema (field order is fixed so re-runs produce stable diffs):
       "value": "<exact value>",
       "context": "<short description of significance>"
     }
+  ],
+  "servings": "<yield verbatim, e.g. \"4 servings\", or null>",
+  "prep_time": "<verbatim, e.g. \"15 min\", or null>",
+  "cook_time": "<verbatim, e.g. \"30 min\", or null>",
+  "ingredients": [
+    {
+      "group": "<component name, e.g. \"For the sauce\", or null>",
+      "quantity": "<metric quantity, e.g. \"30\">",
+      "unit": "<metric unit: g, kg, ml, l, ...>",
+      "original": "<source quantity + unit verbatim, e.g. \"2 tbsp\", or null when already metric or unconvertible>",
+      "item": "<e.g. \"olive oil\">",
+      "preparation": "<e.g. \"finely diced\", or null>"
+    }
+  ],
+  "steps": [
+    {
+      "number": 1,
+      "instruction": "<step text exactly as written in the body>"
+    }
   ]
 }
 ```
@@ -481,6 +653,12 @@ Notes:
   source is from `inbox/papers/`. For all other sources, emit `null`, `null`, and `[]`
   respectively (or omit the keys — indexers treat missing and null the same). Split-off
   number entries in `captures/numbers/` do *not* carry these fields.
+- **Recipe-only fields**: `servings`, `prep_time`, `cook_time`, `ingredients`, and `steps`
+  are present only when the source is a recipe (Step 2.6). For all other sources, emit
+  `null`, `null`, `null`, `[]`, and `[]` respectively (or omit the keys). Fields the
+  source does not state are `null` — never guessed. Inside `ingredients`, `quantity` and
+  `unit` are always metric; `original` preserves the source's own quantity + unit
+  verbatim (`null` when the source is already metric or the phrasing is unconvertible).
 
 ---
 
@@ -515,6 +693,15 @@ List every deleted source in the final summary.
   is written either — the pair is atomic.
 - **Paper with no abstract or conclusion**: omit the missing sections from the body and
   JSON. The subagent returns `null` for that field. The body and JSON are still valid.
+- **Recipe missing times, yield, or quantities**: omit the metadata line from the body
+  and emit `null` for the unknown JSON fields. Vague source phrasing ("a knob of butter")
+  is preserved verbatim — never invented, never converted.
+- **Imperial-only source**: convert every numeric quantity to metric and keep the
+  original in parentheses (body) and in `original` (JSON). Ambiguous volume units are
+  converted as US customary (1 cup = 240 ml); the preserved original means nothing is
+  lost if the user prefers another convention.
+- **Video recipe narration jumps around**: rebuild the steps in actual cooking order;
+  fold asides, sponsor segues, and taste-testing chatter out of the steps.
 - **Video file fails to transcribe** (no audio track, corrupt container, whisper
   confidence too low): the preprocessor keeps the source, prints a warning, and moves
   on. The next process-inbox run will retry it.
@@ -529,6 +716,9 @@ List every deleted source in the final summary.
   writes new files and deletes inbox sources.
 - Does not push to git or commit; the user commits when they choose.
 - Does not translate English content; translates non-English content to English.
+- Does not invent recipe times, temperatures, yields, or quantities that the source does
+  not state. Deterministic metric conversion of stated values is expected, not
+  invention — but unconvertible phrasing stays verbatim.
 - Does not auto-write without confirmation — every topic is shown first.
 - Does not touch `.keep` files or dotfiles.
 - Does not generate embeddings — the JSON stays model-agnostic. A separate indexer reads

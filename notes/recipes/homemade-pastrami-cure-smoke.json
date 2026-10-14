@@ -1,0 +1,75 @@
+{
+  "id": "notes/recipes/homemade-pastrami-cure-smoke",
+  "path": "notes/recipes/homemade-pastrami-cure-smoke.md",
+  "title": "Homemade Pastrami: Cure, Smoke, and Rest",
+  "category": "notes/recipes",
+  "type": "recipes",
+  "summary": "Full-method homemade pastrami recipe combining exact ingredient quantities (house pickling spice; brine of kosher salt, sugar, pink curing salt, garlic per gallon of water) with the video's complete technique: trim a 14 lb choice-grade brisket (leave 1/4 inch fat on the flat), toast and coarsely grind the spices, boil and fully cool the brine over ~1 gallon of ice (2 gallons liquid total), cure 7 days refrigerated, wash off the salt completely, coat with yellow mustard and a pepper-coriander-garlic rub, smoke 5 hours at 250 °F (121 °C), wrap in foil and cook ~5 more hours at 350 °F (176 °C) until a probe meets no resistance, then rest 2+ hours in a cooler and slice.",
+  "keywords": ["pastrami", "brisket", "pink curing salt", "pickling spice", "brine", "smoking", "probe tender", "mustard binder", "curing salt"],
+  "entities": ["Reuben", "Thousand Island dressing", "sauerkraut", "baby Swiss"],
+  "see_also": [
+    "ba-best-banana-bread.md",
+    "../../captures/observations/homemade-vs-store-bought-pastrami.md"
+  ],
+  "source": "inbox/articles/pastrami-ingredients.txt + inbox/video/EASY Homemade PASTRAMI, Step by Step to Perfect DIY Pastrami! [gEZcfjPIN0Y].md",
+  "processed_at": "2026-10-14",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Homemade pastrami built from a 14 lb (6.4 kg) choice-grade brisket: trim, cure 7 days in a pickling-spice brine, smoke at 250 °F (121 °C), then rest until probe-tender.\n\n**Cook:** ~10 hours (5 hours unwrapped + 5 hours foil-wrapped) plus at least 2 hours resting"
+    },
+    {
+      "section": "Ingredients",
+      "content": "## Ingredients\n\n### Pickling spice\n\n- 15 ml (1 tbsp) coriander seeds\n- 15 ml (1 tbsp) black peppercorns\n- 15 ml (1 tbsp) mustard seeds\n- 15 ml (1 tbsp) red chile flakes\n- 15 ml (1 tbsp) allspice berries\n- 15 ml (1 tbsp) whole cloves\n- 5 ml (1 tsp) ground ginger\n- 5 ml (1 tsp) ground mace\n- 1 small cinnamon stick\n- 2 bay leaves\n\n### Brine\n\n- 3.8 l (1 gallon) water\n- 360 ml (1 1/2 cups) kosher salt\n- 240 ml (1 cup) granulated sugar\n- 20 ml (4 tsp) pink curing salt\n- 10 garlic cloves, crushed\n- Whole pickling spice (all of the blend above)\n- About 3.8 l (1 gallon) ice\n\n### Meat & rub\n\n- 14 lb brisket (6.4 kg), choice grade\n- Rub: black pepper, coriander (coarsely ground), garlic powder\n- Yellow mustard (binder)\n\n*Exact rub quantities are not stated in the video source — do not guess them.*"
+    },
+    {
+      "section": "Steps",
+      "content": "## Steps\n\n1. **Trim the brisket** — Remove almost all surface fat from the point (it already has plenty of intramuscular fat); leave at least 1/4 inch (6 mm) of fat on the flat, which tends to dry out.\n2. **Toast and grind the spices** — Toast black pepper, coriander and mustard seeds in a dry pan, keeping it moving so it doesn't burn; a few minutes, until fragrant. Grind coarse with a mortar and pestle, then mix with the 1 tbsp whole cloves, red chile flakes, allspice berries, 1 tsp ground ginger, 1 tsp ground mace, 2 crushed bay leaves and the crushed cinnamon stick.\n3. **Boil the brine** — In a large pot, combine 3.8 l (1 gallon) water, the whole pickling spice, 360 ml (1 1/2 cups) kosher salt, 240 ml (1 cup) granulated sugar, 20 ml (4 tsp) pink curing salt and 10 crushed garlic cloves; mix and bring to a boil, then remove from heat immediately.\n4. **Cool the brine fully** — Set a cooling rack in a large container and add about 3.8 l (1 gallon) of ice; the ice both chills the brine and provides the second gallon of water (2 gallons / 7.6 l total). The brine must be 100% cool before the meat goes in — you do not want to cook the brisket.\n5. **Brine 7 days** — Submerge the brisket; it will float, so weight it down. Seal the container tightly with cling film and refrigerate 7 days.\n6. **Wash off the salt** — After 7 days, remove the brisket and wash the salt off completely (\"wash it like you mean it\"); the salt has penetrated over 7 days, and skipping this step makes it extremely salty. Dry thoroughly.\n7. **Season with the rub** — Lightly coat with yellow mustard so the rub sticks, then apply the coarse pepper-coriander mixture with garlic powder. The brisket shrinks as it cooks, so season accordingly and don't over-season.\n8. **Smoke at 250 °F (121 °C)** — Smoke 5 hours, until a deep red mahogany color and the desired amount of smoke.\n9. **Wrap and finish cooking** — Wrap in aluminum foil and return to the cooker for about 5 more hours at 350 °F (176 °C); go by feel, not the clock — it's done when a probe inserts with no resistance (probe-tender).\n10. **Rest 2+ hours** — Wrap in a towel and rest in a cooler for at least 2 hours.\n11. **Slice and serve** — Slice and check doneness with a bend test: the meat should flex and pull apart tenderly. Optionally build a Reuben: toast bread in butter until golden brown, then layer Thousand Island dressing, pastrami, sauerkraut and melted baby Swiss."
+    },
+    {
+      "section": "Notes & tips",
+      "content": "## Notes & tips\n\n- Fat trimming: leave at least 1/4 inch (6 mm) on the flat; remove nearly all fat from the point.\n- Do not skip the post-brine wash — without it the pastrami will be extremely salty.\n- The brisket shrinks during cooking; watch the seasoning so the crust doesn't become oversalted.\n- Red mahogany color after 5 hours signals good smoke penetration; that's the cue to wrap.\n- Judge the wrapped phase by probe feel (no resistance), not by time.\n- The video does not state exact rub amounts — only the 1 tbsp of whole cloves and 2 bay leaves in the pickling spice are quantified in the transcript.\n- A small patch of the brisket may not pick up the cure; trim it off if needed."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": "~10 hours (5 hours unwrapped + 5 hours foil-wrapped) plus at least 2 hours resting",
+  "ingredients": [
+    { "group": "Pickling spice", "quantity": "15", "unit": "ml", "original": "1 tbsp", "item": "coriander seeds", "preparation": null },
+    { "group": "Pickling spice", "quantity": "15", "unit": "ml", "original": "1 tbsp", "item": "black peppercorns", "preparation": null },
+    { "group": "Pickling spice", "quantity": "15", "unit": "ml", "original": "1 tbsp", "item": "mustard seeds", "preparation": null },
+    { "group": "Pickling spice", "quantity": "15", "unit": "ml", "original": "1 tbsp", "item": "red chile flakes", "preparation": null },
+    { "group": "Pickling spice", "quantity": "15", "unit": "ml", "original": "1 tbsp", "item": "allspice berries", "preparation": null },
+    { "group": "Pickling spice", "quantity": "15", "unit": "ml", "original": "1 tbsp", "item": "whole cloves", "preparation": null },
+    { "group": "Pickling spice", "quantity": "5", "unit": "ml", "original": "1 tsp", "item": "ground ginger", "preparation": null },
+    { "group": "Pickling spice", "quantity": "5", "unit": "ml", "original": "1 tsp", "item": "ground mace", "preparation": null },
+    { "group": "Pickling spice", "quantity": "1", "unit": null, "original": null, "item": "small cinnamon stick", "preparation": null },
+    { "group": "Pickling spice", "quantity": "2", "unit": null, "original": null, "item": "bay leaves", "preparation": null },
+    { "group": "Brine", "quantity": "3.8", "unit": "l", "original": "1 gallon", "item": "water", "preparation": null },
+    { "group": "Brine", "quantity": "360", "unit": "ml", "original": "1 1/2 cups", "item": "kosher salt", "preparation": null },
+    { "group": "Brine", "quantity": "240", "unit": "ml", "original": "1 cup", "item": "granulated sugar", "preparation": null },
+    { "group": "Brine", "quantity": "20", "unit": "ml", "original": "4 tsp", "item": "pink curing salt", "preparation": null },
+    { "group": "Brine", "quantity": "10", "unit": null, "original": null, "item": "garlic cloves", "preparation": "crushed" },
+    { "group": "Brine", "quantity": null, "unit": null, "original": null, "item": "whole pickling spice (all of the blend above)", "preparation": null },
+    { "group": "Brine", "quantity": "3.8", "unit": "l", "original": "about 1 gallon", "item": "ice", "preparation": null },
+    { "group": "Meat & rub", "quantity": "14", "unit": "lb", "original": null, "item": "brisket, choice grade", "preparation": null },
+    { "group": "Meat & rub", "quantity": null, "unit": null, "original": null, "item": "rub: black pepper, coriander (coarsely ground), garlic powder", "preparation": null },
+    { "group": "Meat & rub", "quantity": null, "unit": null, "original": null, "item": "yellow mustard (binder)", "preparation": null }
+  ],
+  "steps": [
+    { "number": 1, "instruction": "**Trim the brisket** — Remove almost all surface fat from the point (it already has plenty of intramuscular fat); leave at least 1/4 inch (6 mm) of fat on the flat, which tends to dry out." },
+    { "number": 2, "instruction": "**Toast and grind the spices** — Toast black pepper, coriander and mustard seeds in a dry pan, keeping it moving so it doesn't burn; a few minutes, until fragrant. Grind coarse with a mortar and pestle, then mix with the 1 tbsp whole cloves, red chile flakes, allspice berries, 1 tsp ground ginger, 1 tsp ground mace, 2 crushed bay leaves and the crushed cinnamon stick." },
+    { "number": 3, "instruction": "**Boil the brine** — In a large pot, combine 3.8 l (1 gallon) water, the whole pickling spice, 360 ml (1 1/2 cups) kosher salt, 240 ml (1 cup) granulated sugar, 20 ml (4 tsp) pink curing salt and 10 crushed garlic cloves; mix and bring to a boil, then remove from heat immediately." },
+    { "number": 4, "instruction": "**Cool the brine fully** — Set a cooling rack in a large container and add about 3.8 l (1 gallon) of ice; the ice both chills the brine and provides the second gallon of water (2 gallons / 7.6 l total). The brine must be 100% cool before the meat goes in — you do not want to cook the brisket." },
+    { "number": 5, "instruction": "**Brine 7 days** — Submerge the brisket; it will float, so weight it down. Seal the container tightly with cling film and refrigerate 7 days." },
+    { "number": 6, "instruction": "**Wash off the salt** — After 7 days, remove the brisket and wash the salt off completely (\"wash it like you mean it\"); the salt has penetrated over 7 days, and skipping this step makes it extremely salty. Dry thoroughly." },
+    { "number": 7, "instruction": "**Season with the rub** — Lightly coat with yellow mustard so the rub sticks, then apply the coarse pepper-coriander mixture with garlic powder. The brisket shrinks as it cooks, so season accordingly and don't over-season." },
+    { "number": 8, "instruction": "**Smoke at 250 °F (121 °C)** — Smoke 5 hours, until a deep red mahogany color and the desired amount of smoke." },
+    { "number": 9, "instruction": "**Wrap and finish cooking** — Wrap in aluminum foil and return to the cooker for about 5 more hours at 350 °F (176 °C); go by feel, not the clock — it's done when a probe inserts with no resistance (probe-tender)." },
+    { "number": 10, "instruction": "**Rest 2+ hours** — Wrap in a towel and rest in a cooler for at least 2 hours." },
+    { "number": 11, "instruction": "**Slice and serve** — Slice and check doneness with a bend test: the meat should flex and pull apart tenderly. Optionally build a Reuben: toast bread in butter until golden brown, then layer Thousand Island dressing, pastrami, sauerkraut and melted baby Swiss." }
+  ]
+}
