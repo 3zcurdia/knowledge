@@ -1,0 +1,35 @@
+{
+  "id": "captures/numbers/unix-time-rollover-numeric-limits",
+  "path": "captures/numbers/unix-time-rollover-numeric-limits.md",
+  "title": "Key Numeric Limits and Dates for Unix Time Rollover",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "Exact values for the Year 2038 problem include the signed 32-bit maximum of 2,147,483,647 seconds, reached at 03:14:07 UTC on 19 January 2038, and the overflow value −2,147,483,648 read as 20:45:52 UTC on 13 December 1901. The unsigned 32-bit limit reaches 06:28:15 UTC on 7 February 2106. The signed 64-bit overflow occurs about 292 billion years from now, roughly 21 times the universe's age (13.79 billion years). The tm_year cap is 2,147,485,547. Other figures include a 500,000,000-second cookie expiry, one billion seconds ending 13 May 2006, ext4 extension to 2446, XFS to 2486, OpenVMS to 31 July 31086, and Windows reaching year 30,828.",
+  "keywords": ["2147483647", "03:14:07 utc", "2106 rollover", "292 billion years", "tm_year limit", "unsigned 32-bit range", "timestamp limits", "windows 30828"],
+  "entities": ["UTC", "Unix epoch", "time_t", "tm_year", "ext4", "XFS", "OpenVMS", "Windows", "Oracle Access Management", "AOLserver"],
+  "see_also": ["../concepts/year-2038-problem-32-bit-overflow.md", "../observations/year-2038-early-incidents.md"],
+  "source": "inbox/articles/Year_2038_problem.md",
+  "processed_at": "2026-10-20",
+  "chunks": [
+    {
+      "section": "Signed 32-bit Limits",
+      "content": "## Signed 32-bit Limits\n\n- Range of a signed 32-bit integer: −(2^31) to 2^31 − 1.\n- Maximum value: 2,147,483,647 seconds after the epoch, which is 03:14:07 UTC on 19 January 2038.\n- Overflow value −(2^31) wraps to 20:45:52 UTC on 13 December 1901.\n- The tm_year field caps the year at 2,147,485,547 (2,147,483,647 + 1900)."
+    },
+    {
+      "section": "Extended Ranges",
+      "content": "## Extended Ranges\n\n- Unsigned 32-bit time_t: up to 06:28:15 UTC on Sunday, 7 February 2106.\n- Signed 64-bit time_t: wraparound about 292 billion years from now, roughly 21 times the estimated age of the universe (13.79 billion years). The source calculation is 2^63 seconds ÷ 60 ÷ 60 ÷ 24 ÷ 365.2425 days per Gregorian year ≈ 292.277 billion years.\n- Signed 64-bit milliseconds since 1 January 1970: about 292 million years.\n- Signed 64-bit microseconds: minimum range of 292,000 years.\n- ext4 extended timestamps: year 2446. XFS big timestamps: year 2486.\n- OpenVMS native APIs: up to 31 July 31086.\n- Windows FILETIME (100-nanosecond intervals since 1 January 1601, 64-bit signed): overflow in year 30,828."
+    },
+    {
+      "section": "Other Dated Values",
+      "content": "## Other Dated Values\n\n- AOLserver incident: one billion seconds before the 2038 cutoff is 01:27:28 UTC on 13 May 2006.\n- Oracle cookie expiry of 500,000,000 seconds (about 15 years and 312 days) crossed 19 January 2038 from 02:20:48 UTC on 17 March 2022.\n- Windows 10 x86 clock skip target: 12 April 2160.\n- Visual Studio _gmtime32 rollover: 19 January 2038 00:00:00."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}
