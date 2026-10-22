@@ -26,7 +26,9 @@
     "Task.async_stream"
   ],
   "see_also": [
-    "../concepts/bounding-volume-hierarchy-raytracing.md"
+    "../numbers/ray-tracing-performance-benchmarks.md",
+    "../concepts/bounding-volume-hierarchy-raytracing.md",
+    "../patterns/language-paradigm-patterns-ray-tracing.md"
   ],
   "source": "inbox/chats/session-ses_0b6d.md",
   "processed_at": "2026-07-09",

@@ -30,6 +30,6 @@ German researchers have investigated the possibility of manufacturing high-stren
 
 - [Damascus Steel: History and Naming](../../captures/concepts/damascus-steel-history.md)
 - [Damascus Steel Mechanical Properties](../../captures/numbers/damascus-steel-mechanical-properties.md)
-- [Modern Reproduction of Damascus Steel](damascus-steel-modern-reproduction.md)
+- [Modern Reproduction of Damascus Steel](../../notes/damascus-steel-modern-reproduction.md)
 
 > Source: inbox/articles/Damascus_steel.md · processed 2026-07-03

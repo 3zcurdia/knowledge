@@ -61,7 +61,9 @@ naive. The two real levers for a much larger speedup are:
 
 ## See also
 
+- [Ray Tracing Performance Benchmarks — Ruby vs Elixir](../numbers/ray-tracing-performance-benchmarks.md)
 - [Bounding Volume Hierarchy (BVH) for ray tracing](../concepts/bounding-volume-hierarchy-raytracing.md)
+- [Language Paradigm Patterns in Ray Tracing Implementations](../patterns/language-paradigm-patterns-ray-tracing.md)
 - *Ray Tracing in One Weekend* — Peter Shirley (the algorithm being ported)
 
 > Source: inbox/chats/session-ses_0b6d.md · processed 2026-07-09

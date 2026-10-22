@@ -7,7 +7,11 @@
   "summary": "Benchmark data comparing Ruby and Elixir implementations of Peter Shirley's \"Ray Tracing in One Weekend\" on an Apple M4 Pro (8+4 cores, 24 GB RAM). Ruby single-core renders in 1h 47m 37s; Elixir single-core takes 42m 38s (2.5× faster). Elixir parallel per-line achieves 2m 56s (37×), and parallel per-line with BVH acceleration reaches 9.2s (702×). The single-core advantage comes from BEAM's compact struct representation and per-process generational GC. Each Ruby Vector3D carries a full object header, while Elixir structs are compact tagged tuples — this compounds over ~225 billion allocations per render.",
   "keywords": ["ray-tracing", "elixir", "ruby", "benchmark", "m4-pro", "path-tracing", "bvh", "parallelization", "beam-vm"],
   "entities": ["Apple M4 Pro", "Ruby", "Elixir", "Peter Shirley", "Ray Tracing in One Weekend", "BEAM", "Vector3D", "BVHNode", "Task.async_stream"],
-  "see_also": [],
+  "see_also": [
+    "../observations/beam-outperforms-mri-path-tracing.md",
+    "../concepts/bounding-volume-hierarchy-raytracing.md",
+    "../patterns/language-paradigm-patterns-ray-tracing.md"
+  ],
   "source": "inbox/agents/exray-report.md",
   "processed_at": "2026-07-11",
   "chunks": [

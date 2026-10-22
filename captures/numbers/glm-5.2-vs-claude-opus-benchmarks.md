@@ -38,22 +38,19 @@ GLM-5.2 is text-only (no image input). Opus is multimodal — can read screensho
 
 | Model | Intelligence | Cost/Task | Notes |
 |---|---|---|---|
-| Fable 5.1 | 66 | $3.69 | Top-tier frontier model |
 | Claude Opus 4.8 | ~60 | ~$21.92 (build task) | Multimodal, strongest for visual tasks |
 | GLM-5.2 | ~55 | $5.39 (build task) | Text-only, open weights, MIT |
-| GLM-5.3 | 60 | $0.49 | 7.5x cheaper than Fable |
-| GLM-5.3-Flash (high) | 55 | $0.023 | 160x cheaper than Fable, sufficient for 90% of needs |
-| Qwen3.8-27B | 52 | $0.015 | Runnable on existing consumer hardware |
 
-Rule of thumb: 1-point intelligence difference is unlikely noticeable by most, while a 5-point gap is substantial.
-
-## Local Cost Calculation
-
-Cost per task for local models: output tokens per task × decode speed on local hardware × delta energy draw × $0.2049/kWh (US residential average, May 2026) + 15% overhead. Hardware priced at zero — RTX 3090 PCs and 64GB Strix Halo are desirable gaming/work machines anyway.
+The wider intelligence-versus-cost curve (frontier models, GLM-5.3, GLM-5.3-Flash, Qwen3.8-27B), the rule of thumb for reading intelligence scores, and the break-even calculation for local models are covered in [LLM Intelligence vs Cost Tradeoffs](../observations/llm-intelligence-vs-cost-tradeoffs.md).
 
 ## Verdict
 
-Use GLM-5.2 when cost and openness matter for text/logic work. Use Opus when correctness, polish, and visual judgment matter. For most tasks, GLM-5.3-Flash at $0.023/task delivers sufficient intelligence at 160× less cost than frontier models. The immense price gap between closed (Anthropic/OpenAI) and open Chinese models means the model is becoming a commodity — the moat moves to the harness, tools, and deployment around it.
+Use GLM-5.2 when cost and openness matter for text/logic work. Use Opus when correctness, polish, and visual judgment matter. The immense price gap between closed (Anthropic/OpenAI) and open Chinese models means the model is becoming a commodity — the moat moves to the harness, tools, and deployment around it.
+
+## See also
+
+- [LLM Intelligence vs Cost Tradeoffs](../observations/llm-intelligence-vs-cost-tradeoffs.md)
+- [Chinese Open-Weights Models Are Closing the Gap](../observations/chinese-open-weights-llm-industry-trend.md)
 
 > Source: inbox/articles/GLM-5.2 vs Claude Opus.md · processed 2026-07-02
 > Merged: captures/observations/llm-intelligence-vs-cost-tradeoffs.md · 2026-09-09

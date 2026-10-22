@@ -7,7 +7,10 @@
   "summary": "Head-to-head benchmarks of GLM-5.2 (open MIT weights) versus Claude Opus 4.8 on a 3D platformer build task and standard suites (AIME 2026, SWE-bench Pro, NL2Repo, HLE, MCP-Atlas, Tool-Decathlon). GLM-5.2 cost a fifth as much ($5.39 vs ~$21.92) but Opus finished in half the time with a cleaner, multimodal-capable result. Per-1M-token pricing, build task metrics, and benchmark scores are tabulated.",
   "keywords": ["glm-5.2", "claude opus", "benchmarks", "llm", "pricing", "multimodal", "swe-bench"],
   "entities": ["GLM-5.2", "Claude Opus 4.8", "AIME 2026", "SWE-bench Pro", "NL2Repo", "HLE", "MCP-Atlas", "Tool-Decathlon"],
-  "see_also": [],
+  "see_also": [
+    "../observations/llm-intelligence-vs-cost-tradeoffs.md",
+    "../observations/chinese-open-weights-llm-industry-trend.md"
+  ],
   "source": "inbox/articles/GLM-5.2 vs Claude Opus.md",
   "processed_at": "2026-07-02",
   "chunks": [
@@ -32,8 +35,12 @@
       "content": "## Key Difference\n\nGLM-5.2 is text-only (no image input). Opus is multimodal — can read screenshots for self-verification. This mattered for visual tasks where GLM-5.2's self-check missed missing textures and debug overlays.\n"
     },
     {
+      "section": "Broader Cost Landscape",
+      "content": "## Broader Cost Landscape\n\n| Model | Intelligence | Cost/Task | Notes |\n|---|---|---|---|\n| Claude Opus 4.8 | ~60 | ~$21.92 (build task) | Multimodal, strongest for visual tasks |\n| GLM-5.2 | ~55 | $5.39 (build task) | Text-only, open weights, MIT |\n\nThe wider intelligence-versus-cost curve (frontier models, GLM-5.3, GLM-5.3-Flash, Qwen3.8-27B), the rule of thumb for reading intelligence scores, and the break-even calculation for local models are covered in [LLM Intelligence vs Cost Tradeoffs](../observations/llm-intelligence-vs-cost-tradeoffs.md).\n"
+    },
+    {
       "section": "Verdict",
-      "content": "## Verdict\n\nUse GLM-5.2 when cost and openness matter for text/logic work. Use Opus when correctness, polish, and visual judgment matter. GLM-5.2 earns a permanent spot as the cheapest frontier-adjacent model with weights no vendor can take away.\n"
+      "content": "## Verdict\n\nUse GLM-5.2 when cost and openness matter for text/logic work. Use Opus when correctness, polish, and visual judgment matter. The immense price gap between closed (Anthropic/OpenAI) and open Chinese models means the model is becoming a commodity — the moat moves to the harness, tools, and deployment around it.\n"
     }
   ]
 }

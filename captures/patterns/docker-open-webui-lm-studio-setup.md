@@ -92,4 +92,11 @@ extra_hosts:
 | socat dies on reboot | systemd service |
 | Ollama errors in UI | Set `ENABLE_OLLAMA_API=false` |
 
+## See also
+
+- [Top Use Cases for Local LLMs](../../notes/top-use-cases-for-local-llms.md)
+- [Qwen 3.6 Model Hardware Fit Guide](../../notes/qwen-3-6-model-hardware-fit-guide.md)
+- [Local AI as Default: On-Device Processing Over Cloud APIs](../observations/local-ai-default-architecture.md)
+- [Local LLM Inference Depends More on Framework Than Raw RAM](../observations/local-llm-inference-framework-over-ram.md)
+
 > Source: inbox/chats/docker-open-webui-setup.md · processed 2026-07-09

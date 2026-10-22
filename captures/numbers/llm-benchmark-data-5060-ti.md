@@ -83,5 +83,12 @@ Complete benchmark results for 10 LLM models on an RTX 5060 Ti 16GB. All models 
 | Qwen3.5 0.8B Q8 0 | 774.23 MiB | pp8192 | 15622.33 |
 | Qwen3.5 0.8B Q8 0 | 774.23 MiB | tg256 | 302.05 |
 
+## See also
+
+- [Bonsai 27B Whitepaper](../../notes/papers/bonsai-27b-whitepaper.md)
+- [Top Use Cases for Local LLMs](../../notes/top-use-cases-for-local-llms.md)
+- [Qwen 3.6 Model Hardware Fit Guide](../../notes/qwen-3-6-model-hardware-fit-guide.md)
+- [LLM Benchmarks — 5060 Ti 16GB (Vulcan) source prompts](../patterns/llm-benchmark-prompts-text-processing.md)
+
 > Source: inbox/agents/llm-benchmarks-5060-ti-16gb-vulcan.csv · processed 2026-07-30
 > Merged: captures/numbers/llm-benchmarks-5060-ti-vulcan.md · 2026-09-09

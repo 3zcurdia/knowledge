@@ -1,0 +1,66 @@
+{
+  "id": "captures/observations/beam-micro-optimization-locality",
+  "path": "captures/observations/beam-micro-optimization-locality.md",
+  "title": "Micro-Optimization Locality: Amdahl's Law in Practice on the BEAM",
+  "category": "captures/observations",
+  "type": "observations",
+  "summary": "Why local speedups rarely show up in production: the BEAM is often smarter than you'd expect, and the only way to know is to measure. The spring releases, with the faster to_lower/1 and the first SWAR work, made those functions up to 30% faster in isolation, yet end-to-end they were flat, because those functions simply were not where a nameserver spends its time: a 2x speedup on 1% of the work is still 0.5%. The methodology that produces trustworthy answers is a parity harness proving every change byte-for-byte identical to the old code down to the errors raised on malformed input (26,434 cases for name decoding alone), keeping the experiments that lost together with their numbers, and an end-to-end production-shaped test rather than micro-benchmarks. Benchmarks ran with Benchee on an Apple M4 Pro and an AMD Ryzen 9 9950X3D, on OTP 29 with the JIT, measuring time, memory and reductions.",
+  "keywords": [
+    "amdahl",
+    "benchmarking",
+    "performance-locality",
+    "end-to-end-benchmarking",
+    "micro-benchmarks",
+    "parity-harness",
+    "to_lower",
+    "swar",
+    "benchee",
+    "reductions"
+  ],
+  "entities": [
+    "Benchee",
+    "Apple M4 Pro",
+    "AMD Ryzen 9 9950X3D",
+    "OTP 29",
+    "JIT",
+    "dns_erlang",
+    "erldns",
+    "to_lower/1",
+    "SWAR",
+    "DNSimple",
+    "DNSSEC",
+    "ALIAS resolution"
+  ],
+  "see_also": [
+    "../patterns/beam-binary-hot-path-optimization.md",
+    "../patterns/beam-swar-string-scanning.md"
+  ],
+  "source": "inbox/articles/Making dns_erlang Fast Binary Tricks for the BEAM.md",
+  "processed_at": "2026-10-21",
+  "chunks": [
+    {
+      "section": "",
+      "content": "# Micro-Optimization Locality: Amdahl's Law in Practice on the BEAM\n\nA function can get dramatically faster in isolation and change nothing at all in production. The `dns_erlang` team saw exactly this: the spring releases made `to_lower/1` and the first SWAR work up to 30% faster in isolation, yet end-to-end they were flat — because those functions simply were not where a nameserver spends its time. **A 2x speedup on 1% of the work is still 0.5%.** The BEAM is often smarter than you'd expect, and the only way to know is to measure.\n"
+    },
+    {
+      "section": "Benchmarks: Benchee, two machines, OTP 29 with the JIT",
+      "content": "## Benchmarks: Benchee, two machines, OTP 29 with the JIT\n\nEvery number below comes from [Benchee](https://github.com/bencheeorg/benchee) on two very different machines (an Apple M4 Pro and an AMD Ryzen 9 9950X3D), on OTP 29 with the JIT, measuring time, memory and reductions.\n"
+    },
+    {
+      "section": "The BEAM is often smarter than you'd expect",
+      "content": "## The BEAM is often smarter than you'd expect\n\nSome of our favourite ideas lost, and the numbers were very clear about it.\n\nThe lesson: the BEAM is often smarter than you'd expect, and the only way to know is to measure.\n"
+    },
+    {
+      "section": "Amdahl's law in practice: a 2x speedup on 1% of the work is still 0.5%",
+      "content": "## Amdahl's law in practice: a 2x speedup on 1% of the work is still 0.5%\n\nJust as interesting is what *didn't* move: the spring releases, with the faster `to_lower/1` and the first SWAR work, made those functions up to 30% faster in isolation, but end-to-end they're flat. Those functions simply weren't where a nameserver spends its time. A 2x speedup on 1% of the work is still 0.5%.\n"
+    },
+    {
+      "section": "Parity harness: byte-for-byte identical behaviour",
+      "content": "## Parity harness: byte-for-byte identical behaviour\n\nEvery change also went through a *parity harness* proving the new code byte-for-byte identical to the old, down to the errors raised on malformed input: 26,434 cases for name decoding alone. And we kept the experiments that lost, with their numbers; we'll get to them.\n"
+    },
+    {
+      "section": "Micro-benchmarks are nice, but what we care about is the nameserver",
+      "content": "## Micro-benchmarks are nice, but what we care about is the nameserver\n\nMicro-benchmarks are nice, but what we care about is the nameserver. So we built a test that looks like production:\n\n- 20,000 synthetic zones, 10% of them DNSSEC-signed, with the record mix our customers actually use.\n- About 19 million queries matching the shape of our real traffic over a week: the same mix of query types and response codes, the same name lengths and label counts, the same skew towards popular names, and the same share of queries asking for DNSSEC (83%).\n- `erldns` built three times, changing nothing but the `dns_erlang` version, pinned to dedicated cores on the same OTP version we run in production, five interleaved rounds each.\n"
+    }
+  ]
+}

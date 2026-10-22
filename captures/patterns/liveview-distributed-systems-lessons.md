@@ -33,5 +33,7 @@ end
 ## See also
 
 - [Service Desk Application Schema and Architecture Design](../../projects/service-desk/schema-and-architecture-design.md)
+- [Avoiding Double Mount in Phoenix LiveView](avoiding-double-mount-phoenix-liveview.md)
+- [Custom HTML Elements in LLM Chat Responses](custom-html-elements-llm-chat.md)
 
 > Source: inbox/articles/Love LiveView and think distributed systems.md · processed 2026-07-02

@@ -1,0 +1,58 @@
+{
+  "id": "captures/patterns/event-sourcing-for-agentic-workflows",
+  "path": "captures/patterns/event-sourcing-for-agentic-workflows.md",
+  "title": "Event Sourcing for Agentic Workflows",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Agentic workflow state becomes recoverable by recording progress as an append-only log (the goal first, then decision and result entries) and making the in-memory state a fold over it. Three rules carry the design: apply_step/2 updates state only and never starts work, calls a model or sends a message, so replaying the log cannot re-run side effects; record/2 persists before it applies, so the log is always ahead of memory and memory stays rebuildable; and step_id, a workflow-assigned number, replaces node-local make_ref/0. A Registry with unique keys via {:via, Registry, ...} turns single-writer into a guarantee ({:error, {:already_started, pid}}), and {:continue, :rebuild} makes OTP rebuild state in handle_continue/2 before any other message is processed.",
+  "keywords": [
+    "event-sourcing",
+    "agentic-workflow",
+    "durability",
+    "append-only-log",
+    "apply_step",
+    "persist-then-apply",
+    "step_id",
+    "make_ref",
+    "rebuild-state",
+    "handle_continue"
+  ],
+  "entities": [
+    "BlogOtp.Log",
+    "BlogOtp.Workflow",
+    "BlogOtp.WorkflowRegistry",
+    "BlogOtp.WorkflowSupervisor",
+    "BlogOtp.Model.Scripted",
+    "Registry",
+    "DynamicSupervisor",
+    "GenServer",
+    "ETS",
+    "apply_step/2",
+    "record/2",
+    "make_ref/0",
+    "step_id",
+    "handle_continue/2",
+    "next_step/1"
+  ],
+  "see_also": [
+    "genserver-owns-agentic-workflow-state.md",
+    "../concepts/restart-is-not-retry.md",
+    "../observations/agentic-systems-database-state.md"
+  ],
+  "source": "inbox/articles/Exploring OTP Patterns for Agentic Workflows.md",
+  "processed_at": "2026-10-21",
+  "chunks": [
+    {
+      "section": "",
+      "content": "# Event Sourcing for Agentic Workflows\n\nLet it crash only works because a supervisor can start a new process in a known good state — but for a workflow that known good state means starting from the beginning, repeating every model decision and every tool call. The fix is to treat the workflow's progress as an append-only log and make the in-memory state a fold over it. Three rules make this work: `apply_step/2` stays free of side effects, `record/2` persists before it applies, and the identifier is a workflow-assigned `step_id` rather than a node-local `make_ref/0`.\n"
+    },
+    {
+      "section": "If this process dies, what happens to the run?",
+      "content": "## If this process dies, what happens to the run?\n\n*“Let it crash”* works because a supervisor can start a new process in a known good state. But for a GenServer, that known good state is whatever init/1 builds. For a workflow, that means starting from the beginning, which is exactly what we don’t want.\n\nThink about our endpoint. By the time the process crashes, the model may have already made several decisions: it read the router, read the controller, ran the tests, maybe even edited the controller. Starting over means repeating all of that, paying for it again in time and in model calls. And some of that work, like editing a file, may not be something we want to do twice.\n\nThe process can own the workflow state while it’s running, but that doesn’t mean process memory has to be the only place where that state lives.\n\nWe need enough durable information to reconstruct the workflow.\n\nOne way to do that is to record its progress as an append-only log. The goal is the first entry. Each tool call the model decides on becomes another, as does each tool result. As the workflow progresses, we only ever add these entries to the end.\n\nFor our endpoint, the log might look like this when the process crashes:\n\n```\n{:goal, \"The GET /users/:id endpoint is returning a 500 error...\"}\n{:decision, 1, {:read_file, %{path: \"lib/my_app_web/router.ex\"}}}\n{:result, 1, ~s(get \"/users/:id\", UserController, :show)}\n{:decision, 2, {:read_file, %{path: \"lib/my_app_web/controllers/user_controller.ex\"}}}\n{:decision, 3, {:run_tests, %{path: \"test/my_app_web/controllers/user_controller_test.exs\"}}}\n{:result, 2, ~s[def show(conn, %{\"id\" => id}) do ... json(conn, user) ...]}\n```\n\nEverything the process knew is there: the goal, every decision, every result that came back. Even the request that’s still waiting for its answer.\n\nIf that log becomes the source from which we reconstruct the workflow state, we’re using the same core idea as **event sourcing**.\n"
+    },
+    {
+      "section": "Rebuilding the state from the log",
+      "content": "## Rebuilding the state from the log\n\nLet’s put that idea into code. Three things change: the workflow gets an id that survives the process, each tool call gets a step id the workflow assigns, and every state change goes through a single function.\n\n```\ndefstruct [:id, :goal, :model, history: [], pending: %{}, steps: 0, max_steps: 10]\n\n# Only updates the state: no work, no model calls, no messages\ndefp apply_step({:goal, goal}, state), do: %{state | goal: goal}\n\ndefp apply_step({:decision, step_id, call}, state) do\n  %{state | pending: Map.put(state.pending, step_id, call), steps: state.steps + 1}\nend\n\ndefp apply_step({:result, step_id, result}, state) do\n  {call, pending} = Map.pop(state.pending, step_id)\n  %{state | pending: pending, history: [{call, result} | state.history]}\nend\n```\n\nEach clause handles one kind of entry from the log. `apply_step/2` never starts work, calls a model, or sends a message. That restriction will matter in a moment.\n\nThe owner is still the only one that writes:\n\n```\n@impl true\ndef handle_info({:tool_result, step_id, result}, state)\n    when is_map_key(state.pending, step_id) do\n  state = record({:result, step_id, result}, state)\n  next_step(state)\nend\n\n# Each call becomes a decision in the log, with a step id the workflow assigns\ndefp request(calls, state) do\n  Enum.reduce(calls, state, fn call, state ->\n    record({:decision, state.steps + 1, call}, state)\n  end)\nend\n\n# Persist first, then apply\ndefp record(entry, state) do\n  :ok = BlogOtp.Log.append(state.id, entry)\n  apply_step(entry, state)\nend\n```\n\nNotice two things.\n\nThe first is `step_id`, which replaces the reference from the previous version. A reference created with `make_ref/0` only identifies something within the running node, and the process waiting for it may be gone after a crash. A step id is just a number the workflow assigns when it records the decision, and it means the same thing to any process that reads the log.\n\nThe second is the order inside `record/2`. We write to the log first, then apply the entry to the in-memory state. If the process dies between those two lines, the log is ahead of memory, and memory is the part we know how to rebuild. The other way around, the process could act on a step that no restart would ever see. And if the append fails, the process crashes before acting on anything.\n\nThe same rule applies to decisions: they’re recorded before anyone starts the work. In this chapter nobody executes the tools yet, but when someone does, the decision will already be in the log.\n\nThis puts a durable write on the owner’s critical path. That’s intentional: we don’t want the workflow to act on a transition it couldn’t recover after a crash.\n\n*In this chapter,* *BlogOtp.Log* *keeps its entries in an ETS table owned by its own process. It survives a workflow crash, but not a node restart. A real implementation would write to disk or a database; the contract, append first and read in order, stays the same.*\n\nStarting a run now means creating its log first:\n\n```\ndef start(goal, opts \\\\ []) do\n  id = new_id()\n  :ok = BlogOtp.Log.append(id, {:goal, goal})\n\n  DynamicSupervisor.start_child(\n    BlogOtp.WorkflowSupervisor,\n    {__MODULE__, Keyword.put(opts, :id, id)}\n  )\nend\n\ndef start_link(opts) do\n  GenServer.start_link(__MODULE__, opts, name: via(Keyword.fetch!(opts, :id)))\nend\n\ndefp via(id), do: {:via, Registry, {BlogOtp.WorkflowRegistry, id}}\n```\n\nThe goal is written before the owner exists; from then on, the owner is the only writer. Registering the process under the workflow id in a `Registry` with unique keys turns “only one writer” from an intention into a guarantee: a key points to at most one process, and a second attempt to start an owner for the same run would get `{:error, {:already_started, pid}}`.\n\nLook at what the process is started with: the id, not the goal. When a supervisor restarts a child, it calls the same start function, with the same arguments, from the child’s specification. The id is all a new process needs to find out everything else.\n\n```\n@impl true\ndef init(opts) do\n  state = %__MODULE__{\n    id: Keyword.fetch!(opts, :id),\n    model: Keyword.get(opts, :model, BlogOtp.Model.Scripted),\n    max_steps: Keyword.get(opts, :max_steps, 10)\n  }\n\n  {:ok, state, {:continue, :rebuild}}\nend\n\n@impl true\ndef handle_continue(:rebuild, state) do\n  state =\n    state.id\n    |> BlogOtp.Log.read()\n    |> Enum.reduce(state, &apply_step/2)\n\n  next_step(state)\nend\n```\n\nWhen `init/1` returns `{:continue, :rebuild}`, OTP runs `handle_continue/2` before the process receives any other message, so no result can be handled while the state is still being rebuilt.\n\nThe same `apply_step/2` that updates the workflow while it runs also rebuilds it after a crash. Now we can see why it had to be free of side effects: replaying the log must not run the tests again. And a new run isn’t a special case either: it’s a log with a single entry, the goal. The fold produces a state with nothing pending, and `next_step/1` asks the model for its first decision.\n\nThe state is a fold over the log.\n\nThis changes what a restart means. The new process doesn’t need to remember what the old one knew. It only needs to rebuild enough of the workflow to continue from a known point. But careful!\n"
+    }
+  ]
+}

@@ -148,4 +148,9 @@ Under resume, sort work into three homes:
 - **`on_connect/1`** — connection-only side effects (subscriptions, timers, presence)
 - **Cookie/session on dead render** — anything previously from `get_connect_params/1`
 
+## See also
+
+- [Distributed Systems Lessons from LiveView: State Ownership and Eventual Consistency](liveview-distributed-systems-lessons.md)
+- [Custom HTML Elements in LLM Chat Responses](custom-html-elements-llm-chat.md)
+
 > Source: inbox/articles/Stop mounting your LiveView twice.md · processed 2026-07-02

@@ -7,7 +7,10 @@
   "summary": "Analysis of LLM intelligence vs cost tradeoffs using ArtificialAnalysis data. The article critiques AA's logarithmic cost axis and datacenter pricing for local models, then replots with linear costs and OpenRouter pricing. Key findings: immense cost gap between frontier Western models and cheaper Chinese alternatives; extra intelligence per dollar obeys diminishing returns; GLM-5.3-Flash at $0.023/task is 160x cheaper than Fable 5.1 and sufficient for 90% of needs. Hardware requirements table for local models from 128GB to 2TB RAM included.",
   "keywords": ["llm", "intelligence index", "cost per task", "pareto frontier", "openrouter", "local models", "artificialanalysis", "diminishing returns"],
   "entities": ["ArtificialAnalysis", "OpenRouter", "GLM-5.3", "GLM-5.3-Flash", "Fable 5.1", "Qwen3.8-Flash", "Kimi K3", "DeepSeek V4 Flash", "Ornith-1.5-35B-A3B"],
-  "see_also": [],
+  "see_also": [
+    "../numbers/glm-5.2-vs-claude-opus-benchmarks.md",
+    "chinese-open-weights-llm-industry-trend.md"
+  ],
   "source": "inbox/articles/intelligence-vs-cost.md",
   "processed_at": "2026-09-09",
   "chunks": [

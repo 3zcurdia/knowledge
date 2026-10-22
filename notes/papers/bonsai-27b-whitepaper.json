@@ -7,7 +7,11 @@
   "summary": "Bonsai 27B is a binary/ternary quantized variant of Qwen3.6-27B that enables 27B-class reasoning on laptops and phones. Ternary (1.71 bpw, ~5.9 GB) retains 95% of FP16 intelligence; 1-bit (1.125 bpw, ~3.9 GB) retains 90%. Both outperform conventional low-bit methods (IQ2_XXS, Q4_K_XL) at smaller footprints. Custom low-bit kernels run on Apple MLX and CUDA. 262K-token context via 4-bit KV cache. DSpark speculative decoding adds ~1.35x speedup. First 27B model to run interactively on a phone (~11 tok/s on iPhone 17 Pro Max).",
   "keywords": ["bonsai-27b", "weight-quantization", "edge-inference", "ternary-weights", "binary-weights", "qwen3.6-27b", "prismml", "dsark", "speculative-decoding", "intelligence-density"],
   "entities": ["Bonsai 27B", "Qwen3.6-27B", "PrismML", "DSpark", "iPhone 17 Pro Max", "Apple MLX", "CUDA", "BitNet", "Gemma-4-31B", "IQ2_XXS", "Q4_K_XL", "EvalScope", "vLLM", "llama.cpp"],
-  "see_also": [],
+  "see_also": [
+    "../../captures/patterns/bitnet-1bit-llm-architecture.md",
+    "../../captures/patterns/quantization-fundamentals-llms.md",
+    "../../captures/numbers/llm-benchmark-data-5060-ti.md"
+  ],
   "source": "inbox/papers/bonsai-27b-whitepaper.md",
   "processed_at": "2026-07-15",
   "chunks": [

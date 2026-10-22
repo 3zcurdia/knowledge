@@ -8,8 +8,8 @@
   "keywords": ["damascus-steel", "mechanical-properties", "yield-strength", "tensile-strength", "hardness", "folding", "impact-toughness", "lamination"],
   "entities": ["Verhoeven", "Peterson", "Baker", "1075 steel", "15N20 steel", "Rockwell"],
   "see_also": [
-    "../concepts/damascus-steel-history.md",
-    "damascus-steel-metallurgy.md"
+    "../../captures/concepts/damascus-steel-history.md",
+    "../observations/damascus-steel-metallurgy.md"
   ],
   "source": "inbox/articles/Damascus_steel.md",
   "processed_at": "2026-07-03",

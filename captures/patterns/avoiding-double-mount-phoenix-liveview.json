@@ -7,7 +7,10 @@
   "summary": "Every Phoenix LiveView mounts twice on first page load: once for the static HTTP dead render and again when the WebSocket connects, so mount/3, handle_params/3, and render/1 all run twice. The connected?(socket) guard only trades the query for an empty first paint, breaking SEO, link previews, and no-JS fallback. The Phoenix team's adoptable LiveViews proposal (issue #3551) would reuse the dead-render process across socket connect. An interim :resume fork of phoenix_live_view parks the socket in a holder process, signs a token, and splices state on connect so mount/3 and on_mount hooks do not re-run. Migration patterns cover data loads, connection-only side effects via on_connect/1, connect-params replacement with cookies, and real-time counts.",
   "keywords": ["phoenix", "liveview", "double-mount", "dead-render", "websocket", "connected-socket", "on-connect", "resume"],
   "entities": ["Phoenix", "LiveView", "WebSocket", "GenServer", "DynamicSupervisor", "phoenix_live_view"],
-  "see_also": [],
+  "see_also": [
+    "liveview-distributed-systems-lessons.md",
+    "custom-html-elements-llm-chat.md"
+  ],
   "source": "inbox/articles/Stop mounting your LiveView twice.md",
   "processed_at": "2026-07-02",
   "chunks": [

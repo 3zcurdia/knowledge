@@ -7,7 +7,11 @@
   "summary": "Two distributed systems lessons from building a LiveView web chat. Lesson one — state ownership: web applications are distributed systems, so frontend validation aids UX but cannot enforce business rules because users can bypass it via DevTools. The knowledge of valid data belongs on the backend; LiveView's bi-directional protocol makes the backend validate and reply with %{accepted: true/false}, and the frontend acts on the reply (e.g. caching to localStorage). Lesson two — eventual consistency: distinguish empty (not yet loaded) from none (definitively absent). On page load show a loading indicator until data arrives from the cache rather than displaying a default that flickers when the cached value returns. Sequence: empty state, loading indicator, receive cached value or default, ready for interaction.",
   "keywords": ["liveview", "distributed-systems", "state-ownership", "eventual-consistency", "frontend-validation", "phoenix"],
   "entities": ["LiveView", "DevTools", "localStorage"],
-  "see_also": ["../../projects/service-desk/schema-and-architecture-design.md"],
+  "see_also": [
+    "../../projects/service-desk/schema-and-architecture-design.md",
+    "avoiding-double-mount-phoenix-liveview.md",
+    "custom-html-elements-llm-chat.md"
+  ],
   "source": "inbox/articles/Love LiveView and think distributed systems.md",
   "processed_at": "2026-07-02",
   "chunks": [

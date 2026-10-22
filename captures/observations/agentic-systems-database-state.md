@@ -21,5 +21,8 @@ The instruction sent to the LLM is a functional representation of database state
 
 - [Agentic Workflows with Oban Pro: Cascades, Human-in-the-Loop, Grafting](../patterns/oban-pro-agentic-workflows.md)
 - [ReqLLM: Composable LLM Interactions via Req Plugins](../patterns/reqllm-llm-plugins-elixir.md)
+- [GenServer as the Owner of Agentic Workflow State](../patterns/genserver-owns-agentic-workflow-state.md)
+- [Event Sourcing for Agentic Workflows](../patterns/event-sourcing-for-agentic-workflows.md)
+- [Restart Is Not Retry](../concepts/restart-is-not-retry.md)
 
 > Source: inbox/articles/Bringing agents back down to earth.md · processed 2026-07-02

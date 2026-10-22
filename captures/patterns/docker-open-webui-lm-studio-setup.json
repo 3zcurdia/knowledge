@@ -7,7 +7,12 @@
   "summary": "Troubleshooting guide for connecting Open-WebUI (Docker) to LM Studio on a remote machine. Three issues were identified: port mismatch between socat listener and configured URL, incorrect API type (Ollama vs OpenAI-compatible), and socat not persisting across reboots. The fix uses OPENAI_API_BASE_URL environment variable, a systemd service for socat persistence, and correct port alignment. Covers docker-compose configuration, socat proxy setup, and verification steps.",
   "keywords": ["open-webui", "lm studio", "docker", "socat", "openai api", "docker-compose", "systemd", "port forwarding"],
   "entities": ["Open-WebUI", "LM Studio", "CMK3888", "Orchemy 3.8", "Ollama", "Debian", "OMV7", "socat"],
-  "see_also": [],
+  "see_also": [
+    "../../notes/top-use-cases-for-local-llms.md",
+    "../../notes/qwen-3-6-model-hardware-fit-guide.md",
+    "../observations/local-ai-default-architecture.md",
+    "../observations/local-llm-inference-framework-over-ram.md"
+  ],
   "source": "inbox/chats/docker-open-webui-setup.md",
   "processed_at": "2026-07-09",
   "chunks": [

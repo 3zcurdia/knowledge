@@ -58,4 +58,9 @@ Beyond 64GB RAM, zero hardware cost stops being defensible — almost nobody nee
 
 Immense cost difference between state-of-the-art Anthropic/OpenAI models and much cheaper Chinese models: former are too expensive even for large corporations, latter as cheap as a mobile subscription. Extra intelligence per dollar obeys diminishing returns — most users won't notice the difference between intelligence 60 and 66.
 
+## See also
+
+- [GLM-5.2 vs Claude Opus 4.8: Benchmark Comparison](../numbers/glm-5.2-vs-claude-opus-benchmarks.md)
+- [Chinese Open-Weights Models Are Closing the Gap](chinese-open-weights-llm-industry-trend.md)
+
 > Source: inbox/articles/intelligence-vs-cost.md · processed 2026-09-09

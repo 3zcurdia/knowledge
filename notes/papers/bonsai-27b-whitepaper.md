@@ -98,5 +98,6 @@ The Bonsai methodology is architecture-agnostic and not tied to a single model f
 
 - [BitNet 1-bit LLM Architecture and Quantization-Aware Training](../../captures/patterns/bitnet-1bit-llm-architecture.md)
 - [Quantization Fundamentals for LLMs](../../captures/patterns/quantization-fundamentals-llms.md)
+- [LLM Benchmarks — 5060 Ti 16GB (Vulcan)](../../captures/numbers/llm-benchmark-data-5060-ti.md)
 
 > Source: inbox/papers/bonsai-27b-whitepaper.md · processed 2026-07-15

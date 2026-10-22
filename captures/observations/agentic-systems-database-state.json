@@ -9,7 +9,10 @@
   "entities": ["Phoenix", "Elixir", "BEAM", "Postgres", "Phoenix.Sync", "TanStack DB", "Anthropic API", "DynamicSupervisor", "Burn"],
   "see_also": [
     "../patterns/oban-pro-agentic-workflows.md",
-    "../patterns/reqllm-llm-plugins-elixir.md"
+    "../patterns/reqllm-llm-plugins-elixir.md",
+    "../patterns/genserver-owns-agentic-workflow-state.md",
+    "../patterns/event-sourcing-for-agentic-workflows.md",
+    "../concepts/restart-is-not-retry.md"
   ],
   "source": "inbox/articles/Bringing agents back down to earth.md",
   "processed_at": "2026-07-02",

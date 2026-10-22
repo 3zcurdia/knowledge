@@ -7,7 +7,9 @@
   "summary": "Exact values for the Year 2038 problem include the signed 32-bit maximum of 2,147,483,647 seconds, reached at 03:14:07 UTC on 19 January 2038, and the overflow value −2,147,483,648 read as 20:45:52 UTC on 13 December 1901. The unsigned 32-bit limit reaches 06:28:15 UTC on 7 February 2106. The signed 64-bit overflow occurs about 292 billion years from now, roughly 21 times the universe's age (13.79 billion years). The tm_year cap is 2,147,485,547. Other figures include a 500,000,000-second cookie expiry, one billion seconds ending 13 May 2006, ext4 extension to 2446, XFS to 2486, OpenVMS to 31 July 31086, and Windows reaching year 30,828.",
   "keywords": ["2147483647", "03:14:07 utc", "2106 rollover", "292 billion years", "tm_year limit", "unsigned 32-bit range", "timestamp limits", "windows 30828"],
   "entities": ["UTC", "Unix epoch", "time_t", "tm_year", "ext4", "XFS", "OpenVMS", "Windows", "Oracle Access Management", "AOLserver"],
-  "see_also": ["../concepts/year-2038-problem-32-bit-overflow.md", "../observations/year-2038-early-incidents.md"],
+  "see_also": [
+    "../concepts/year-2038-problem-32-bit-overflow.md"
+  ],
   "source": "inbox/articles/Year_2038_problem.md",
   "processed_at": "2026-10-20",
   "chunks": [

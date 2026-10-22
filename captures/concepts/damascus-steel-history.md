@@ -39,8 +39,8 @@ Production of these patterned swords gradually declined, ceasing by around 1900,
 
 ## See also
 
-- [Damascus Steel Mechanical Properties](damascus-steel-mechanical-properties.md)
-- [Damascus Steel Metallurgy and Modern Research](damascus-steel-metallurgy.md)
-- [Modern Reproduction of Damascus Steel](damascus-steel-modern-reproduction.md)
+- [Damascus Steel Mechanical Properties](../numbers/damascus-steel-mechanical-properties.md)
+- [Damascus Steel Metallurgy and Modern Research](../observations/damascus-steel-metallurgy.md)
+- [Modern Reproduction of Damascus Steel](../../notes/damascus-steel-modern-reproduction.md)
 
 > Source: inbox/articles/Damascus_steel.md · processed 2026-07-03

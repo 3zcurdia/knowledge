@@ -27,6 +27,5 @@
 ## See also
 
 - [Year 2038 Problem Root Cause: 32-bit Unix Time Overflow](../concepts/year-2038-problem-32-bit-overflow.md)
-- [Early Real-World Year 2038 Incidents (2006–2022)](../observations/year-2038-early-incidents.md)
 
 > Source: inbox/articles/Year_2038_problem.md · processed 2026-10-20

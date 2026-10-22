@@ -1,0 +1,43 @@
+{
+  "id": "captures/concepts/restart-is-not-retry",
+  "path": "captures/concepts/restart-is-not-retry.md",
+  "title": "Restart Is Not Retry",
+  "category": "captures/concepts",
+  "type": "concepts",
+  "summary": "Rebuilding a workflow's state and re-executing the work that state describes are two separate problems. After a crash, folding the log leaves pending holding exactly one entry, step 3 'Run the tests', with no result, so next_step/1 waits for a result that may never arrive. The log records that a decision was made but not whether the work actually ran: the request may never have been sent, the tests may still have been running, or the result may have been lost before it could be recorded. Re-running an external action is therefore an idempotency question, not a recovery question: a duplicate pull request, a database row that must never exist twice, or a customer charge. Restarting restores the ability to continue the workflow; it says nothing about whether to re-execute the action.",
+  "keywords": [
+    "restart-vs-retry",
+    "idempotency",
+    "failure-recovery",
+    "unknown-outcome",
+    "event-sourcing",
+    "agentic-workflow"
+  ],
+  "entities": [
+    "next_step/1",
+    "pending",
+    "step 3",
+    "Run the tests",
+    "Open a pull request",
+    "GenServer",
+    "BlogOtp.Workflow",
+    "apply_step/2"
+  ],
+  "see_also": [
+    "../patterns/event-sourcing-for-agentic-workflows.md",
+    "../patterns/genserver-owns-agentic-workflow-state.md",
+    "../observations/agentic-systems-database-state.md"
+  ],
+  "source": "inbox/articles/Exploring OTP Patterns for Agentic Workflows.md",
+  "processed_at": "2026-10-21",
+  "chunks": [
+    {
+      "section": "",
+      "content": "# Restart Is Not Retry\n\nRebuilding a workflow's state and re-executing the work that state describes are two separate problems. A restart gives the process back the ability to continue the workflow; it says nothing about whether an external action should run again. The log records that a *decision* was made, never that the *effect* of that decision completed — and for actions like opening a pull request, inserting a database row that must never exist twice, or charging a customer, replaying them is not a safe default.\n"
+    },
+    {
+      "section": "Rebuilding isn’t resuming",
+      "content": "## Rebuilding isn’t resuming\n\nFold the log from our crash, and `pending` holds exactly one entry: step 3.\n\n`Run the tests`\n\nThere’s no result for it. So `next_step/1` sees something pending and waits, for a result that may never come.\n\nWe know the decision was recorded. But did the work actually run? Maybe the request was never sent. Maybe the tests were still running when the process crashed. Maybe they finished, and the result was lost before it could be recorded.\n\nFor a test suite, running it again is harmless. But imagine our agent’s last step had been:\n\n`Open a pull request`\n\nNow repeating it means a duplicate pull request. And some actions are even more delicate than that, like inserting a row into a database that must never exist twice, or charging a customer. Those are the ones where we have to be really careful.\n\nRestarting the process gives us back the ability to continue the workflow. It doesn’t tell us whether to run an external action again.\n\n**Restart and retry are two different problems.**\n\nThat leaves two questions open: where the work actually happens while the owner stays available, and what to do with a step whose outcome we don’t know. The first question is where the next chapter picks up. The second one will have to wait until we talk about failure recovery.\n"
+    }
+  ]
+}

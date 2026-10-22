@@ -8,9 +8,9 @@
   "keywords": ["damascus-steel", "crucible-steel", "carbon-nanotubes", "nanowires", "cementite", "wootz", "metallurgy", "dendrites"],
   "entities": ["Verhoeven", "Biruni", "Peter Paufler", "Technical University of Dresden", "Iowa State University"],
   "see_also": [
-    "../concepts/damascus-steel-history.md",
-    "../numbers/damascus-steel-mechanical-properties.md",
-    "damascus-steel-modern-reproduction.md"
+    "../../captures/concepts/damascus-steel-history.md",
+    "../../captures/numbers/damascus-steel-mechanical-properties.md",
+    "../../notes/damascus-steel-modern-reproduction.md"
   ],
   "source": "inbox/articles/Damascus_steel.md",
   "processed_at": "2026-07-03",

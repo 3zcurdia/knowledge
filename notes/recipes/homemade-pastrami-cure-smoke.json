@@ -8,8 +8,7 @@
   "keywords": ["pastrami", "brisket", "pink curing salt", "pickling spice", "brine", "smoking", "probe tender", "mustard binder", "curing salt"],
   "entities": ["Reuben", "Thousand Island dressing", "sauerkraut", "baby Swiss"],
   "see_also": [
-    "ba-best-banana-bread.md",
-    "../../captures/observations/homemade-vs-store-bought-pastrami.md"
+    "ba-best-banana-bread.md"
   ],
   "source": "inbox/articles/pastrami-ingredients.txt + inbox/video/EASY Homemade PASTRAMI, Step by Step to Perfect DIY Pastrami! [gEZcfjPIN0Y].md",
   "processed_at": "2026-10-14",

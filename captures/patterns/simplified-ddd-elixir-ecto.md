@@ -115,4 +115,11 @@ View modules define specific queries or combine results from query modules for v
 
 Stricter approaches include defining aggregates as plain structs with functions returning updated structs (mapping to Ecto in dedicated repo modules), or using command structs (e.g. `MyApp.Tasks.RenameWorkspaceCommand`) for form validation. The tradeoff is shared validation logic between commands and aggregates, and mapping aggregate errors to command errors.
 
+## See also
+
+- [Elixir Testing Philosophy: Test What Matters](elixir-testing-philosophy.md)
+- [The Joy of Simpler Systems](../observations/joy-of-functional-languages.md)
+- [Invision AI: Adopting Elixir to Simplify System Architecture](../observations/invision-elixir-adoption.md)
+- [Service Desk Application Schema and Architecture Design](../../projects/service-desk/schema-and-architecture-design.md)
+
 > Source: inbox/articles/Simplified DDD in Elixir.md · processed 2026-07-02

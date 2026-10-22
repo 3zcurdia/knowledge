@@ -64,6 +64,5 @@ Homemade pastrami built from a 14 lb (6.4 kg) choice-grade brisket: trim, cure 7
 ## See also
 
 - [BA's Best Banana Bread](ba-best-banana-bread.md)
-- [Homemade vs Store-Bought Pastrami Taste Test](../../captures/observations/homemade-vs-store-bought-pastrami.md)
 
 > Source: inbox/articles/pastrami-ingredients.txt + inbox/video/EASY Homemade PASTRAMI, Step by Step to Perfect DIY Pastrami! [gEZcfjPIN0Y].md · processed 2026-10-14

@@ -7,7 +7,12 @@
   "summary": "A pragmatic, simplified Domain-Driven Design approach for structuring Elixir applications that balances clean domain models with Ecto/Phoenix conventions. Domain events are plain structs without persistence concerns; aggregates are Ecto.Schema modules with use-case-specific changeset functions that enforce invariants and return domain events when valid. Value objects are primitive fields, wrapper structs with custom Ecto types, or embedded schemas. Separate repositories are omitted since changesets handle aggregate manipulation directly. Domain services handle cross-aggregate manipulation, Phoenix context modules act as application services that apply changes to the repo and publish events, and read queries and views live in separate modules.",
   "keywords": ["ddd", "domain-driven-design", "elixir", "ecto", "phoenix", "aggregates", "domain-events", "changesets"],
   "entities": ["Ecto", "Phoenix", "Ecto.Schema", "Ecto.Repo", "MyApp.Tasks", "MyApp.Tasks.Workspace", "WorkspaceRenamed", "MyApp.Tasks.ProjectStatus", "MyApp.Tasks.WorkspaceRepo"],
-  "see_also": [],
+  "see_also": [
+    "elixir-testing-philosophy.md",
+    "../observations/joy-of-functional-languages.md",
+    "../observations/invision-elixir-adoption.md",
+    "../../projects/service-desk/schema-and-architecture-design.md"
+  ],
   "source": "inbox/articles/Simplified DDD in Elixir.md",
   "processed_at": "2026-07-02",
   "chunks": [

@@ -23,6 +23,6 @@ This is due to the failure and fracture mechanisms in Damascus steel, where crac
 ## See also
 
 - [Damascus Steel: History and Naming](../../captures/concepts/damascus-steel-history.md)
-- [Damascus Steel Metallurgy and Modern Research](damascus-steel-metallurgy.md)
+- [Damascus Steel Metallurgy and Modern Research](../observations/damascus-steel-metallurgy.md)
 
 > Source: inbox/articles/Damascus_steel.md · processed 2026-07-03

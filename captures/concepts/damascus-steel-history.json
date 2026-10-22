@@ -8,9 +8,9 @@
   "keywords": ["damascus-steel", "wootz", "crucible-steel", "swords", "damascus", "metallurgy", "history"],
   "entities": ["Damascus steel", "wootz", "al-Kindi", "al-Biruni", "Damascus", "Sri Lanka", "Khorasan", "Isfahan", "British Raj", "Coomaraswamy"],
   "see_also": [
-    "damascus-steel-mechanical-properties.md",
-    "damascus-steel-metallurgy.md",
-    "damascus-steel-modern-reproduction.md"
+    "../numbers/damascus-steel-mechanical-properties.md",
+    "../observations/damascus-steel-metallurgy.md",
+    "../../notes/damascus-steel-modern-reproduction.md"
   ],
   "source": "inbox/articles/Damascus_steel.md",
   "processed_at": "2026-07-03",

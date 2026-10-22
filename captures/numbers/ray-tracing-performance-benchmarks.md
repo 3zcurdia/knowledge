@@ -24,4 +24,10 @@ The Ruby README warns that larger renders take "a looooong time" and their final
 
 The 2.5× single-core advantage comes primarily from **BEAM's per-process memory management** and **struct memory density**. Each `Vector3D` in Ruby carries a full Ruby object header, whereas an Elixir `%Vector{}` struct is a more compact tagged tuple under the hood. With ~225 billion allocations over a render, this difference compounds dramatically.
 
+## See also
+
+- [Why BEAM (Elixir) outperforms MRI (Ruby) on path tracing](../observations/beam-outperforms-mri-path-tracing.md)
+- [Bounding Volume Hierarchy (BVH) for ray tracing](../concepts/bounding-volume-hierarchy-raytracing.md)
+- [Language Paradigm Patterns in Ray Tracing Implementations](../patterns/language-paradigm-patterns-ray-tracing.md)
+
 > Source: inbox/agents/exray-report.md · processed 2026-07-11
