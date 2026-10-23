@@ -49,7 +49,14 @@ reason, stop — skip the finding.
 ## Step 1 — Collect KB files
 
 Build the scan list. Walk `captures/**`, `decisions/**`, `notes/**`, `projects/**` for `.md`
-files. Skip `inbox/`, `.keep`, and dotfiles. Sort by path.
+files. Skip `inbox/`, `.keep`, dotfiles, `captures/*/INDEX.md`, and `*.json` companions. Sort by path.
+
+Token-saving: for `captures/` triage, read the four index files first —
+`captures/concepts/INDEX.md`, `captures/numbers/INDEX.md`,
+`captures/observations/INDEX.md`, `captures/patterns/INDEX.md` — and use their
+one-line summaries to shortlist candidates. Open full `captures/` files only when
+titles + one-liners suggest a duplicate, overlap, or missing link; read the
+`decisions/`, `notes/`, and `projects/` full files as before.
 
 If fewer than 2 files are found, print "KB has fewer than 2 files — nothing to consolidate." and stop.
 
@@ -118,6 +125,10 @@ When merging:
 - Merge `## See also` sections (deduplicate links)
 - Update the provenance footer to note the merge: `> Merged: <deleted path> · <YYYY-MM-DD>`
 - Delete the non-surviving file
+- Maintain the token-saving index: if either file lives under `captures/*/`, update that
+  directory's `INDEX.md` — remove the deleted file's line, and rewrite the surviving
+  file's line to ` - [<title>](<basename>) — <one sentence>` reflecting the merged
+  content; keep lines sorted by filename
 
 ### Cross-reference behavior
 
@@ -126,6 +137,7 @@ When adding cross-references:
 - Place it before the provenance footer (if present)
 - Use relative paths: `[<title>](<relative-path>)`
 - Do not create duplicate links if they already exist
+- No `INDEX.md` change needed — summaries are unchanged by link-only edits
 
 ---
 
@@ -160,10 +172,10 @@ Done. KB consolidation complete.
 
 ## What this skill does NOT do
 
-- Does not modify files in `inbox/` — only categorized directories
+- Does not modify files in `inbox/` — only categorized directories plus their `captures/*/INDEX.md` index lines
 - Does not push to git or commit; the user commits when they choose
 - Does not auto-merge without confirmation — every action is shown first
-- Does not touch `.keep` files or dotfiles
+- Does not touch `.keep` files, dotfiles, or `*.json` companions (the `.json` stays paired with its `.md`; only `INDEX.md` is maintained alongside merges/deletes)
 - Does not re-categorize files (use `/process-inbox` for that)
 
 ---

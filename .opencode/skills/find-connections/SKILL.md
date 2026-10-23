@@ -56,7 +56,13 @@ find 3, say so — silence is better than filler.
 ## Step 1 — Collect recent captures
 
 Build the work list. Walk `captures/**` for `.md` files whose mtime falls inside the
-window. Skip `inbox/`, `.keep`, and dotfiles. Sort by path.
+window. Skip `inbox/`, `.keep`, dotfiles, `captures/*/INDEX.md`, and `*.json` companions. Sort by path.
+
+Token-saving: read the four index files first — `captures/concepts/INDEX.md`,
+`captures/numbers/INDEX.md`, `captures/observations/INDEX.md`,
+`captures/patterns/INDEX.md` — for cheap full-corpus context. Then open full bodies
+only for the in-window files; use the index one-liners (not full reads) for any
+out-of-window context.
 
 If fewer than 2 files are found, print "Need at least 2 recent captures — run
 `/process-inbox` first." and stop.
@@ -239,7 +245,7 @@ pair as C.
 
 ## What this skill does NOT do
 
-- Does not modify files in `captures/`, `decisions/`, `projects/`, or `inbox/`.
+- Does not modify files in `captures/`, `decisions/`, `projects/`, or `inbox/`, and does not modify `captures/*/INDEX.md`.
 - Does not run on `notes/` (other than writing to `notes/connections/`) or on `decisions/`
   or `projects/`. Its job is mining `captures/` for cross-file relationships.
 - Does not run a full KB scan — use `/consolidate` for that.

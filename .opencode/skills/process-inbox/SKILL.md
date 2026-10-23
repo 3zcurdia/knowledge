@@ -198,7 +198,9 @@ For each topic, compute:
 Collision handling: if the destination `.md` path already exists, do not overwrite. Suffix
 the filename with `-2`, `-3`, … until free. The `.json` companion takes the same suffixed
 basename. If a near-identical file already exists, offer to skip instead of duplicating —
-skipping skips both the `.md` and the `.json` atomically.
+skipping skips both the `.md` and the `.json` atomically. For `captures/*/` routes,
+check the destination's `INDEX.md` one-liners first (cheap duplicate screen) before
+opening full files to confirm.
 
 Directory creation: `mkdir -p` the destination directory before writing if it does not
 exist (this matters for `projects/<name>/`).
@@ -246,6 +248,13 @@ Confirm with a single line: `wrote <md path> (+ json)`.
 Write ordering: write the `.md` first. If the `.json` write fails after the `.md`
 succeeded, leave the `.md` in place (it is still valid prose), warn the user that the
 companion is missing, and **do not delete the source** (so the run can be retried).
+
+Index maintenance (only when the destination is under `captures/*/`): after the
+`.md` + `.json` pair succeeds, update that directory's `INDEX.md` with one line
+` - [<title>](<basename>) — <one sentence, ≤ ~25 words>` inserted in filename sort
+order (rewrite the line in place when a collision suffix produced `-2`, `-3`, …).
+If the directory has no `INDEX.md`, create one with the same header shape. Mention
+the index update in the `wrote` confirmation (e.g. `wrote <md path> (+ json, index)`).
 
 After every topic from a source file has been handled (written or skipped), apply the
 source-deletion rule (see below).
@@ -691,6 +700,9 @@ List every deleted source in the final summary.
   pair. If the user skips, leave the orphan half untouched and warn.
 - **Re-processed source**: if the resulting `.md` path collides and is skipped, no `.json`
   is written either — the pair is atomic.
+- **INDEX.md write fails after `.md` + `.json` succeed**: leave prose and JSON in place,
+  warn that the index line is missing, and continue — the next `/consolidate` run can
+  repair the index line.
 - **Paper with no abstract or conclusion**: omit the missing sections from the body and
   JSON. The subagent returns `null` for that field. The body and JSON are still valid.
 - **Recipe missing times, yield, or quantities**: omit the metadata line from the body
@@ -713,7 +725,7 @@ List every deleted source in the final summary.
 ## What this skill does NOT do
 
 - Does not modify or move files already sitting in the categorized directories — only
-  writes new files and deletes inbox sources.
+  writes new files, updates the destination's `captures/*/INDEX.md` one-liner, and deletes inbox sources.
 - Does not push to git or commit; the user commits when they choose.
 - Does not translate English content; translates non-English content to English.
 - Does not invent recipe times, temperatures, yields, or quantities that the source does

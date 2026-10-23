@@ -27,6 +27,10 @@ This is a markdown-only knowledge base. All content files use `.md` extension.
 - Use kebab-case for filenames: `topic-name.md`
 - One topic per file
 - Start each file with a `# Title` heading
+- Each `captures/*/` directory has an auto-maintained `INDEX.md` with one line per file:
+  `- [Title](file.md) — one sentence.` Read the index first for triage; open full
+  files only as needed. Keep the index sorted by filename and update it on every
+  `captures/` write, merge, or delete (see skill instructions).
 
 ## Cross-references
 
