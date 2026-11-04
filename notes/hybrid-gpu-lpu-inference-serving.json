@@ -1,0 +1,23 @@
+{
+  "id": "notes/hybrid-gpu-lpu-inference-serving",
+  "path": "notes/hybrid-gpu-lpu-inference-serving.md",
+  "title": "Splitting Inference — Pre-fill on GPUs, Decode on LPUs",
+  "category": "notes",
+  "type": "notes",
+  "summary": "Why inference serving splits across GPU and LPU. Pre-fill processes prompt tokens in parallel (GPU strength); decode generates one token at a time and is memory-bound (LPU strength). The KV cache grows into gigabytes per user — beyond LPU SRAM — so attention stays on GPUs while feed-forward layers, holding most weights, run on LPUs: 18-wheelers and delivery vans. GPU batching amortizes HBM copies for low cost per token; the LPU skips copying for instant response but needs hundreds of SRAM chips.",
+  "keywords": ["inference-serving", "prefill-decode", "kv-cache", "gpu-lpu-hybrid", "batching"],
+  "entities": ["GPU", "LPU", "Groq", "KV cache", "HBM", "SRAM"],
+  "see_also": ["groq-lpu-static-scheduling-determinism.md"],
+  "source": "inbox/video/It’s von Neumann’s fault ｜ GPU · TPU · LPU [yTXHZxXXjPI].md",
+  "processed_at": "2026-11-04",
+  "chunks": [
+    {
+      "section": "Two stages, two architectures",
+      "content": "## Two stages, two architectures\n\nLLM inference consists of two stages. First, pre-fill: the prompt tokens are processed in parallel, like a batch of tokens — a natural fit for the GPU. Second, decode: the response is generated one token at a time, and as seen elsewhere, that work is easily bottlenecked by memory — generally a great match for the LPU. There is one wrinkle: when generating a new token, an LLM attends to every previous token. To avoid recomputing them, it stores two activations per past token — a key and a value — in what is called the KV cache. That cache grows with every token and every user into gigabytes, far more than the LPU's SRAM can hold. So attention stays on the GPU. What is left for Groq are the feed-forward layers, which is where most of the model weights live anyway."
+    },
+    {
+      "section": "Why not run everything on one chip",
+      "content": "## Why not run everything on one chip\n\nIt comes down to how each architecture pays for memory. A GPU amortizes the time spent copying from HBM with a large batch, which makes the cost per token very low. Groq skips the copying all together and immediately responds to a query — but now you need hundreds of chips with SRAM, which gets pricey, somewhere between $15,000 and $20,000 per chip. Splitting the model is not quite as efficient on either side, but for the last mile it is more efficient than having one kind of chip do everything: putting the two together is like putting 18-wheelers and delivery vans together — projections on the LPUs, attention on the GPUs, and then you get the best of both worlds."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "id": "captures/numbers/ai-accelerator-performance-scaling-figures",
+  "path": "captures/numbers/ai-accelerator-performance-scaling-figures.md",
+  "title": "AI Accelerator Performance and Scaling Figures",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "Quick-reference table of AI accelerator figures: Nvidia takes 80 cents of every AI chip dollar; TPU v1 hit 92 trillion ops/sec (35x CPU) and beat K80 15x at half the power with just 2% control logic; 34 billion bytes/sec channel vs 46 trillion demand means 99.9% idle; TPU bandwidth grew 200x from V1 to V8 and compute 50x from V2 to V7; pods reach 9,000+ TPUs, NVLink racks wire 72 GPUs; Groq hit 240 tokens/sec on Llama 2 70B with 230 MB SRAM across 576 chips.",
+  "keywords": ["tpu-specs", "groq-benchmarks", "memory-bandwidth", "tops", "nvlink", "pod-scaling"],
+  "entities": ["Nvidia", "Google", "TPU", "Groq", "LPU", "K80", "HBM", "NVLink", "DeepMind", "Llama 3.1 70B", "Llama 2 70B", "AlexNet"],
+  "see_also": ["../observations/tpu-vs-gpu-microarchitecture-tradeoffs.md", "moores-law.md"],
+  "source": "inbox/video/It’s von Neumann’s fault ｜ GPU · TPU · LPU [yTXHZxXXjPI].md",
+  "processed_at": "2026-11-04",
+  "chunks": [
+    {
+      "section": "",
+      "content": "# AI Accelerator Performance and Scaling Figures\n\nKey quantitative facts comparing AI accelerators — Google's TPU, Nvidia's GPU, and Groq's LPU — from the source video.\n\n| Metric | Value | Context |\n|--------|-------|---------|\n| Nvidia's take | 80 cents per dollar | Share of every dollar spent on AI chips that Nvidia makes |\n| 2013 Google speech system | 20% error-rate cut | Biggest jump in 20 years; about 40M parameters vs AlexNet's 60M |\n| TPU v1 peak throughput | 92 trillion ops/sec | 8-bit integer MACs, about 35x the Google server CPU of the time |\n| TPU v1 vs Nvidia K80 | 15x faster at less than half the power | First-generation ASIC result |\n| TPU v1 control logic | 2% of die | A quarter goes to the matrix multiply unit, another third to the activation buffer |\n| TPU v1 instruction set | ~1,000 x86 instructions vs a handful | TPU fetches its instructions from an external host CPU over PCIe |\n| TPU v1 DRAM channel | 34 billion bytes/sec | vs 46 trillion bytes/sec naive demand at 700 MHz — processor idle 99.9% |\n| TPU v1 on-chip memory | 28 MB SRAM + 8 GB DDR3 | SRAM is 10-20x less dense per bit than DRAM |\n| TPU v1 peak batch | 250 | Batch needed for peak utilization; first-query latency suffers |\n| TPU bandwidth V1 → V8 | 200x | Biggest single jump in V2, when HBM arrived |\n| TPU compute V2 → V7 | 50x | At 16-bit precision |\n| Largest TPU pod (V7) | more than 9,000 TPUs | Google connects thousands of boards into a pod |\n| NVLink rack | 72 GPUs | Nvidia's equivalent scale-out, wired into a single rack |\n| DeepMind 2023 serving | batch size 120 | Quantized Llama 3.1 70B on a TPU v5e to keep the chip busy |\n| Groq LPU early 2024 | 240 tokens/sec | Llama 2 70B, twice as fast as the runner-up |\n| Groq LPU SRAM | 230 MB | Forces a 70B model to be split across 576 chips |\n| Groq LPU chip cost | $15,000 - $20,000 per chip | Price of the SRAM-only approach at scale |\n| Groq latency prediction (2022) | off by only 1% | Model latency predicted before running it |"
+    }
+  ]
+}

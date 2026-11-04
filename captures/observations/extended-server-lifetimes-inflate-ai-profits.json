@@ -1,0 +1,23 @@
+{
+  "id": "captures/observations/extended-server-lifetimes-inflate-ai-profits",
+  "path": "captures/observations/extended-server-lifetimes-inflate-ai-profits.md",
+  "title": "Extending Server Lifetimes Flatters AI Profits",
+  "category": "captures/observations",
+  "type": "observations",
+  "summary": "How extending server lifetimes inflates AI profits. Microsoft and Google lengthened assumed AI-server life from 4 to 6 years in financial filings, moving billions in cost downstream; Meta's version boosted profit $2.6B and earlier extensions padded it $5B+. Amazon's 2025 reversal (cutting to 5 years, admitting AI obsoletes hardware faster) cost about $1B. Michael Burry estimates $167B hidden this way and warns Oracle profits are overstated by more than 25% and Meta's by about 20%; Nvidia disputed it with a seven-page memo.",
+  "keywords": ["server-depreciation", "ai-accounting", "michael-burry", "capex-expensing", "oracle-earnings"],
+  "entities": ["Nvidia", "Vera Rubin", "Microsoft", "Google", "Meta", "Amazon", "Michael Burry", "Oracle"],
+  "see_also": ["../../notes/ai-datacenter-debt-off-balance-sheet.md"],
+  "source": "inbox/video/The AI bubble is about to pop... [MgngwkPAuqQ].md",
+  "processed_at": "2026-11-04",
+  "chunks": [
+    {
+      "section": "The filing change",
+      "content": "## The filing change\n\nWhen Nvidia shipped its next-generation Vera Rubin chip in the summer of 2026, the chips sitting in warehouses across America fell a full generation behind overnight. Microsoft and Google could not let Wall Street see the bleeding, so they altered a line in their financial filings: the assumed life of their AI servers was extended from four years to six. With the stroke of a pen, billions in costs were pushed further down the road — overnight, operating expenses disappeared and profits artificially swelled. Meta pulled that exact same stunt, instantly padding its profits by $2.6 billion without selling a single extra ad; it had already stretched its servers' lives twice before, padding profits by more than $5 billion."
+    },
+    {
+      "section": "Reversals and pushback",
+      "content": "## Reversals and pushback\n\nIn 2025 Meta suddenly reversed course, cutting some servers back to five years and admitting the reason: artificial intelligence is making hardware obsolete faster than expected. Coming clean and telling the truth cost Amazon about a billion dollars in profit. Michael Burry estimates that Big Tech will hide $167 billion in costs using this trick, calling it one of the more common frauds of the modern era. Nvidia immediately fired back with a defensive seven-page memo to Wall Street analysts, desperate to claim that its chips stay useful for up to six years. Burry is not backing down: he is now warning that Oracle's profits will soon be overstated by more than a quarter and Meta's by about a fifth."
+    }
+  ]
+}

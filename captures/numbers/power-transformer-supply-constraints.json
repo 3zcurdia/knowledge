@@ -1,0 +1,27 @@
+{
+  "id": "captures/numbers/power-transformer-supply-constraints",
+  "path": "captures/numbers/power-transformer-supply-constraints.md",
+  "title": "Power Transformer Lead Times and Prices",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "US power transformer supply constraints behind the datacenter buildout: about 2.5-year lead times, prices up 77% since 2019, a 3-in-10 domestic shortage, 80% of the biggest units imported, and specialized steel cores produced only by a mill in Butler, Pennsylvania (town of 13,000). Transformer makers refuse to build factories without guaranteed AI-era orders, so the richest companies compete with governments for the same hardware.",
+  "keywords": ["power-transformer", "lead-times", "supply-chain", "butler-pennsylvania", "transformer-prices"],
+  "entities": ["Butler, Pennsylvania"],
+  "see_also": ["../observations/ai-datacenter-grid-bottleneck.md"],
+  "source": "inbox/video/The AI bubble is about to pop... [MgngwkPAuqQ].md",
+  "processed_at": "2026-11-04",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Large power transformers — electrical monoliths that can weigh as much as an empty Boeing 747 — are the critical piece of hardware the entire AI buildout rides on, and nobody can build them fast enough. Ordering one today means a two-and-a-half-year wait: by the time the company builds and the facility goes live, every chip inside it is obsolete. Transformer prices have risen 77% since 2019 and utilities pay it anyway, yet America is still short three out of every ten transformers it needs."
+    },
+    {
+      "section": "Why supply cannot respond",
+      "content": "## Why supply cannot respond\n\nCrews build transformers one at a time around a core of specialized steel, and only one place in the entire country can make that steel: Butler, Pennsylvania. The multi-million dollar AI industry is leaning its full weight on a town of 13,000, whose mill has become a focal point of the entire AI boom. Transformer makers are not convinced the AI demand will last — not one wants to get stuck with a massive factory and no orders — so even the companies supplying the boom do not trust it. The country turned elsewhere: today 80% of the country's biggest transformers are imported, and countries all over the world are fighting for the same hardware. The richest companies on earth are going head to head with entire governments, and there is no cutting in line."
+    },
+    {
+      "section": "Sources",
+      "content": "## Sources\n\n- https://www.woodmac.com/news/opinion/transformer-troubles-manufacturing-and-policy-constraints-hit-us-transformer-supply/"
+    }
+  ]
+}
