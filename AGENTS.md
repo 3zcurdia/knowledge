@@ -14,6 +14,7 @@ This is a markdown-only knowledge base. All content files use `.md` extension.
   - `agents/` — agent-generated content pending review
   - `articles/` — article clippings and external reads to process
   - `chats/` — conversation extracts to process
+  - `code/` — codebase dumps per project (`inbox/code/<project>/`) for code-highlight distillation
   - `papers/` — academic papers and research articles to process
   - `video/` — video and audio files pending transcription (whisper-cpp)
 - `notes/` — general notes and references

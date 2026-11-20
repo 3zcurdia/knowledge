@@ -3,7 +3,7 @@ name: process-inbox
 description: |
   Triage and normalize exported conversations and papers sitting in inbox/ into the
   categorized knowledge base. Reads inbox/chats/, inbox/agents/, inbox/articles/,
-  inbox/papers/, and inbox/video/, extracts substantive topics, and rewrites each as
+  inbox/papers/, inbox/video/, and inbox/code/, extracts substantive topics, and rewrites each as
   a one-topic markdown file under the right category, paired with a sibling .json
   structured-data file that a RAG indexer consumes. Removes the source. For papers,
   also extracts the abstract, conclusion, and all quantitative data/metrics. For
@@ -11,7 +11,9 @@ description: |
   into a clean recipe template — metadata, metric-first ingredients with the original
   units kept for reference, step-by-step explanations with
   doneness cues, tips — filed under notes/recipies/ with structured ingredients/steps
-  in the JSON. For video
+  in the JSON. For codebases in inbox/code/<project>/, distills only remarkable
+  code highlights — verbatim snippets, design patterns, architectural decisions —
+  not product functionality. For video
   and audio, transcribes with whisper-cpp (ffmpeg + whisper-cli) into plain-text
   markdown before the segmentation step.
   Interactive: proposes title/category/filename per topic and asks before writing.
@@ -25,14 +27,18 @@ user_invocable: true
 # /process-inbox
 
 Work through every file in `inbox/chats/`, `inbox/agents/`, `inbox/articles/`,
-`inbox/papers/`, and `inbox/video/`, distilling each into one or more normalized,
+`inbox/papers/`, and `inbox/video/`, plus every project in `inbox/code/`,
+distilling each into one or more normalized,
 one-topic markdown files routed to the correct category directory. Papers get special
 handling: the abstract, conclusion, and all quantitative data are extracted and
 structured separately. Recipes are detected by content in any source and rebuilt into
 a clean recipe template — metadata line, metric-first ingredients (original units kept
 in parentheses for reference), and clear step-by-step
 explanations with doneness cues — filed under `notes/recipies/` with structured
-ingredient and step data in the JSON. Video and audio are preprocessed with `whisper-cpp` (via
+ingredient and step data in the JSON. Codebases get special
+handling (Step 2.7): only remarkable code highlights are kept — verbatim snippets,
+design patterns, architectural decisions — never product/feature summaries.
+Video and audio are preprocessed with `whisper-cpp` (via
 `ffmpeg` + `whisper-cli`) into plain-text transcripts before segmentation. Each
 markdown file is paired with a sibling `.json` structured-data file that a RAG indexer
 consumes for retrieval (summary, keywords, section-level chunks). Interactive: every
@@ -42,6 +48,7 @@ proposed output pair is shown for confirmation before it is written.
 
 "process inbox" / "triage inbox" / "process chats" / "process papers" / "process video" /
 "process videos" / "transcribe video" / "process recipes" / "extract recipes" /
+"process code" / "triage code" /
 "normalize inbox" / `/process-inbox`
 
 ## Invocation
@@ -53,8 +60,10 @@ proposed output pair is shown for confirmation before it is written.
 /process-inbox articles         # scope to inbox/articles/ only
 /process-inbox papers           # scope to inbox/papers/ only
 /process-inbox video           # scope to inbox/video/ only
+/process-inbox code            # scope to inbox/code/ only (all projects)
+/process-inbox code/<project>  # scope to one codebase, e.g. code/my-api
 /process-inbox foo.md          # scope to one filename
-process inbox / triage inbox / process papers / process video / transcribe video      # natural-language triggers
+process inbox / triage inbox / process papers / process video / transcribe video / process code      # natural-language triggers
 ```
 
 ---
@@ -87,7 +96,8 @@ Tags are surfaced in the interactive prompt and may be edited before Write.
 
 ## Step 0.5 — PDF preprocessing
 
-If there are `.pdf` files anywhere in `inbox/`, automatically run:
+If there are `.pdf` files anywhere in `inbox/` **except** `inbox/code/` (never touch
+codebases here), automatically run:
 
 ```bash
 scripts/preprocess-pdfs
@@ -101,7 +111,8 @@ up automatically.
 
 ## Step 0.6 — Video & audio preprocessing
 
-If there are video or audio files anywhere in `inbox/`, automatically run:
+If there are video or audio files anywhere in `inbox/` **except** `inbox/code/` (never touch
+codebases here), automatically run:
 
 ```bash
 scripts/preprocess-videos
@@ -137,9 +148,12 @@ WHISPER_MODEL=ggml-small.bin scripts/preprocess-videos
 Build the work list. Scan the requested scope (`inbox/chats/**`, `inbox/agents/**`,
 `inbox/articles/**`, `inbox/papers/**`, `inbox/video/**`, or the whole `inbox/**`) for
 `.md`, `.txt`, `.csv`, and extensionless text. Skip `.keep`, dotfiles, `.pdf` (handled in
-Step 0.5), and video/audio files (handled in Step 0.6). Sort by path.
+Step 0.5), video/audio files (handled in Step 0.6), and everything under `inbox/code/`
+(handled separately in Step 2.7 — codebases are directories, not text clippings).
+Sort by path.
 
-If the list is empty, print "Inbox is empty — nothing to process." and stop.
+If the list is empty and the scope does not include `code`, print "Inbox is empty — nothing to process." and stop.
+(When scope is `code` or whole-inbox with code projects present, continue to Step 2.7 even if no text files exist.)
 
 ---
 
@@ -480,6 +494,96 @@ remainder is filed separately at its normal route.
 
 ---
 
+## Step 2.7 — Code-specific processing
+
+When the scope includes `code`, process each top-level entry in `inbox/code/` as one
+project unit: `inbox/code/<project>/` is a full codebase dump (directory); a loose file
+directly under `inbox/code/` (e.g. `inbox/code/snippet.py`) is a single-file project
+named by its basename. Skip `.keep` and dotfiles.
+
+### 2.7a — Map then select (per project)
+
+1. **Map fast, don't read everything.** Use the `explore` subagent (`medium` for small
+   repos, `very thorough` for large/monorepo) to list stack (languages, frameworks),
+   layout, and candidate highlights. Ignore `.git/`, `node_modules/`, `vendor/`,
+   `dist/`, `build/`, `target/`, `__pycache__/`, `.venv/`, `coverage/`, `*.lock`,
+   minified/bundled assets, images, and binaries.
+2. **Select only what is remarkable and worth keeping.** Cap at ~10 topics per project;
+   a small or boilerplate-heavy project may yield 0–3. Prefer quality over coverage.
+3. **Explicit non-goal:** do NOT describe product functionality, feature lists, or what
+   the app does for users. Every topic must be justified by its code value: a pattern,
+   snippet, or decision another engineer could reuse.
+
+Qualifies (keep):
+
+- Non-trivial abstraction, reusable module, custom hook/decorator/macro/DSL
+- Concurrency, streaming, caching, retry/backoff, idempotency handling
+- Error handling, validation, or testing strategy worth copying
+- API/schema design, migration technique, data-modeling choice with trade-offs
+- Security, performance, or observability trick with measurable rationale
+- Infra-as-code, CI, or build pattern that generalizes beyond this repo
+- In-code ADR: a choice between alternatives visible in code/comments with rationale
+
+Does NOT qualify (skip):
+
+- Product/feature summary, README marketing, roadmap, user-facing behavior
+- CRUD boilerplate, generated code, trivial config, style-only differences
+- Full-file dumps — trim snippets to the essential ~80 lines max per topic
+
+### 2.7b — Code body format
+
+One topic per file. Structure:
+
+````markdown
+# <highlight title>
+
+<1–2 sentences: what the code does technically and why it is worth keeping. No product pitch.>
+
+**Project**: <project> · **Stack**: <e.g. python/fastapi, go> · **Where**: `<relative path inside inbox/code/<project>/, e.g. internal/cache/lru.go:42>`
+
+## Code
+```<lang>
+<verbatim snippet, trimmed to essentials>
+```
+
+## Why it matters
+- <reusable lesson / trade-off / when to copy vs avoid>
+
+## See also
+...
+
+> Source: inbox/code/<project>/... · processed <YYYY-MM-DD>
+````
+
+Rules:
+
+- `## Code` is verbatim — never paraphrase, never invent. Include the language tag.
+  If the snippet needs context (imports, types), include the minimum to compile mentally.
+- `**Where**` cites the exact relative path (with `:line` when known).
+- Omit `## Why it matters` only when the code is self-evidently reusable; prefer keeping it.
+- Provenance `Source:` points at the project dir or exact file (e.g.
+  `inbox/code/my-api/internal/cache/lru.go`), matching the JSON `source` field.
+
+### 2.7c — Categorization default for code
+
+- Project-tied highlight that only makes sense in context → `projects/<project>/`
+  (creates the dir with `mkdir -p` if missing).
+- Reusable technique / convention / "how to do X" → `captures/patterns/`
+  (with a `See also` link back to the project file when one exists).
+- Choice between alternatives with trade-offs → `decisions/`.
+- Precedence: `decisions/ > projects/ > captures/* > notes/`. Default to
+  `projects/<project>/` when unsure so the highlight stays with its codebase.
+- Keywords must include stack tokens (e.g. `["go", "lru-cache", "eviction"]`);
+  entities include file paths / symbol names verbatim (e.g.
+  `["internal/cache/lru.go", "LRUCache"]`).
+
+Topics from code go through the same propose → confirm (Step 2b–2d) flow, with
+`Source: inbox/code/<project>/...` in the prompt block. After all topics for a project
+are handled, the project directory is deleted per the source-deletion rule
+(`rm -rf` — directories, not files).
+
+---
+
 ## Step 3 — Progress & summary
 
 After each source file, print `[<done>/<total> files done]`.
@@ -525,6 +629,7 @@ came from:
 | A foundational principle, law, mental model, or definition             | `captures/concepts/`      |
 | Academic paper, preprint, or technical report (from `inbox/papers/`)    | `notes/papers/`           |
 | A recipe: ingredient list + preparation steps for a dish, bake, drink  | `notes/recipies/`         |
+| A remarkable code snippet, design pattern, or in-code architectural decision (from `inbox/code/`) | `projects/<project>/` by default; promote reusable techniques to `captures/patterns/`, trade-offs to `decisions/` |
 | Tied to a named project or initiative (and not a decision)              | `projects/<project>/`     |
 | General reference, explanation, how-to (the default catch-all)          | `notes/`                  |
 
@@ -545,7 +650,9 @@ That is: a decision wins even if it mentions a project; a project-scoped non-dec
 beats a generic capture; `notes/` is always the fallback. Papers from `inbox/papers/`
 default to `notes/papers/` regardless of precedence (they are not decisions, projects,
 or generic captures). Recipes likewise always file under `notes/recipies/` regardless
-of precedence (Step 2.6).
+of precedence (Step 2.6). Code highlights default to `projects/<project>/` unless the
+technique is genuinely reusable (→ `captures/patterns/`) or a trade-off decision
+(→ `decisions/`); see Step 2.7c.
 
 If you cannot confidently route a topic, default to `notes/` and say so in the rationale
 so the user can recategorize.
@@ -584,6 +691,12 @@ description, metadata line, `## Ingredients`, `## Steps`, optional
 `## Notes & tips`, `## See also`). Omit the metadata line and the `## Notes & tips`
 section when the source does not support them — never invent times, yields,
 temperatures, or quantities.
+
+**Code**: code highlights from `inbox/code/` follow the format defined in Step 2.7b
+(`# Title`, 1–2 sentence technical why-keep, `**Project** · **Stack** · **Where**` line,
+`## Code` verbatim snippet with language tag, `## Why it matters`, `## See also`).
+Never write product/feature summaries. Code is always verbatim — never paraphrase or
+invent. `**Where**` cites the exact relative path with `:line` when known.
 
 Provenance footer: append a single line at the end of every written file:
 
@@ -674,12 +787,14 @@ Notes:
 ## Source-deletion rule
 
 The inbox is a transient queue. After a source file has been fully processed (every topic
-either written or explicitly skipped), delete it with `rm`:
+either written or explicitly skipped), delete it with `rm`. After a code project in
+`inbox/code/<project>/` has been fully processed, delete the directory with `rm -rf`:
 
-- **Delete** if at least one topic from it was written.
+- **Delete** if at least one topic from it was written (`rm` for files, `rm -rf` for `inbox/code/<project>/` dirs).
 - **Keep** if the user skipped every topic (they likely want to revisit). Print a note that
   it was retained.
 - **Delete** skip-no-content files (empty / pure-noise) — they have no value to retain.
+  Delete skip-no-content code projects too (boilerplate-only repos with nothing remarkable).
 
 List every deleted source in the final summary.
 
@@ -717,6 +832,12 @@ List every deleted source in the final summary.
 - **Video file fails to transcribe** (no audio track, corrupt container, whisper
   confidence too low): the preprocessor keeps the source, prints a warning, and moves
   on. The next process-inbox run will retry it.
+- **Code project is huge (monorepo, vendored deps):** rely on the explore subagent's map;
+  sample entry points, `README` for layout only (never for product copy), and top-ranked
+  files by centrality. Do not dump full files — trim to the highlight.
+- **Code project is boilerplate-only:** mark skip-no-content, delete per source-deletion rule.
+- **Binary or generated code in inbox/code/:** skip with a warning, do not delete the whole
+  project for one bad file — only fail the topic, not the project.
 - **whisper-cli or ffmpeg install fails** (no sudo, unsupported distro, no network):
   the preprocessor aborts with install instructions. No source files are touched.
 
@@ -731,6 +852,9 @@ List every deleted source in the final summary.
 - Does not invent recipe times, temperatures, yields, or quantities that the source does
   not state. Deterministic metric conversion of stated values is expected, not
   invention — but unconvertible phrasing stays verbatim.
+- Does not describe product functionality or features for code projects — only code
+  highlights (snippets, patterns, architectural decisions) per Step 2.7. Never invents
+  or paraphrases code.
 - Does not auto-write without confirmation — every topic is shown first.
 - Does not touch `.keep` files or dotfiles.
 - Does not generate embeddings — the JSON stays model-agnostic. A separate indexer reads
@@ -747,10 +871,13 @@ List every deleted source in the final summary.
 /process-inbox articles
 /process-inbox papers
 /process-inbox video
+/process-inbox code
+/process-inbox code/my-api
 /process-inbox 2026-07-02-standup.md
 process inbox
 triage inbox
 process papers
 process video
+process code
 transcribe inbox videos
 ```
