@@ -1,0 +1,49 @@
+{
+  "id": "captures/patterns/client-embed-snippet-loader",
+  "path": "captures/patterns/client-embed-snippet-loader.md",
+  "title": "Per-client embed snippet with loader and iframe checkout",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "v4 embed pattern improving on v3: frozen single-namespace loader with derived origin and preconnect; allowlisted data-gp-* params; HMAC token-bound sandboxed iframe overlay with nonce + source-checked postMessage close.",
+  "keywords": [
+    "rails",
+    "javascript-embed",
+    "snippet-loader",
+    "iframe-checkout",
+    "postmessage-nonce",
+    "sandboxed-iframe",
+    "hmac-token",
+    "per-client-customization"
+  ],
+  "entities": [
+    "SnippetsController",
+    "Client",
+    "window.GP",
+    "snippet_bundle_version",
+    "checkoutOrigin",
+    "data-gp-*"
+  ],
+  "see_also": [
+    "group-email-dispatch.md"
+  ],
+  "source": "inbox/code/internal-app",
+  "processed_at": "2026-11-20",
+  "chunks": [
+    {
+      "section": "Code",
+      "content": "## Code \u2014 v4: improves on v3 (v2 dropped)\n\nv2 used global selector + `*:contains(text)` injection. v3 fixed that with\nexplicit `.gp-checkout-btn` + iframe + `postMessage`, but kept 5 weaknesses:\ndual globals (`_gp` vs `GP`), hardcoded origin, forwards *all* `data-*`,\norigin-only message check, `v=` timestamp + `maximum(:updated_at)` per hit.\nv4 below fixes all five with the same paste shape.\n\n```ruby\n# app/models/client.rb \u2014 content version, cached, no per-hit MAX query\ndef snippet_bundle_version\n  Rails.cache.fetch(\"client/#{id}/snippet_version\", expires_in: 1.hour) do\n    [updated_at, integrations.maximum(:updated_at)].compact.max.to_i\n  end\nend\n\n# app/controllers/snippets_controller.rb \u2014 sign the session, don't trust data-*\ndef show\n  @token = OpenSSL::HMAC.hexdigest(\n    \"SHA256\", Rails.application.secret_key_base,\n    \"#{@client.id}:#{@client.snippet_bundle_version}\"\n  )\nend\n```\n\n```js\n// loader.js.erb \u2014 single namespace, origin derived from own src, idempotent\n(function () {\n  if (window.GP && window.GP.__loaded) return;\n  var host = document.currentScript || {};\n  var cfg = (host.dataset) || {};\n  var bundleUrl = <%= snippet_client_url(client_id: @client.slug, v: @client.snippet_bundle_version).to_json %>;\n  var checkoutOrigin = new URL(bundleUrl).origin; // never hardcode, never drift\n\n  window.GP = Object.freeze({\n    __loaded: true,\n    client: <%= @client.slug.to_json %>,\n    platform: <%= params[:platform].to_json %>,\n    agentId: <%= params[:agent_id].to_json %>,\n    token: <%= @token.to_json %>, // binds iframe session to this client+version\n    bundleVersion: <%= @client.snippet_bundle_version.to_json %>,\n    checkoutOrigin: checkoutOrigin,\n    checkoutBase: checkoutOrigin + \"/checkout\"\n  });\n\n  var pre = document.createElement(\"link\");\n  pre.rel = \"preconnect\"; pre.href = checkoutOrigin;\n  document.head.appendChild(pre);\n\n  var s = document.createElement(\"script\");\n  s.async = true; s.defer = true;\n  s.src = bundleUrl;\n  s.onerror = function () { window.GP = { __loaded: false }; };\n  document.head.appendChild(s);\n})();\n```\n\n```js\n// embed.js \u2014 allowlisted params + token-bound sandboxed overlay\n(function () {\n  if (!window.GP || !window.GP.checkoutOrigin) return;\n  var ORIGIN = window.GP.checkoutOrigin;\n  var BTN = \".gp-checkout-btn\";\n  var active = null; // { iframe, token, prevOverflow }\n\n  // Forward ONLY data-gp-* (v3 forwarded every data-*, leaking internals).\n  // Server must still re-validate: data-* is attacker-controlled.\n  function checkoutUrl(btn) {\n    var qs = new URLSearchParams({\n      client: window.GP.client, embed: \"1\",\n      v: String(window.GP.bundleVersion), token: window.GP.token\n    });\n    btn.getAttributeNames().forEach(function (a) {\n      if (a.indexOf(\"data-gp-\") !== 0) return;\n      qs.set(a.slice(8).replace(/-/g, \"_\"), btn.getAttribute(a));\n    });\n    return window.GP.checkoutBase + \"?\" + qs.toString();\n  }\n\n  function open(btn) {\n    close(false);\n    var token = Math.random().toString(36).slice(2); // per-open nonce\n    var wrap = document.createElement(\"div\");\n    wrap.setAttribute(\"role\", \"dialog\");\n    wrap.setAttribute(\"aria-modal\", \"true\");\n    wrap.style.cssText = \"position:fixed;inset:0;z-index:2147483647;background:rgba(0,0,0,.5)\";\n    var frame = document.createElement(\"iframe\");\n    frame.src = checkoutUrl(btn) + \"&nonce=\" + encodeURIComponent(token);\n    frame.setAttribute(\"sandbox\", \"allow-scripts allow-same-origin allow-forms allow-popups\");\n    frame.setAttribute(\"allow\", \"payment *\");\n    frame.style.cssText = \"position:absolute;inset:5%;width:90%;height:90%;border:0;background:#fff\";\n    frame.title = \"Checkout\";\n    wrap.appendChild(frame);\n    wrap.addEventListener(\"click\", function (e) { if (e.target === wrap) close(true); });\n    document.body.appendChild(wrap);\n    active = {\n      wrap: wrap, iframe: frame, token: token,\n      prevOverflow: document.body.style.overflow\n    };\n    document.body.style.overflow = \"hidden\";\n    frame.focus();\n  }\n\n  function close(notify) {\n    if (!active) return;\n    active.wrap.remove();\n    document.body.style.overflow = active.prevOverflow || \"\";\n    active = null;\n  }\n\n  // Delegation covers SPA/Turbo-injected buttons \u2014 no re-bind, no MutationObserver.\n  document.addEventListener(\"click\", function (ev) {\n    var btn = ev.target.closest && ev.target.closest(BTN);\n    if (!btn) return;\n    ev.preventDefault();\n    open(btn);\n  });\n  document.addEventListener(\"keydown\", function (ev) {\n    if (ev.key === \"Escape\") close(true);\n  });\n\n  window.addEventListener(\"message\", function (ev) {\n    if (ev.origin !== ORIGIN) return;\n    // v3 checked origin only: any same-origin ad/frame could close + redirect.\n    if (!active || ev.source !== active.iframe.contentWindow) return;\n    var d = ev.data || {};\n    if (d.action !== \"close\" || d.nonce !== active.token) return;\n    var redirect = typeof d.redirect === \"string\" ? d.redirect : \"\";\n    close(false);\n    if (redirect.indexOf(ORIGIN + \"/\") === 0) {\n      window.location.href = redirect;\n    }\n  });\n})();\n```"
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n\n- v4 keeps v3's shape (tiny loader \u2192 per-client bundle \u2192 iframe overlay) and\n  removes its five remaining holes:\n  1. One frozen `window.GP` (was `_gp` + `GP`); origin derived from the\n     bundle URL itself, plus `preconnect` \u2014 no hardcoded constant to drift.\n  2. Forwards only `data-gp-*` (was: every `data-*`, leaking `data-secret`\n     etc.). Server re-validates everything \u2014 `data-*` is attacker input.\n  3. `message` handler checks `origin` **and** `ev.source === iframe` **and**\n     per-open `nonce` (was: origin only) \u2014 a same-origin ad can no longer\n     close checkout or force a redirect.\n  4. Sandboxed iframe (`allow-scripts allow-same-origin allow-forms\n     allow-popups`), ESC-to-close, backdrop-click close, scroll lock,\n     `role=dialog` \u2014 v3 had none of this.\n  5. Version cached server-side (`Rails.cache`), token-bound with HMAC \u2014\n     no per-hit `maximum(:updated_at)`, no `Date.now()` cache killer, no\n     client-spoofable session.\n- Delete v2 outright: `scope :v2` + `page_scope_selector` (`*:contains(...)`)\n  needs jQuery, full-DOM scan, breaks on copy changes, raw-interpolates text.\n- Copy v4 for any hosted flow embedded in third-party pages."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}

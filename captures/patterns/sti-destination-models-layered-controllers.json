@@ -1,0 +1,31 @@
+{
+  "id": "captures/patterns/sti-destination-models-layered-controllers",
+  "path": "captures/patterns/sti-destination-models-layered-controllers.md",
+  "title": "STI destination models with shared gateway mixin and layered controllers",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Rails STI pattern for pluggable merchant destinations: a destination base maps short type names, declares the abstract transfer interface with per-class caps, shares gateway behavior through a mixin with create-on-validate hooks, and mirrors the layering in controllers where a namespace base adds merchant scoping while embed snippet controllers bypass the app stack.",
+  "keywords": ["ruby", "rails", "sti", "single-table-inheritance", "transfer-destination", "mixin", "controller-layering"],
+  "entities": ["Pay::PaymentDestination", "Pay::BalancedCard", "Pay::BalancedBankAccount", "Pay::SpreedlyGateway", "Pay::BogusPaymentDestination", "Pay::BalancedMethods", "Merchants::BaseController", "Snippet::V3::SnippetsController"],
+  "see_also": ["group-email-dispatch.md", "client-embed-snippet-loader.md"],
+  "source": "inbox/code/internal-app",
+  "processed_at": "2026-11-20",
+  "chunks": [
+    {
+      "section": "Code",
+      "content": "## Code\n\n```ruby\n# app/models/pay/payment_destination.rb\n  def self.new(*args, &block)\n    if (attributes = args.first).is_a? Hash\n      attributes[:type] = 'Pay::BalancedCard' if attributes[:type] == 'card'\n      attributes[:type] = 'Pay::BalancedBankAccount' if attributes[:type] == 'bank_account'\n      attributes[:type] = 'Pay::SpreedlyGateway' if attributes[:type] == 'gateway'\n    end\n    super(*args, &block)\n  end\n```\n\n```ruby\n# app/models/pay/payment_destination.rb\n  def send_funds(group_purchase, amount)\n    raise NotImplementedError\n  end\n\n  def screen_name\n    raise NotImplementedError\n  end\n\n  def remove_from_service\n    raise NotImplementedError\n  end\n\n  def can_be_destroyed?\n    raise NotImplementedError\n  end\n```\n\n```ruby\n# app/models/pay/balanced_card.rb\nmodule Pay\n  class BalancedCard < PaymentDestination\n    include BalancedMethods\n\n    MAX_PAYOUT_AMOUNT = Money.new(2500_00, :usd)\n```\n\n```ruby\n# app/models/pay/balanced_bank_account.rb\n    MAX_PAYOUT_AMOUNT = Money.new(15000_00, :usd)\n```\n\n```ruby\n# app/models/pay/spreedly_gateway.rb\n    alias_attribute :screen_name, :name\n```\n\n```ruby\n# app/models/pay/balanced_methods.rb\n    def self.included(base)\n      base.class_eval {\n        alias_attribute :resource_uri, :remote_id\n        alias_attribute :screen_name, :name\n        attr_accessor :resource_fields\n\n        before_validation :create_on_balanced, if: :new_record?\n      }\n\n      base.send :include, InstanceMethods\n      base.send :extend, ClassMethods\n    end\n```\n\n```ruby\n# app/models/pay/bogus_payment_destination.rb\nclass Pay::BogusPaymentDestination < Pay::PaymentDestination\n  def send_funds(group_purchase, amount, details)\n    Transaction.record(group_purchase.organizer, :PAY_OUT, amount: amount, details: details)\n  end\n\n  def remote_id\n    object_id\n  end\nend\n```\n\n```ruby\n# app/controllers/merchants/base_controller.rb\nclass Merchants::BaseController < ApplicationController\n  layout 'merchant'\n  before_action :set_merchant\n  before_action :authorize_merchant\n  before_action :activate_pricing_plan\n  before_action :get_action_required_merchants_count, only: [:index]\n\n  protected\n\n  def set_merchant\n    @merchant = Merchant.friendly.find(params[:merchant_id]) if params[:merchant_id]\n    gon.merchant_name = @merchant.display_name\n  end\n\n  def authorize_merchant\n    authorize! :operate, @merchant\n  end\nend\n```\n\n```ruby\n# app/controllers/snippet/v3/snippets_controller.rb\nclass Snippet::V3::SnippetsController < ActionController::Base\n  before_action :find_merchant\n  after_action :set_cache_control_headers, only: [:loader, :embed]\n```"
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n\n- STI plus short-name coercion in `self.new` lets callers pass `type: 'card'` while the `type` column stores the class; `type_to_human` reverses the mapping for display.\n- The base class owns only the contract (`send_funds`, `screen_name`, `remove_from_service`, `can_be_destroyed?`) and per-class caps (`MAX_PAYOUT_AMOUNT`: 2500 USD card vs 15000 USD bank account), so adding a destination rail is one subclass.\n- `BalancedMethods.self.included` injects aliases, the `create_on_balanced` validation hook, and `send_funds!`/`reverse!` once for both Balanced subclasses instead of duplicating gateway code.\n- `BogusPaymentDestination` shows the intended seam: swap the subclass in test without touching callers (note its `send_funds` takes 3 args vs the base 2 — a smell to align before copying).\n- Controller layering mirrors the model layering: `Merchants::BaseController` adds layout plus `set_merchant`/`authorize_merchant` once for every `Merchants::*` controller; `Snippet::*` inherits `ActionController::Base` directly to dodge app-wide locale/mixpanel/auth filters on embed JS responses."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}

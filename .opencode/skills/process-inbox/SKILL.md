@@ -559,6 +559,7 @@ Rules:
 
 - `## Code` is verbatim — never paraphrase, never invent. Include the language tag.
   If the snippet needs context (imports, types), include the minimum to compile mentally.
+  The only permitted deviation is generalization per 2.7d, mirrored exactly in the JSON chunks.
 - `**Where**` cites the exact relative path (with `:line` when known).
 - Omit `## Why it matters` only when the code is self-evidently reusable; prefer keeping it.
 - Provenance `Source:` points at the project dir or exact file (e.g.
@@ -581,6 +582,47 @@ Topics from code go through the same propose → confirm (Step 2b–2d) flow, wi
 `Source: inbox/code/<project>/...` in the prompt block. After all topics for a project
 are handled, the project directory is deleted per the source-deletion rule
 (`rm -rf` — directories, not files).
+
+### 2.7d — Generalize code highlights (business-agnostic patterns)
+
+Code highlights should read as reusable patterns for any business type, not as artifacts
+of one company or domain. Brand names, company initialisms, and domain-role wording tie
+a pattern to a single business — generalize them. Ask once per project, on the first
+confirm prompt: "Generalize into business-agnostic patterns?" If yes, apply the
+generalization below to every topic from that project before writing, and show a
+`Generalize: yes (internal-app)` line in each confirm block so the generalized preview
+is what the user approves.
+
+1. **Titles/filenames**: drop company- and domain-identifying words, keep generic pattern
+   wording (e.g. "Group payment email dispatch" → "Group email dispatch",
+   "Per-merchant embed snippet" → "Per-client embed snippet"). Renames must update
+   `INDEX.md` lines, `## See also` links, and JSON `id` / `path` / `see_also` to match.
+2. **Project label + provenance**: `**Project**: <project>` → `**Project**: internal-app`;
+   `Source: inbox/code/<project>` → `Source: inbox/code/internal-app` (identical string
+   in JSON `source` and the footer).
+3. **Brand literals in code**: default slugs, company domains, company emails → neutral
+   placeholders (`"petco"` → `"example"`, `@petco.com` → `@example.com`). Class
+   names, file paths, third-party vendor names, and exact values stay untouched.
+4. **Proprietary namespaces, prefixes, and suffixes**: eliminate them. Rename to generic
+   functional names where the affix is pure branding (e.g. `window._pc` →
+   `window._app`, `pc_tracker` → `tracker`), or to neutral initials where a namespace
+   is structurally required (e.g. `PCO` → `EX`). Apply the rename identically in the
+   `.md` and the `.json`, so chunks remain verbatim substrings of the body. The result
+   is a clean capture with no company brand and nothing product-specific left in
+   identifiers.
+5. **Prose**: swap company- and domain-specific wording for generic equivalents
+   ("payment params" → "checkout params", "payout rail" → "destination rail",
+   "merchants paste" → "clients paste", "per-merchant" → "per-client"); never change
+   the meaning of the pattern. Code identifiers and class names stay as they are.
+
+Verification after generalization (all must pass): JSON parses; `id` / `path` / `title`
+match the `.md`; every chunk is a verbatim substring of the body; a case-sensitive
+sweep for each replaced token across the `.md`, the `.json`, and the `INDEX.md` line
+returns zero hits. Re-run the sweep after any follow-up edit — a stale chunk is a
+silent desync between prose and index data.
+
+Generalization is the single sanctioned exception to "code is verbatim" (2.7b); it is
+always previewed before Write, never applied silently afterwards.
 
 ---
 
@@ -854,7 +896,7 @@ List every deleted source in the final summary.
   invention — but unconvertible phrasing stays verbatim.
 - Does not describe product functionality or features for code projects — only code
   highlights (snippets, patterns, architectural decisions) per Step 2.7. Never invents
-  or paraphrases code.
+  or paraphrases code, except the previewed business-agnostic generalization in 2.7d.
 - Does not auto-write without confirmation — every topic is shown first.
 - Does not touch `.keep` files or dotfiles.
 - Does not generate embeddings — the JSON stays model-agnostic. A separate indexer reads

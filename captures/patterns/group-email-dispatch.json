@@ -1,0 +1,31 @@
+{
+  "id": "captures/patterns/group-email-dispatch",
+  "path": "captures/patterns/group-email-dispatch.md",
+  "title": "Group email dispatch via EmailConstructor and SystemMailer",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Rails transactional-mail pattern from a group app: callers enqueue only an email-name symbol plus args via a mailer job; an EmailConstructor resolves recipients, subjects, and extras through a catalog method, filters disabled recipients and per-client notification buckets, sets locale, and delivers through a single generic mailer with tracking headers.",
+  "keywords": ["rails", "actionmailer", "activejob", "transactional-email", "email-catalog", "merchant-notifications", "sidekiq"],
+  "entities": ["EmailConstructor", "SystemMailer", "SystemMailerJob", "MerchantNotificationConfig", "EmailsCatalog", "Merchant"],
+  "see_also": ["client-embed-snippet-loader.md"],
+  "source": "inbox/code/internal-app",
+  "processed_at": "2026-11-20",
+  "chunks": [
+    {
+      "section": "Code",
+      "content": "## Code\n\n```ruby\n# lib/email_constructor.rb\n  def send_email\n    load_variables\n    @recipients.each do |recipient|\n      next if recipient_disabled?(recipient)\n      next unless bucket_enabled?(recipient, @extra_variables[:group_purchase])\n      set_locale(recipient)\n\n      if recipient.is_a?(Merchant)\n        @extra_variables[:hide_notification_preferences] = true\n      end\n\n      begin\n        mailer_instance(recipient).deliver_now\n      rescue => e\n        if Rails.env.production?\n          Airbrake.notify(e, error_message: \"#{e.message} :: RESCUED MAILER ERROR\", parameters: {\n            email_name: @email_name.to_json,\n            recipient: recipient.to_json,\n            options: @options.to_json,\n            extra_variables: @extra_variables.to_json\n            })\n        else\n          raise e\n        end\n      end\n    end\n  end\n\n  def mailer_instance(recipient)\n    load_variables\n    SystemMailer.default_email(@email_name, recipient, @options, @extra_variables)\n  end\n```\n\n```ruby\n# app/jobs/system_mailer_job.rb\nclass SystemMailerJob < ActiveJob::Base\n  include DefaultJobOptions\n  queue_as :mailers\n\n  def perform(email_name, *args)\n    EmailConstructor.new(email_name.to_sym, *args).send_email\n  end\nend\n```\n\n```ruby\n# app/mailers/system_mailer.rb\n  def default_email(email_name, recipient, options, extra_variables = {})\n    @recipient = recipient\n    to = if @recipient.is_a? Merchant\n      @recipient.notification_config.recipients_for(email_name)\n    elsif @recipient.respond_to? :email_with_name\n      @recipient.email_with_name\n    elsif @recipient.is_a?(String) && @recipient =~ /(?:\"?([^\"]*)\"?\\s)?(?:<?([_a-z0-9-]+(?:\\.[_a-z0-9-]+)*@[a-z0-9-]+(?:\\.[a-z0-9-]+)*(?:\\.[a-z]{2,4}))>?)$/\n      @recipient\n    else\n      nil\n    end\n\n    extra_variables[:group_purchase] ||= @recipient.group_purchase if @recipient.respond_to?(:group_purchase)\n\n    if to.present?\n      extra_variables.each { |k,v| instance_variable_set \"@#{k}\", v } if extra_variables.present?\n      @merchant ||= @group_purchase.try(:merchant)\n      options.merge! template_name: email_name, to: to\n      mail(options)\n    end\n  end\n```\n\n```ruby\n# app/models/merchant_notification_config.rb\n  def recipients_for(email)\n    if bucket(email) == 'receipts'\n      payments_and_billing_emails\n    else\n      basic_emails\n    end\n  end\n```\n\n```ruby\n# lib/emails_catalog.rb\n  # Email to merchant when a GP is created\n  def purch_created_merch_notice(group_purchase)\n    @recipients = [group_purchase.merchant]\n    @options = {\n      subject: I18n.t('system_mailer.purch_created_merch_notice.subject',\n                      group_purchase_name: group_purchase.name)\n    }\n  end\n```"
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n\n- One generic `default_email` serves ~100 transactional emails via `template_name: email_name`; adding an email means adding one catalog method, not one mailer method.\n- Recipient filtering (`recipient_disabled?`, `bucket_enabled?`) happens before delivery, so group-purchase state callbacks in `Membership::States` and `GroupPurchase::States` stay one-liners like `SystemMailerJob.perform_later(:inv_claim_spot, self)`.\n- Merchant recipients resolve through `MerchantNotificationConfig` buckets (`receipts` vs `basic_emails`), letting each merchant split billing mail from lifecycle mail without code changes.\n- Copy this when many domain events each need their own recipients/subject but share delivery, locale, tracking, and error handling; avoid it when you have under a handful of emails — the indirection is not worth it."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}
