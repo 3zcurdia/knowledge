@@ -1,0 +1,31 @@
+{
+  "id": "captures/patterns/role-constrained-routing-warden",
+  "path": "captures/patterns/role-constrained-routing-warden.md",
+  "title": "Role-constrained routing via Warden",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Request-level role routing with an 11-line Warden matcher: RoleConstraint matches reads warden user role so six roles each get their own root plus a fallback, with guests falling through to the sign-in root. Same file mounts the Sidekiq dashboard inside an admin-only authenticate block. Ask how role-based landing pages or admin-only dashboard mounts work without controller branching.",
+  "keywords": ["rails", "routing", "warden"],
+  "entities": ["RoleConstraint", "role_constraint.rb", "routes.rb", "Sidekiq::Web", "warden"],
+  "see_also": [],
+  "source": "inbox/code/internal-app",
+  "processed_at": "2026-11-23",
+  "chunks": [
+    {
+      "section": "Code",
+      "content": "## Code\n\n```ruby\n# lib/role_constraint.rb\nclass RoleConstraint\n  def initialize(*roles)\n    @roles = roles\n  end\n\n  def matches?(request)\n    if request.env['warden'].authenticated?\n      @roles.include? request.env['warden'].user.try(:role)\n    end\n  end\nend\n```\n\n```ruby\n# config/routes.rb\nauthenticate :user, -> (u) { u.admin? } do\n  require 'sidekiq/web'\n  mount Sidekiq::Web => '/sidekiq'\nend\n```\n\n```ruby\n# config/routes.rb\ndevise_scope :user do\n  authenticated :user do\n    root :to => 'home#status', :constraints => RoleConstraint.new('admin'), as: :admin_root\n    root :to => 'home#coach_dashboard', :constraints => RoleConstraint.new('coach'), as: :coach_root\n    root :to => 'home#status', :constraints => RoleConstraint.new('user'), as: :user_root\n    root :to => 'lesson_topics#index', :constraints => RoleConstraint.new('preuser'), as: :preuser_root\n    root :to => 'engagements#index', :constraints => RoleConstraint.new('stakeholder'), as: :stakeholder_root\n    root :to => 'profiles#my_profile', :constraints => RoleConstraint.new('registered'), as: :registered_root\n    root :to => 'home#index' #matches this route when the above matches don't pass\n  end\n\n  #Route if not logged in\n  unauthenticated do\n    root :to => 'user/sessions#new', as: :unauthenticated_root\n  end\nend\n```"
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n\n- Eleven lines replace six controllers or filters: routing itself picks the landing page from `warden.user.role`, so the home controller never branches on role.\n- `matches?` returns nil (falsy) for guests instead of raising — unauthenticated roots fall through cleanly.\n- `authenticate :user, &:admin?` around `Sidekiq::Web` keeps the ops dashboard inside the same auth stack instead of a separate basic-auth layer.\n- Copy for multi-role monoliths with distinct landing pages; prefer Pundit policies (not routes) once authorization moves past the front door."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}

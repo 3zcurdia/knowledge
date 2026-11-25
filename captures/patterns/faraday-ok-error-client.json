@@ -1,0 +1,39 @@
+{
+  "id": "captures/patterns/faraday-ok-error-client",
+  "path": "captures/patterns/faraday-ok-error-client.md",
+  "title": "Minimal Faraday client returning ok/error tuples",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Tiny Faraday JSON client with uniform ok/error tuple return, content-type-aware error extraction, and memoized connection — copyable third-party API seam.",
+  "keywords": [
+    "ruby",
+    "faraday",
+    "api-client"
+  ],
+  "entities": [
+    "Hubspot::Api",
+    "Faraday",
+    "handle_response"
+  ],
+  "see_also": [],
+  "source": "inbox/code/internal-app/app/services/hubspot/api.rb",
+  "processed_at": "2026-11-23",
+  "chunks": [
+    {
+      "section": "Code",
+      "content": "## Code\n```ruby\n# frozen_string_literal: true\n\nmodule Hubspot\n  class Api\n    def get(path, **query_params)\n      Rails.logger.debug { \"[HUBSPOT GET] #{path}\" }\n      response = conn.get(path, query_params) do |req|\n        req.headers[\"Authorization\"] = \"Bearer #{api_key}\"\n      end\n\n      result = handle_response(response)\n      result[\"results\"] || result\n    end\n\n    def post(path, payload)\n      Rails.logger.debug { \"[HUBSPOT POST] #{path}\" }\n      response = conn.post(path) do |req|\n        req.headers[\"Authorization\"] = \"Bearer #{api_key}\"\n        req.body = payload.to_json\n      end\n\n      handle_response(response)\n    end\n\n    private\n\n    def handle_response(response)\n      if response.success?\n        { ok: response.body }\n      elsif response.headers[\"content-type\"].include?(\"json\")\n        { error: { status: response.status, message: response.body[\"message\"] } }\n      else\n        { error: { status: response.status, message: response.body } }\n      end\n    end\n\n    def conn\n      @conn ||= Faraday.new(url: \"https://api.hubapi.com/\") do |faraday|\n        faraday.request :json\n        faraday.response :json\n      end\n    end\n\n    def api_key\n      Rails.application.credentials.hubspot[:api_key]\n    end\n  end\nend\n```"
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n- `{ok:} / {error:}` tuples force callers to branch explicitly instead of rescuing exceptions for control flow.\n- Content-type check avoids JSON-key errors on HTML/plain error pages from providers.\n- Memoized `Faraday.new` with `:json` middleware keeps every endpoint to a 5-line method."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}

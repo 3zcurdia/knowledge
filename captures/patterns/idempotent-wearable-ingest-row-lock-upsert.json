@@ -1,0 +1,31 @@
+{
+  "id": "captures/patterns/idempotent-wearable-ingest-row-lock-upsert",
+  "path": "captures/patterns/idempotent-wearable-ingest-row-lock-upsert.md",
+  "title": "Idempotent wearable ingest with row lock and upsert",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Rails time-series ingest that stays correct under Sidekiq retries and duplicate webhook deliveries: lock the per-user device row inside a transaction, preload existing day rows for the date range into a hash, then upsert each day via sync. Paired with a template-method loader that iterates resource names and tolerates only the vendor-known 400 validation/resource-path error. Ask how to make wearable or third-party daily ingest idempotent, serialize concurrent pulls, or selectively swallow vendor 400s.",
+  "keywords": ["rails", "time-series-ingest", "row-lock"],
+  "entities": ["DeviceUtils", "DeviceDataLoading", "UserDevice", "safe_load!", "exec_request!"],
+  "see_also": ["external-api-adapter-boundary-wearable-sync.md", "hmac-webhook-durable-inbox.md"],
+  "source": "inbox/code/internal-app",
+  "processed_at": "2026-11-23",
+  "chunks": [
+    {
+      "section": "Code",
+      "content": "## Code\n\n```ruby\n# app/models/concerns/device_utils.rb\ndef safe_load!(user_id, date_or_range, parsed_response)\n  date_or_range = date_or_range.is_a?(Date) ? (date_or_range..date_or_range) : date_or_range\n  transaction do\n    UserDevice.where(user_id: user_id, device: Device.fitbit_activity_monitor.limit(1)).lock.first\n    records = where(user_id: user_id, day: date_or_range).each_with_object({}) { |entry, memo| memo[entry.day] = entry }\n    date_or_range.each do |date|\n      record = records[date] || new(user_id: user_id, day: date)\n      record.sync!(parsed_response[date])\n    end\n  end\nend\n```\n\n```ruby\n# app/models/concerns/device_data_loading.rb\ndef load_data!(user, &request)\n  resource_names.each do |resource|\n    exec_request!(user, resource, request)\n  end\nend\n```\n\n```ruby\n# app/models/concerns/device_data_loading.rb\ndef exec_request!(user, resource, request)\n  response = request.call(resource)\n  update_series_for_user(user, response)\nrescue FitbitClient::Error => e\n  # Skip the current resource if the endpoint returns 400 due the user\n  # device does not log data for the requested resource type\n  if e.response.status == 400\n    json_response = JSON.parse(e.response.body)\n    return if json_response.dig('errors', 0, 'errorType') == 'validation' &&\n              json_response.dig('errors', 0, 'fieldName') == 'resource path'\n  end\n  raise(e)\nend\n```"
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n\n- `lock.first` on the `UserDevice` row serializes concurrent pulls and webhook deliveries per user so two workers cannot interleave day-row creates.\n- Preloading `where(day: range)` into a hash turns N-day backfills into one SELECT plus in-memory lookup instead of N `find_or_create` round trips.\n- `records[date] || new(...)` plus `sync!` makes every replay an upsert: safe under Sidekiq retries and duplicate webhook deliveries.\n- `exec_request!` swallows only the vendor's known 400 `validation/resource path` (device never logs that resource) and re-raises everything else — selective tolerance instead of blanket rescue.\n- Copy when ingesting third-party time series per user per day; skip the lock when a unique index on `(user_id, day)` plus `upsert_all` already gives you the guarantee."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}

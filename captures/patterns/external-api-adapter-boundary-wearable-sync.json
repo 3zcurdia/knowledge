@@ -1,0 +1,31 @@
+{
+  "id": "captures/patterns/external-api-adapter-boundary-wearable-sync",
+  "path": "captures/patterns/external-api-adapter-boundary-wearable-sync.md",
+  "title": "External API adapter boundary for wearable sync",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Adapter object isolating a wearable vendor behind sync_account, load_data and subscription helpers. Covers transactional OAuth account creation, cached account invalidation, boolean-on-error sync, per-day sleep fallback for a broken range endpoint, 7-day activity windows, and user-id-embedded subscription ids. Ask how to bound third-party OAuth and time-series quirks behind one seam so workers stay vendor-free.",
+  "keywords": ["rails", "adapter-pattern", "oauth2"],
+  "entities": ["DeviceAdapter::Fitbit", "device_adapter/fitbit.rb", "UserDevice", "Oauth2Account", "subscription_id"],
+  "see_also": ["idempotent-wearable-ingest-row-lock-upsert.md", "hmac-webhook-durable-inbox.md"],
+  "source": "inbox/code/internal-app",
+  "processed_at": "2026-11-23",
+  "chunks": [
+    {
+      "section": "Code",
+      "content": "## Code\n\n```ruby\n# app/models/device_adapter/fitbit.rb\ndef sync_account!(fitbit_user_id, token, refresh_token, expires_at)\n  ActiveRecord::Base.transaction do\n    # CREATE OR UPDATE the user device\n    UserDevice.where(user_id: @user.id, device: Device.fitbit_activity_monitor.first).first_or_create!\n\n    # CREATE OR UPDATE the user linked account\n    linked_account = create_or_update_user_linked_account!(fitbit_user_id)\n\n    # CREATE OR UPDATE the OAuth2 Account\n    create_or_update_oauth2_account!(linked_account, refresh_token, token, expires_at)\n\n    # Invalidate cached account\n    @account = nil\n    true\n  end\nrescue => e\n  Rails.logger.error \"[DeviceAdapter::Fitbit#sync_account Error] #{e.message}\"\n  false\nend\n```\n\n```ruby\n# app/models/device_adapter/fitbit.rb\ndef load_data!\n  # Fix due fitbit api is broken!\n  # load_data_for_sleep_by_range!(Date.current - 7.days, Date.current)\n  current_date = Date.current\n  ((current_date - 7.days)..current_date).each do |date|\n    load_data_sleep!(date)\n  end\n\n  DeviceActivity.load_data!(user) { |resource| client.activity_time_series(resource, current_date, '7d') }\nend\n```\n\n```ruby\n# app/models/device_adapter/fitbit.rb\ndef load_data_sleep!(date_or_range)\n  if date_or_range.is_a?(Date)\n    DeviceSleep.load_data!(user.id, date_or_range) { client.sleep_logs_by_date(date_or_range) }\n  else\n    DeviceSleep.load_data!(user.id, date_or_range) { client.sleep_logs_by_date_range(date_or_range.begin, date_or_range.end) }\n  end\nend\n```\n\n```ruby\n# app/models/device_adapter/fitbit.rb\ndef load_data_weight!(date = nil)\n  if date\n    DeviceWeight.load_data!(user.id, date) { client.weight_logs(date) }\n  else # Fetch for 8 days\n    DeviceWeight.load_data!(user.id, default_date_range) { client.weight_logs(default_date_range.end, '7d') }\n  end\nend\n```\n\n```ruby\n# app/models/device_adapter/fitbit.rb\ndef subscribed?(type)\n  subscription = retrieve_subscription(type)\n  subscription && subscription.dig('apiSubscriptions', 0, 'subscriptionId') == subscription_id(type)\nend\n\ndef create_subscription(type)\n  client.add_subscription(type, subscription_id(type))\nend\n\ndef retrieve_subscription(type)\n  client.list_of_subscriptions(type)\nend\n\ndef remove_subscription(type)\n  client.delete_subscription(type, subscription_id(type))\nend\n```\n\n```ruby\n# app/models/device_adapter/fitbit.rb\ndef subscription_id(type)\n  \"#{@user.id}#{type}\"\nend\n```"
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n\n- One seam (`sync/load/subscribed?/create/remove_subscription`) hides OAuth2 account rows, `first_or_create!` device rows, per-day versus per-range vendor calls, and the broken-range-endpoint workaround.\n- `subscription_id` embeds the local user id (`\"#{user.id}#{type}\"`) so inbound webhook rows route back without a lookup table; `user_id_from_subscription_id` parses it back with a leading-digits regex.\n- Transactional `sync_account!` returns boolean and logs instead of raising, so OAuth callbacks stay thin; callers that need strictness should check the return value.\n- Copy when integrating any per-user OAuth vendor with webhooks; avoid stuffing `client.*` calls directly into workers — the vendor's broken-range workaround would then leak everywhere."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}

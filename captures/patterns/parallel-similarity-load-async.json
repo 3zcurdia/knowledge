@@ -1,0 +1,40 @@
+{
+  "id": "captures/patterns/parallel-similarity-load-async",
+  "path": "captures/patterns/parallel-similarity-load-async.md",
+  "title": "Parallel similarity fan-out with load_async",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Fan-out per-candidate ActiveRecord queries with load_async for parallel DB execution, then merge/uniq/sort in Ruby — simple parallel similarity search pattern.",
+  "keywords": [
+    "rails",
+    "activerecord",
+    "concurrency"
+  ],
+  "entities": [
+    "ItemsSimilarityQuery",
+    "ActionQuery",
+    "load_async",
+    "similar_model"
+  ],
+  "see_also": [],
+  "source": "inbox/code/internal-app/app/queries/api/items_similarity_query.rb",
+  "processed_at": "2026-11-23",
+  "chunks": [
+    {
+      "section": "Code",
+      "content": "## Code\n```ruby\n# frozen_string_literal: true\n\nmodule Api\n  class ItemsSimilarityQuery < ActionQuery\n    def initialize(scope: Item, params: {})\n      @initial_scope = scope.includes(:manufacturer, :item_category, :recalls)\n      @params = params\n    end\n\n    def call\n      initial_scope\n        .then(&method(:search))\n    end\n\n    private\n\n    attr_reader :initial_scope, :params\n\n    def search(scope)\n      if params[:model].present?\n        search_by_model(scope)\n      elsif params[:candidates].present?\n        search_by_candidates(scope)\n      else\n        raise ActionController::ParameterMissing, \"model or candidates\"\n      end\n    end\n\n    def search_by_model(scope)\n      scope.similar_model(params[:model]).limit(10)\n    end\n\n    def search_by_candidates(scope)\n      params[:candidates]\n        .split(\",\")\n        .reject { |c| c.size <= 4 }\n        .flat_map { scope.similar_model(_1).load_async.limit(10) }\n        .compact\n        .uniq\n        .sort_by { |a, b| a&.confidence.to_f <=> b&.confidence.to_f }\n    end\n  end\nend\n```"
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n- `load_async` inside `flat_map` fires one query per candidate concurrently on the same pool — no threads, no jobs, just the Rails 7 async executor.\n- `reject short tokens` plus `compact/uniq/sort_by confidence` moves ranking to Ruby, keeping SQL simple and composable via `ActionQuery.then`.\n- Copyable when an endpoint accepts a comma list and must return top-N merged matches with bounded per-branch limits."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}

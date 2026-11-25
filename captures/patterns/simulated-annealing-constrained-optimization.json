@@ -1,0 +1,47 @@
+{
+  "id": "captures/patterns/simulated-annealing-constrained-optimization",
+  "path": "captures/patterns/simulated-annealing-constrained-optimization.md",
+  "title": "Simulated Annealing for Constrained Optimization",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Simulated annealing is a nature-inspired heuristic for constrained optimization problems where exact search is impractical. Adapted from physical annealing by three IBM researchers in 1983, it explores random solution changes, occasionally accepting worse moves early to escape local optima, then gradually reducing that tolerance as it cools toward a near-optimal solution. The technique applies across domains such as logistics, airline routing, molecular biology, scheduling, infrastructure planning, and robotics.",
+  "keywords": [
+    "simulated-annealing",
+    "constrained-optimization",
+    "heuristic-search",
+    "local-optima",
+    "metaheuristics"
+  ],
+  "entities": [
+    "IBM"
+  ],
+  "see_also": [],
+  "source": "inbox/video/The Most Metal Algorithm in Computer Science [I_0GBWCKft8].mkv",
+  "processed_at": "2026-11-25",
+  "chunks": [
+    {
+      "section": "Constrained optimization",
+      "content": "## Constrained optimization\n\nA constrained optimization problem requires finding the best balance among competing factors while keeping the solution feasible. Examples include placing factories, warehouses, and distribution centers while accounting for supplier prices, demand, material use, setup and maintenance costs, production capacity, operating costs, and environmental impact. Exact methods work well when the problem has a simple mathematical form, but problems with many interrelated variables can make exhaustive or exact search impractical."
+    },
+    {
+      "section": "Physical annealing analogy",
+      "content": "## Physical annealing analogy\n\nIn physical annealing, metal is heated and then cooled slowly. At high temperature, atoms move randomly; as temperature drops, they are less likely to move into higher-energy positions and tend to settle into a low-energy, defect-free crystal arrangement. Slow cooling gives atoms time to escape poor local arrangements before they become fixed."
+    },
+    {
+      "section": "Simulated annealing algorithm",
+      "content": "## Simulated annealing algorithm\n\nIn 1983, three IBM researchers adapted this process into an optimization algorithm. The algorithm starts from a random solution and repeatedly applies random changes. Early in the search, it accepts some changes that worsen the objective, analogous to atoms temporarily moving into higher-energy states. This allows the search to escape local optima. As the \"temperature\" decreases, the algorithm becomes less willing to accept worsening changes and converges toward a near-optimal solution."
+    },
+    {
+      "section": "Applications",
+      "content": "## Applications\n\nSimulated annealing has been applied to facility location and product planning, airline route planning under profit, fuel, travel-time, and capacity constraints, protein structure prediction constrained by experimental data and physical feasibility, university exam scheduling, power generator siting, and robot route planning."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}

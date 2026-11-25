@@ -1,0 +1,40 @@
+{
+  "id": "captures/patterns/stripe-webhook-defensive-dispatch",
+  "path": "captures/patterns/stripe-webhook-defensive-dispatch.md",
+  "title": "Defensive webhook parsing with type dispatch",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Zero-validation webhook wrapper that safely parses JSON-or-Hash payloads, normalizes event type to symbol for dispatch, and never raises on malformed input.",
+  "keywords": [
+    "stripe",
+    "webhooks",
+    "ruby"
+  ],
+  "entities": [
+    "WebhookEvent",
+    "Stripe::Event",
+    "construct_from",
+    "safe_parse"
+  ],
+  "see_also": [],
+  "source": "inbox/code/internal-app/app/services/stripe_payments/webhook_event.rb",
+  "processed_at": "2026-11-23",
+  "chunks": [
+    {
+      "section": "Code",
+      "content": "## Code\n```ruby\n# frozen_string_literal: true\n\nmodule StripePayments\n  class WebhookEvent\n    def initialize(payload)\n      @payload = payload\n    end\n\n    def type\n      @type ||= event.type.to_s.parameterize.underscore.to_sym if event.respond_to?(:type)\n    end\n\n    def id\n      @id ||= object.try(:id)\n    end\n\n    def customer_id\n      @customer_id ||= object.try(:customer)\n    end\n\n    protected\n\n    def event\n      @event ||= build_event\n    end\n\n    def object\n      @object ||= event.try(:data).try(:object)\n    end\n\n    def build_event\n      Stripe::Event.construct_from(safe_parse(@payload))\n    end\n\n    private\n\n    def safe_parse(payload)\n      return payload if payload.is_a?(Hash)\n\n      JSON.parse(payload)\n    rescue JSON::ParserError\n      Stripe::Event.construct_from({})\n    end\n  end\nend\n```"
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n- `construct_from` plus `safe_parse` accepts Hash or JSON string and degrades to an empty event instead of raising — webhooks stay 200-OK on garbage input.\n- `parameterize.underscore.to_sym` turns dotted vendor types into stable Ruby dispatch keys for handler lookup.\n- `try` chains on `data.object` isolate callers from missing-shape payloads."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}

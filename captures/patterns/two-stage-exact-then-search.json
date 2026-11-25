@@ -1,0 +1,40 @@
+{
+  "id": "captures/patterns/two-stage-exact-then-search",
+  "path": "captures/patterns/two-stage-exact-then-search.md",
+  "title": "Two-stage exact-then-fulltext search with success flag",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Cheap exact-match query first, expensive pg_search fallback only on miss, with explicit success flag — avoids fulltext cost on exact hits.",
+  "keywords": [
+    "rails",
+    "pg-search",
+    "search"
+  ],
+  "entities": [
+    "SearchItemsQuery",
+    "ActionQuery",
+    "full_text_search",
+    "successful?"
+  ],
+  "see_also": [],
+  "source": "inbox/code/internal-app/app/queries/search_items_query.rb",
+  "processed_at": "2026-11-23",
+  "chunks": [
+    {
+      "section": "Code",
+      "content": "## Code\n```ruby\n# frozen_string_literal: true\n\nclass SearchItemsQuery < ActionQuery\n  attr_reader :terms\n\n  def initialize(scope: Item, params: {})\n    @initial_scope = scope.includes(:manufacturer, :item_category, :recalls,\n                                    documents: { file_attachment: :blob })\n                          .where.not(item_category: ItemCategory.find_by(name: \"part\"))\n    @params = params\n    @terms = params[:terms]\n    @successful = false\n  end\n\n  def call\n    initial_scope\n      .then(&method(:search))\n  end\n\n  def successful?\n    @successful\n  end\n\n  private\n\n  attr_reader :initial_scope, :params\n\n  def search(scope)\n    return scope.none if terms.blank?\n\n    results = scope.where(model: terms)\n    if results.exists?\n      @successful = true\n      return results\n    end\n\n    results = scope.full_text_search(terms)\n    @successful = true if results.exists?\n    results\n  end\nend\n```"
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n- Exact `where` plus `exists?` short-circuits the expensive `pg_search` path on the common hit, saving a full-text query per exact lookup.\n- `successful?` flag lets controllers decide between results, empty-state, or suggestion UI without re-querying.\n- `scope.none` on blank terms avoids accidental full-table scans from empty input."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}

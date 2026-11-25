@@ -1,0 +1,40 @@
+{
+  "id": "captures/patterns/serial-decoder-template-method",
+  "path": "captures/patterns/serial-decoder-template-method.md",
+  "title": "Serial-number decoder family via template-method + named captures",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Template-method base class with per-vendor regex subclasses decodes manufacture dates from serial numbers using named captures and lookup tables, filtering future dates.",
+  "keywords": [
+    "ruby",
+    "serial-parser",
+    "template-method"
+  ],
+  "entities": [
+    "ActiveDecoder",
+    "GeDecoder",
+    "serial_regex",
+    "app/decoders/active_decoder.rb"
+  ],
+  "see_also": [],
+  "source": "inbox/code/internal-app/app/decoders/active_decoder.rb",
+  "processed_at": "2026-11-23",
+  "chunks": [
+    {
+      "section": "Code",
+      "content": "## Code\n```ruby\n# frozen_string_literal: true\n\n# Decode a serial number\nclass ActiveDecoder\n  def self.decode(serial_number)\n    new(serial_number).data\n  end\n\n  def self.decode_manufacture_date(serial_number)\n    new(serial_number).manufacture_date\n  end\n\n  def initialize(serial_number)\n    @serial_number = serial_number\n  end\n\n  def manufacture_date\n    return unless valid?\n\n    years.filter_map do |year|\n      date = Date.new(year.to_i, Date::ABBR_MONTHNAMES.index(month), 1)\n      \"#{month}/#{year}\" if date < Time.zone.today\n    end.join(\" \").upcase\n  end\n\n  def week = serial_data[\"week\"].to_i\n\n  def data\n    @data ||= {\n      years: years,\n      month: month\n    }\n  end\n\n  def valid?\n    serial_data.present? && years.present? && month.present?\n  end\n\n  protected\n\n  def estimate_month_from_week\n    Date::ABBR_MONTHNAMES[(Date.new(years.first.to_i, 1, 1) + week.weeks).month]\n  end\n\n  def serial_data\n    @serial_data ||= @serial_number.match(serial_regex)&.named_captures || {}\n  end\n\n  def serial_regex\n    raise NotImplementedError, \"You must implement the serial_regex method for #{self.class}\"\n  end\nend\n```\n\n```ruby\n# frozen_string_literal: true\n\n# General Electric decoder\nclass GeDecoder < ActiveDecoder\n  def years = YEARS[serial_data[\"year\"]]\n  def month = MONTHS[serial_data[\"month\"]]\n\n  private\n\n  def serial_regex\n    @serial_regex ||= /\\A(?<month>[ADFGHLMRSTVZ])(?<year>[ADFGHLMRSTVZ])\\w{6,7}\\z/\n  end\n\n  YEARS = {\n    \"A\" => %w[1991 2003 2015],\n    \"D\" => %w[1992 2004 2016],\n    \"F\" => %w[1993 2005 2017],\n    \"G\" => %w[1994 2006 2018],\n    \"H\" => %w[1995 2007 2019],\n    \"L\" => %w[1996 2008 2020],\n    \"M\" => %w[1997 2009 2021],\n    \"R\" => %w[1998 2010 2022],\n    \"S\" => %w[1999 2011 2023],\n    \"T\" => %w[2000 2012 2024],\n    \"V\" => %w[2001 2013 2025],\n    \"Z\" => %w[2002 2014 2026]\n  }.freeze\n\n  MONTHS = {\n    \"A\" => \"Jan\",\n    \"D\" => \"Feb\",\n    \"F\" => \"Mar\",\n    \"G\" => \"Apr\",\n    \"H\" => \"May\",\n    \"L\" => \"Jun\",\n    \"M\" => \"Jul\",\n    \"R\" => \"Aug\",\n    \"S\" => \"Sep\",\n    \"T\" => \"Oct\",\n    \"V\" => \"Nov\",\n    \"Z\" => \"Dec\"\n  }.freeze\nend\n```"
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n- Template-method with `NotImplementedError` keeps vendor variants to one regex plus two maps — new vendor means one small subclass, no conditional sprawl.\n- `match.named_captures` decouples parsing from interpretation; ambiguous year letters resolve to candidate lists filtered against today.\n- `estimate_month_from_week` shows how week-based serials reuse the same seam without changing callers (`decode` / `decode_manufacture_date`)."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}

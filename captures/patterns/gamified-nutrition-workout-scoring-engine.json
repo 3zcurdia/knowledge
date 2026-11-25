@@ -1,0 +1,31 @@
+{
+  "id": "captures/patterns/gamified-nutrition-workout-scoring-engine",
+  "path": "captures/patterns/gamified-nutrition-workout-scoring-engine.md",
+  "title": "Gamified nutrition and workout scoring rules engine",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Derived daily scoring: meal logs map circumstances to morning, afternoon and evening buckets and pass count, per-meal calorie cap, target-band, and BigDecimal macro-balance gates before writing 1 or 0 into a single per-user-per-day row via find_or_initialize_by; workouts map to cardio, strength or rest. Backed by a pure nutrition-math module and a target-minus-spent calculator. Ask how the nutrition score, macro balance ranges, or team leaderboard query work.",
+  "keywords": ["rails", "rules-engine", "gamification"],
+  "entities": ["Score", "MacroBalanceCalculator", "Count", "do_score", "nutrition_score", "record_score", "balanced?"],
+  "see_also": ["idempotent-wearable-ingest-row-lock-upsert.md"],
+  "source": "inbox/code/internal-app",
+  "processed_at": "2026-11-23",
+  "chunks": [
+    {
+      "section": "Code",
+      "content": "## Code\n\n```ruby\n# app/models/score.rb\ndef self.do_score(log, user)\n  if log.loggable_type == \"Recipe\"\n    case log.properties['circumstance'].to_i\n    when 1, 2\n      nutrition_score(user, :morning, log)\n    when 3, 4\n      nutrition_score(user, :afternoon, log)\n    else\n      nutrition_score(user, :evening, log)\n    end\n  elsif log.loggable_type == 'Exercise'\n    workout_score(user, log)\n  else\n    Rails.logger.error \"[ERROR::Score#do_score] : invalid loggable type : #{log.loggable_type.inspect}\"\n    false\n  end\nend\n```\n\n```ruby\n# app/models/score.rb\ndef self.nutrition_score(user, time, log)\n  circumstance = Recipe.time_period_to_circumstance(time)\n  current_logs_recipes = Log.recipes_for_score(user.id, log.day, circumstance)\n\n  # Should be 2 meals to archive the score\n  return record_score(user, log.day, time, 0) unless current_logs_recipes.count == 2\n\n  # Validate than the calories are lower than 550\n  if Recipe.where(id: current_logs_recipes.select(:loggable_id)).where('calories >= ?', MAX_CALORIES_PER_MEAL).exists?\n    return record_score(user, log.day, time, 0)\n  end\n\n  # The following operations takes into account all the logs for the\n  # specified user, day and period of time\n  total_calories = Count.new(user).current_b_calories_all_meals(time, log.day)\n  macro_details = user.get_tracked_macros(log.day, circumstance)\n  macros_balanced = MacroBalanceCalculator.balanced?(macro_details['percent_total_fat'], macro_details['percent_carbs'], macro_details['percent_protein'])\n\n  record_score(user, log.day, time, (-50..50).cover?(total_calories) && macros_balanced ? 1 : 0)\nend\n```\n\n```ruby\n# app/models/score.rb\ndef self.record_score(user, date, type = nil, value = nil)\n  score = Score.find_or_initialize_by(user_id: user.id, day: date) do |scr|\n    scr.user_id = user.id\n    scr.team_id = user.team_id\n    scr.coach_id = user.team.coach.id\n    scr.zipcode = user.info.zip_code\n    scr.day = date\n  end\n  score.assign_attributes({ type => value }) if type && value\n  score.save\nend\n```\n\n```ruby\n# app/models/macro_balance_calculator.rb\ndef self.balanced?(percent_calories_fats, percent_calories_carbs, percent_calories_proteins)\n  (0.10..0.30).cover?(percent_calories_fats) &&\n    (0.35..0.55).cover?(percent_calories_carbs) &&\n    (0.25..0.45).cover?(percent_calories_proteins)\nend\n```\n\n```ruby\n# app/models/macro_balance_calculator.rb\ndef self.b_calories(fats, carbs, proteins)\n  return 0 if fats.zero? && carbs.zero? && proteins.zero?\n  calories = raw_calories(fats, carbs, proteins)\n  percent_of_calories = percentage_of_calories(calories[:fat], calories[:carb], calories[:protein])\n  if balanced?(percent_of_calories[:fat], percent_of_calories[:carb], percent_of_calories[:protein])\n    format_b_calories(calories[:total])\n  else\n    0\n  end\nend\n```\n\n```ruby\n# app/models/count.rb\ndef current_b_calories_all_meals(time, date)\n  target_b_calories(time) - spent_b_calories_all_meals(time, date)\nend\n```"
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n\n- Four gates in order of cheapness (count, then per-meal cap via `EXISTS`, then target band, then macro balance) so the common fail-fast path never computes macros.\n- `find_or_initialize_by(user_id:, day:)` plus `assign_attributes({type => value})` keeps exactly one score row per user per day; re-logging re-derives instead of double-counting.\n- `MacroBalanceCalculator` is a pure `BigDecimal` module (9/4/4 kcal per gram) separate from the older float `MacroBalance` mixin — testable math versus model plumbing.\n- The weekly team leaderboard drops to raw SQL summing `cardio+strength+morning+afternoon+evening` per team; it is marked `#TODO clean up` — fast but brittle if columns change.\n- Copy the gate-then-upsert shape for any derived daily score; do not copy the circumstance magic numbers (`1..6`) without the `Recipe.time_period_to_circumstance` map beside them."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}

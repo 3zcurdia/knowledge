@@ -1,0 +1,40 @@
+{
+  "id": "captures/patterns/sti-rule-engine-conditions",
+  "path": "captures/patterns/sti-rule-engine-conditions.md",
+  "title": "STI rule engine with conditions_meet predicate",
+  "category": "captures/patterns",
+  "type": "patterns",
+  "summary": "Single-table-inheritance rule set where base model defines a predicate contract and subclasses implement matching logic, enabling extensible condition checks without conditionals.",
+  "keywords": [
+    "rails",
+    "sti",
+    "rule-engine"
+  ],
+  "entities": [
+    "RecallRule",
+    "RecallRules::MatchSerial",
+    "RecallRules::RangeSerial",
+    "conditions_meet?"
+  ],
+  "see_also": [],
+  "source": "inbox/code/internal-app/app/models/recall_rule.rb",
+  "processed_at": "2026-11-23",
+  "chunks": [
+    {
+      "section": "Code",
+      "content": "## Code\n```ruby\n# frozen_string_literal: true\n\nclass RecallRule < ApplicationRecord\n  belongs_to :recall\n\n  validates :parameters, presence: true\n\n  def conditions_meet?(_property_item)\n    raise NotImplementedError, \"You must implement #{self.class}##{__method__}\"\n  end\nend\n```\n\n```ruby\n# frozen_string_literal: true\n\nmodule RecallRules\n  class MatchSerial < RecallRule\n    store_accessor :parameters, [:serial]\n    validates :serial, presence: true\n\n    normalizes :serial, with: ->(serial) { serial.upcase.strip }\n\n    def conditions_meet?(property_item)\n      property_item.serial == serial\n    end\n  end\nend\n```\n\n```ruby\n# frozen_string_literal: true\n\nmodule RecallRules\n  class RangeSerial < RecallRule\n    store_accessor :parameters, %i[from_serial to_serial]\n    validates :from_serial, :to_serial, presence: true\n\n    normalizes :from_serial, with: ->(serial) { serial.upcase.strip }\n    normalizes :to_serial, with: ->(serial) { serial.upcase.strip }\n\n    def conditions_meet?(property_item)\n      range.cover?(property_item.serial)\n    end\n\n    private\n\n    def range\n      @range ||= from_serial..to_serial\n    end\n  end\nend\n```"
+    },
+    {
+      "section": "Why it matters",
+      "content": "## Why it matters\n- STI plus `store_accessor` gives schemaless per-rule params with validations and `normalizes` normalization in one place.\n- Callers iterate rules and call one predicate — adding a match type means adding a subclass, never editing a case statement.\n- Range built once and memoized shows the performance habit for hot predicates."
+    }
+  ],
+  "abstract": null,
+  "conclusion": null,
+  "numbers": [],
+  "servings": null,
+  "prep_time": null,
+  "cook_time": null,
+  "ingredients": [],
+  "steps": []
+}
