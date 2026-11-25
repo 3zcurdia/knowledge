@@ -25,7 +25,7 @@ npm run build
 The generated site is written to `web/_site/` and includes the Pagefind search
 bundle. GitHub Actions publishes that directory to GitHub Pages at:
 
-https://knowledge.ezcurdia.dev/
+https://kb.ezcurdia.dev/
 
 ## Content rules
 

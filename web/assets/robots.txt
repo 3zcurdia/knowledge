@@ -1,1 +1,1 @@
-Sitemap: https://knowledge.ezcurdia.dev/sitemap.xml
+Sitemap: https://kb.ezcurdia.dev/sitemap.xml
