@@ -1,0 +1,35 @@
+{% extends "base.njk" %}
+
+{% block content %}
+<section class="search-page" data-pagefind-ignore="all">
+  <header class="page-heading">
+    <p class="eyebrow">Full-text search</p>
+    <h1>Search the knowledge base</h1>
+    <p>Search across {{ knowledge.total }} entries, including code blocks, tables, and technical terms.</p>
+  </header>
+
+  <div class="search-panel">
+    <pagefind-input autofocus placeholder="Try “PostGIS”, “idempotent”, or “banana bread”"></pagefind-input>
+    <div class="search-filters">
+      <pagefind-filter-dropdown filter="category" label="Category" sort="alphabetical"></pagefind-filter-dropdown>
+      <pagefind-filter-dropdown filter="type" label="Type" sort="alphabetical"></pagefind-filter-dropdown>
+    </div>
+    <pagefind-summary default-message="Type at least two characters to search."></pagefind-summary>
+    <pagefind-results>
+      {% raw %}
+      <script type="text/pagefind-template">
+        <li class="pf-result custom-result">
+          <div class="result-meta">
+            <span>{{ meta.category }}</span>
+            <span>{{ meta.type }}</span>
+            {% if meta.date %}<time>{{ meta.date }}</time>{% endif %}
+          </div>
+          <h2><a href="{{ meta.url | default(url) | safeUrl }}">{{ meta.title }}</a></h2>
+          {% if excerpt %}<p>{{+ excerpt +}}</p>{% endif %}
+        </li>
+      </script>
+      {% endraw %}
+    </pagefind-results>
+  </div>
+</section>
+{% endblock %}

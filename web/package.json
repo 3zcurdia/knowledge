@@ -1,0 +1,17 @@
+{
+  "name": "knowledge-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('_site', { recursive: true, force: true })\"",
+    "dev": "eleventy --serve",
+    "build": "npm run clean && eleventy",
+    "index": "pagefind --site _site"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "3.1.8",
+    "@11ty/eleventy-plugin-syntaxhighlight": "5.0.2",
+    "pagefind": "1.6.0"
+  }
+}

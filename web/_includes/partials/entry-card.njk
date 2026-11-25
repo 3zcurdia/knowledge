@@ -1,0 +1,8 @@
+<article class="entry-card">
+  <div class="entry-card-meta">
+    <a href="{{ entry.category | categoryUrl }}">{{ entry.categoryLabel }}</a>
+    <time datetime="{{ entry.processedAt }}">{{ entry.processedAt }}</time>
+  </div>
+  <h3><a href="{{ entry.url }}">{{ entry.title }}</a></h3>
+  {% if entry.summary %}<p>{{ entry.summary }}</p>{% endif %}
+</article>

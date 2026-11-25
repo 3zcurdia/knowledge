@@ -1,0 +1,35 @@
+{% extends "base.njk" %}
+
+{% block content %}
+<section class="browse" data-pagefind-ignore="all">
+  <header class="page-heading">
+    <p class="eyebrow">Browse</p>
+    <h1>{% if activeCategory %}{{ knowledge.categories | findCategory(activeCategory) }}{% else %}All knowledge{% endif %}</h1>
+    <p>
+      {% if activeCategory %}
+        Entries in this category.
+      {% else %}
+        {{ knowledge.total }} entries across {{ knowledge.categories.length }} categories.
+      {% endif %}
+    </p>
+  </header>
+
+  {% for category in knowledge.categories %}
+    {% if not activeCategory or category.slug == activeCategory %}
+      <section class="browse-group" aria-labelledby="category-{{ category.slug }}">
+        <div class="section-heading">
+          <h2 id="category-{{ category.slug }}">{{ category.label }}</h2>
+          <span class="muted">{{ category.count }} entries</span>
+        </div>
+        <div class="entry-list">
+          {% for entry in knowledge.entries %}
+            {% if entry.category == category.name %}
+              {% include "partials/entry-card.njk" %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+  {% endfor %}
+</section>
+{% endblock %}

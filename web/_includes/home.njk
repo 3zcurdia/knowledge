@@ -1,0 +1,60 @@
+{% extends "base.njk" %}
+
+{% block content %}
+<section class="home" data-pagefind-ignore="all">
+  <div class="hero">
+    <p class="eyebrow">Personal knowledge base</p>
+    <h1>Technical knowledge, ready to find.</h1>
+    <p class="hero-copy">{{ site.description }}</p>
+    <button class="hero-search" type="button" data-open-search>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+      <span>Search {{ knowledge.total }} entries…</span>
+      <kbd>⌘ K</kbd>
+    </button>
+    <div class="hero-actions">
+      <a class="button" href="/browse.html">Browse all entries</a>
+      <a class="text-link" href="/search.html">Open full search <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+
+  <div class="stats" aria-label="Knowledge base statistics">
+    <div><strong>{{ knowledge.total }}</strong><span>entries</span></div>
+    <div><strong>{{ knowledge.categories.length }}</strong><span>categories</span></div>
+    <div><strong>{{ knowledge.types.length }}</strong><span>content types</span></div>
+    <div><strong>{{ knowledge.entries[0].processedAt }}</strong><span>last processed</span></div>
+  </div>
+
+  <section aria-labelledby="categories-heading">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Explore</p>
+        <h2 id="categories-heading">Categories</h2>
+      </div>
+      <a class="text-link" href="/browse.html">View all <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="category-grid">
+      {% for category in knowledge.categories %}
+        <a class="category-card" href="{{ category.url }}">
+          <span class="category-count">{{ category.count }}</span>
+          <strong>{{ category.label }}</strong>
+          <span>Browse entries <span aria-hidden="true">→</span></span>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section aria-labelledby="recent-heading">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Recently processed</p>
+        <h2 id="recent-heading">Latest knowledge</h2>
+      </div>
+    </div>
+    <div class="entry-list">
+      {% for entry in knowledge.entries | first(8) %}
+        {% include "partials/entry-card.njk" %}
+      {% endfor %}
+    </div>
+  </section>
+</section>
+{% endblock %}

@@ -1,0 +1,25 @@
+<aside id="sidebar" class="sidebar" data-pagefind-ignore aria-label="Knowledge categories">
+  <div class="sidebar-inner">
+    <nav aria-label="Knowledge">
+      <p class="nav-label">Explore</p>
+      <a class="nav-link {% if page.url == '/' | htmlBaseUrl %}active{% endif %}" href="/">Home</a>
+      <a class="nav-link {% if page.url == '/browse.html' | htmlBaseUrl %}active{% endif %}" href="/browse.html">All entries <span>{{ knowledge.total }}</span></a>
+      <a class="nav-link {% if page.url == '/search.html' | htmlBaseUrl %}active{% endif %}" href="/search.html">Search</a>
+    </nav>
+
+    <nav aria-label="Categories">
+      <p class="nav-label">Categories</p>
+      {% for category in knowledge.categories %}
+        <a class="nav-link {% if activeCategory == category.slug or entry.category == category.name %}active{% endif %}" href="{{ category.url }}">
+          <span>{{ category.label }}</span>
+          <span class="count">{{ category.count }}</span>
+        </a>
+      {% endfor %}
+    </nav>
+
+    <div class="sidebar-note">
+      <strong>{{ knowledge.total }} entries</strong>
+      <span>Built directly from the Markdown knowledge base.</span>
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,53 @@
+{% extends "base.njk" %}
+
+{% block content %}
+{% if notFound %}
+  <section class="empty-state" data-pagefind-ignore="all">
+    <p class="eyebrow">404</p>
+    <h1>Page not found</h1>
+    <p>The requested page is not part of this knowledge base.</p>
+    <p><a class="button" href="/">Back to the knowledge base</a></p>
+  </section>
+{% elif entry %}
+  <article class="article" data-pagefind-body>
+    <header class="article-header">
+      <nav class="breadcrumbs" data-pagefind-ignore aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <a href="/browse.html">Browse</a>
+        <span>/</span>
+        <a href="{{ entry.category | categoryUrl }}">{{ entry.categoryLabel }}</a>
+      </nav>
+
+      <h1 data-pagefind-meta="title">{{ entry.title }}</h1>
+      {% if entry.summary %}<p class="article-summary">{{ entry.summary }}</p>{% endif %}
+
+      <div class="article-meta" data-pagefind-ignore>
+        <span class="category-badge">{{ entry.categoryLabel }}</span>
+        <time datetime="{{ entry.processedAt }}">{{ entry.processedAt }}</time>
+        {% if entry.source %}<span class="source-path" title="{{ entry.source }}">{{ entry.source }}</span>{% endif %}
+      </div>
+
+      {% if entry.keywords.length %}
+        <ul class="tag-list" data-pagefind-ignore aria-label="Keywords">
+          {% for keyword in entry.keywords %}<li>{{ keyword }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+    </header>
+
+    <div class="article-layout">
+      <aside class="toc" data-pagefind-ignore aria-label="On this page">
+        <p class="toc-title">On this page</p>
+        <nav data-toc></nav>
+      </aside>
+      <div class="prose">
+        {{ content | safe }}
+      </div>
+    </div>
+  </article>
+{% else %}
+  <section class="prose" data-pagefind-ignore="all">
+    {{ content | safe }}
+  </section>
+{% endif %}
+{% endblock %}
