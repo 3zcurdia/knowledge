@@ -1,8 +1,8 @@
 export default {
   title: "Knowledge",
-  tagline: "A searchable technical knowledge base",
+  tagline: "A searchable personal knowledge space",
   description:
-    "A personal knowledge base of technical patterns, observations, concepts, benchmarks, papers, recipes, and project notes.",
+    "A personal knowledge space for ideas, technical notes, recipes, articles, and project details—built for a RAG system and ready to browse anytime.",
   author: "Luis Ezcurdia",
   url: "https://kb.ezcurdia.dev",
 };
