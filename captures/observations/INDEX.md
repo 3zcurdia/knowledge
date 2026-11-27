@@ -14,6 +14,7 @@
 - [Damascus Steel Metallurgy and Modern Research](damascus-steel-metallurgy.md) — Crucible wootz steel shows dendritic segregation and possible carbon nanotubes, with modern laser methods exceeding historic strength.
 - [Extending Server Lifetimes Flatters AI Profits](extended-server-lifetimes-inflate-ai-profits.md) — Microsoft, Google, and Meta extended assumed AI server life from 4 to 6 years, moving billions in cost downstream.
 - [Ford Easy Fuel Capless Fuel System](ford-easy-fuel-capless-system.md) — Ford Easy Fuel uses a spring-loaded flapper instead of a gas cap, needing aftermarket plugs for real theft protection.
+- [Why P versus NP remains open](history-and-current-status-of-p-versus-np.md) — Traces P versus NP history, community belief, proof barriers, independence, and unverified claimed solutions.
 - [Invision AI: Adopting Elixir to Simplify System Architecture](invision-elixir-adoption.md) — Invision AI replaced C++, Go, and Python with Elixir and Phoenix LiveView for simpler concurrent real-time mobility systems.
 - [The Joy of Simpler Systems](joy-of-functional-languages.md) — Functional Elixir code builds trust through pure functions without hidden state, making refactoring and testing simpler than Ruby OOP.
 - [The Consensus Causal Model of the Late Bronze Age Collapse](late-bronze-age-collapse-consensus-causes.md) — Scholars favor an all-of-the-above model combining drought, centralized palace economies, warfare, and contagious trade disruption.
@@ -25,6 +26,7 @@
 - [Local LLM Inference Depends More on Framework Than Raw RAM](local-llm-inference-framework-over-ram.md) — A 22B model ran on 16GB Linux GPU but failed on 24GB Mac Mini, proving framework and quantization outweigh memory.
 - [Loop Engineering: Coding Agent Infrastructure](loop-engineering-agent-infrastructure.md) — Loop engineering replaces manual prompting with scheduled automations, worktrees, skills, connectors, subagents, and persistent memory.
 - [Loop Engineering: The Hype-Skepticism View](loop-engineering-hype-skepticism.md) — Loop engineering merely relabels prompt and context engineering and cannot verify architecture, maintainability, or design quality.
+- [Complexity landscape around P and NP](p-versus-np-complexity-landscape-status.md) — Maps proved separations, counting classes, NP-intermediate candidates, and unresolved factoring and graph-isomorphism status.
 - [PostGIS Daily Replication Over Live Proxy](postgis-daily-replication-over-live-proxy.md) — Nearest-cities queries use daily replicated tables for fast indexed reads because static city data tolerates sync lag.
 - [PWA Offline Mode: IndexedDB Queue Over Native Asset Handling](pwa-offline-mode-indexeddb-queue.md) — Offline PWA serves a minimal cached page and queues photos in IndexedDB for upload after connectivity returns.
 - [TPU vs GPU Microarchitecture Trade-offs](tpu-vs-gpu-microarchitecture-tradeoffs.md) — TPU v1 spends 2% of its die on control logic and beats K80 15x at half the power; GPUs answer with tensor cores.

@@ -7,9 +7,13 @@
 - [Apple Silicon Overview](apple-silicon-overview.md) — Defines Apple silicon as ARM-based in-house SoCs powering Macs iPhones and other devices with TSMC Samsung fabrication.
 - [Archaeological Evidence Bias in Collapse Narratives](archaeological-evidence-bias-in-collapse-narratives.md) — Explains how destruction preserves evidence while post-collapse poverty and lost records darken archaeology, biasing collapse severity and chronology.
 - [Bounding Volume Hierarchy (BVH) for ray tracing](bounding-volume-hierarchy-raytracing.md) — Describes BVH trees of bounding boxes that cut ray-scene intersection from linear to logarithmic without changing render output.
+- [Consequences of resolving P versus NP](consequences-of-resolving-p-versus-np.md) — Explains conditional cryptography, optimization, proof-discovery, and average-case consequences of P = NP or P ≠ NP.
 - [Conway's Law](conways-law.md) — States system designs mirror the communication structures of their organizations, with evidence for modularity in loosely coupled teams.
 - [Damascus Steel: History and Naming](damascus-steel-history.md) — Covers wootz-based Damascus steel origins in India Sri Lanka, Damascus naming theories, legends and reasons production ended.
 - [Memory Bandwidth Is the Bottleneck Systolic Arrays Solve](memory-bandwidth-bottleneck-systolic-arrays.md) — Memory wall leaves a naive chip 99.9% idle; Kung's systolic array amortizes fetches and the TPU's weight-stationary grid cuts weight traffic by the batch factor.
+- [NP-completeness and polynomial-time reductions](np-completeness-and-reductions.md) — Defines NP-completeness and NP-hardness, with SAT, Cook–Levin, reduction chains, and a practical completeness test.
 - [Occam's razor](occams-razor.md) — Recommends preferring simplest adequate explanation with fewest assumptions, surveying formulations applications mathematical basis and caveats.
+- [P and NP: definitions and equivalent formulations](p-versus-np-definitions.md) — Defines P and NP through machines, certificates, verifiers, Sudoku, and equivalent descriptive-complexity formulations.
+- [Polynomial time versus practical tractability](p-versus-np-tractability-caveats.md) — Separates asymptotic complexity from practical performance, with graph minors, simplex, and Levin's SUBSET-SUM semi-algorithm.
 - [Restart Is Not Retry](restart-is-not-retry.md) — Distinguishes restarting workflow state from safely retrying external effects since logs record decisions not completed outcomes.
 - [Year 2038 Problem Root Cause: 32-bit Unix Time Overflow](year-2038-problem-32-bit-overflow.md) — Explains Y2038 overflow when signed 32-bit Unix time exceeds maximum in January 2038, with impacts and 64-bit mitigation.

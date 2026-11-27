@@ -1,0 +1,27 @@
+{
+  "id": "captures/numbers/p-versus-np-proof-claim-counts",
+  "path": "captures/numbers/p-versus-np-proof-claim-counts.md",
+  "title": "P versus NP proof-claim counts, 1986–2016",
+  "category": "captures/numbers",
+  "type": "numbers",
+  "summary": "Records Gerhard J. Woeginger's 1986–2016 inventory of 116 purported P versus NP proofs: 61 claimed P = NP, 49 claimed P ≠ NP, and 6 claimed other results such as undecidability. These are claim counts, not accepted proofs or probabilities about the true answer.",
+  "keywords": ["p-versus-np", "woeginger", "proof-claims", "1986", "2016", "claimed-solutions"],
+  "entities": ["Gerhard J. Woeginger", "P = NP", "P ≠ NP", "The P-versus-NP page"],
+  "see_also": ["../observations/history-and-current-status-of-p-versus-np.md", "../concepts/p-versus-np-definitions.md"],
+  "source": "inbox/articles/P_versus_NP_problem.md",
+  "processed_at": "2026-11-26",
+  "chunks": [
+    {
+      "section": "",
+      "content": "Gerhard J. Woeginger's catalog records purported solutions, not accepted proofs.\n"
+    },
+    {
+      "section": "Inventory",
+      "content": "## Inventory\n\n| Claim type | Count |\n| --- | --- |\n| Proofs of P = NP | 61 |\n| Proofs of P ≠ NP | 49 |\n| Other results, such as undecidability | 6 |\n| **Total** | **116** |\n\nPeriod: 1986–2016.\n\nSource page: https://wscor.win.tue.nl/woeginger/P-versus-NP.htm\n"
+    },
+    {
+      "section": "Interpretation",
+      "content": "## Interpretation\n\nThe counts show repeated attempts to claim a resolution. They do not measure the probability that either answer is true, and P versus NP remains unsolved.\n"
+    }
+  ]
+}

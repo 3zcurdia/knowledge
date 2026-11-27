@@ -14,6 +14,8 @@
 - [LLM Benchmarks — 5060 Ti 16GB (Vulcan)](llm-benchmark-data-5060-ti.md) — Benchmarks 10 quantized LLMs on RTX 5060 Ti 16GB, with Qwen 0.8B fastest at 302 tokens per second generation.
 - [Moore's law](moores-law.md) — States transistor counts double about every two years at 41 percent CAGR, slowing to about every three years since 2010.
 - [MOSFET scaling — process node timeline](mosfet-scaling-process-nodes.md) — Lists MOSFET gate lengths shrinking from 20 micrometers in 1968 to 2nm in 2025 with 1nm projected.
+- [P versus NP proof-claim counts, 1986–2016](p-versus-np-proof-claim-counts.md) — Catalogs 116 purported proofs: 61 for P = NP, 49 for P ≠ NP, and 6 for other results.
+- [P versus NP researcher-poll results](p-versus-np-researcher-polls.md) — Records Gasarch polls from 2001 to 2018, rising from 61% to 88% belief in P ≠ NP.
 - [Power Transformer Lead Times and Prices](power-transformer-supply-constraints.md) — Transformers take 2.5 years to deliver, cost 77% more than 2019, and the US is short 3 in 10.
 - [Ray Tracing Performance Benchmarks — Ruby vs Elixir](ray-tracing-performance-benchmarks.md) — Apple M4 Pro test shows Elixir with BVH and parallelism up to 702x faster than single-core Ruby.
 - [Ruby Performance Benchmarks: 2025-2026 PR Roundup](ruby-performance-benchmarks-2025-2026.md) — Lists 2025 to 2026 Ruby PR speedups including 45.55x String scrub and 800000x BigDecimal multiplication.

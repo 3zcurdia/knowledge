@@ -1,0 +1,35 @@
+{
+  "id": "captures/concepts/np-completeness-and-reductions",
+  "path": "captures/concepts/np-completeness-and-reductions.md",
+  "title": "NP-completeness and polynomial-time reductions",
+  "category": "captures/concepts",
+  "type": "concepts",
+  "summary": "Defines NP-completeness and NP-hardness, explains the Cook–Levin theorem, and shows how polynomial-time reductions transfer hardness. Includes the Sudoku-to-Latin-squares-to-tri-partition-to-3-SAT-to-SAT chain and a practical two-step completeness test: prove NP membership and reduce a known NP-complete problem to the target.",
+  "keywords": ["np-completeness", "np-hard", "polynomial-time-reduction", "sat", "cook-levin-theorem", "3-sat", "sudoku"],
+  "entities": ["NP-complete", "NP-hard", "Cook–Levin theorem", "Boolean satisfiability problem", "SAT", "Stephen Cook", "The complexity of theorem proving procedures", "Leonid Levin", "Sudoku", "Latin squares", "tri-partite graphs", "3-SAT", "L′ ≤_p L", "P ≠ NP"],
+  "see_also": ["p-versus-np-definitions.md", "p-versus-np-tractability-caveats.md", "consequences-of-resolving-p-versus-np.md"],
+  "source": "inbox/articles/P_versus_NP_problem.md",
+  "processed_at": "2026-11-26",
+  "chunks": [
+    {
+      "section": "",
+      "content": "NP-completeness identifies problems that represent the full difficulty of NP. A polynomial-time algorithm for any NP-complete problem would imply P = NP.\n"
+    },
+    {
+      "section": "Definitions",
+      "content": "## Definitions\n\nA decision problem is **NP-complete** iff it is in NP and every problem in NP reduces to it in polynomial time. It is **NP-hard** if every NP problem reduces to it; NP-hard problems need not be in NP and need not have polynomial-time-verifiable answers.\n\nIf `L ∈ NP`, proving that an already NP-complete problem reduces to `L` is enough to prove `L` NP-complete.\n"
+    },
+    {
+      "section": "Why SAT matters",
+      "content": "## Why SAT matters\n\nThe Cook–Levin theorem establishes that Boolean satisfiability (`SAT`) is NP-complete. Every NP instance can be transformed mechanically into a SAT instance in polynomial time. SAT was the first natural problem proved NP-complete; reductions subsequently made it practical to transfer hardness across many domains.\n\nStephen Cook stated the precise problem in the 1971 paper “The complexity of theorem proving procedures”; Leonid Levin independently introduced it in 1973.\n"
+    },
+    {
+      "section": "Reduction example",
+      "content": "## Reduction example\n\nThe article's generalized Sudoku problem is NP-complete through a chain:\n\n`Sudoku → completing Latin squares → partitioning tri-partite graphs into triangles → 3-SAT → SAT`\n\nA polynomial-time solution at any link yields a polynomial-time solution for the next, and a polynomial-time SAT algorithm yields polynomial-time algorithms for every NP problem. Problems linked by such reductions are computationally “the same problem” up to polynomial-time transformations.\n"
+    },
+    {
+      "section": "Completeness test",
+      "content": "## Completeness test\n\nTo classify a new problem:\n\n1. Show it belongs to NP by giving a polynomial-time verifier and polynomial-size certificate.\n2. Reduce a known NP-complete problem to it in polynomial time.\n\nNo polynomial-time algorithm is known for any NP-complete problem. This is evidence for the prevailing `P ≠ NP` belief, not a proof of separation.\n"
+    }
+  ]
+}

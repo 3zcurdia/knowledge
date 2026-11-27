@@ -1,0 +1,35 @@
+{
+  "id": "captures/concepts/p-versus-np-definitions",
+  "path": "captures/concepts/p-versus-np-definitions.md",
+  "title": "P and NP: definitions and equivalent formulations",
+  "category": "captures/concepts",
+  "type": "concepts",
+  "summary": "Defines P and NP through deterministic machines, certificates, verifiers, and existential witnesses. Includes generalized versus fixed-size Sudoku, formal language notation, and the equivalent descriptive-complexity statement P = NP iff FO(LFP) = ESO. Also notes the polynomial-hierarchy equivalence and shows with COMPOSITE that membership in NP does not imply hardness.",
+  "keywords": ["p-versus-np", "polynomial-time", "nondeterminism", "certificate-verifier", "descriptive-complexity", "sudoku", "composite"],
+  "entities": ["P", "NP", "nondeterministic polynomial time", "deterministic polynomial-time Turing machine", "P ⊆ NP", "T_M(n) ∈ O(n^k)", "COMPOSITE", "AKS primality test", "Fagin's theorem", "existential second-order logic", "ESO", "Immerman–Vardi theorem", "first-order logic with a least fixed-point operator", "FO(LFP)", "PH"],
+  "see_also": ["np-completeness-and-reductions.md", "p-versus-np-tractability-caveats.md", "../observations/history-and-current-status-of-p-versus-np.md"],
+  "source": "inbox/articles/P_versus_NP_problem.md",
+  "processed_at": "2026-11-26",
+  "chunks": [
+    {
+      "section": "",
+      "content": "The P versus NP problem asks whether every decision problem with polynomial-time-verifiable positive answers also has a polynomial-time algorithm that decides all instances. “Quickly” means polynomial in input length, not necessarily fast in practice.\n"
+    },
+    {
+      "section": "The question",
+      "content": "## The question\n\n- **P** is the class of decision problems solvable by a deterministic polynomial-time Turing machine.\n- **NP** (“nondeterministic polynomial time”) is the class whose positive answers have polynomial-size certificates checkable in polynomial time. Equivalently, a nondeterministic polynomial-time Turing machine can find an accepting path; nondeterminism is not randomness.\n- Clearly `P ⊆ NP`; the open question is whether the inclusion is strict.\n\nFor generalized Sudoku on an `n^2 × n^2` grid, a filled grid is easy to verify row-by-row, column-by-column, and across its `n × n` boxes using integers `1` through `n^2`. No polynomial-time decision algorithm is known. Fixed-size Sudoku is different: finitely many grids make it solvable by table lookup, so it is in P.\n"
+    },
+    {
+      "section": "Formal definitions",
+      "content": "## Formal definitions\n\nA deterministic polynomial-time machine `M` must halt on every input and satisfy `T_M(n) ∈ O(n^k)` for some constant `k`, where `T_M(n)` is its maximum running time on inputs of length `n`. Thus:\n\n`P = {L : L = L(M) for some deterministic polynomial-time Turing machine M}`\n\n`L(M) = {w ∈ Σ* : M accepts w}`\n\nA language `L` is in NP iff a polynomial-time decidable relation `R` and polynomial `p` exist such that:\n\n`x ∈ L ⟺ ∃y ( |y| ≤ p(|x|) ∧ R(x,y) )`\n\nThe witness `y` is a certificate. The formal problem asks whether polynomial-time decidable predicates are closed under polynomially bounded existential quantification.\n"
+    },
+    {
+      "section": "Equivalent formulations",
+      "content": "## Equivalent formulations\n\nOn finite ordered structures, descriptive complexity gives:\n\n- **Fagin's theorem:** NP is exactly existential second-order logic (`ESO`).\n- **Immerman–Vardi theorem:** P is exactly first-order logic with a least fixed-point operator (`FO(LFP)`).\n\nTherefore:\n\n`P = NP ⟺ FO(LFP) = ESO`\n\nThe polynomial hierarchy (`PH`) also yields `P = NP` iff `P = PH`.\n"
+    },
+    {
+      "section": "Boundaries",
+      "content": "## Boundaries\n\n`COMPOSITE = {x ∈ ℕ | x = pq for integers p, q > 1}` is in NP: a divisor `y` with `1 < y ≤ √x` is a checkable certificate. The AKS primality test also places `COMPOSITE` in P, illustrating that an NP problem need not be hard.\n"
+    }
+  ]
+}
