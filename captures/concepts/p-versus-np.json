@@ -1,0 +1,43 @@
+{
+  "id": "captures/concepts/p-versus-np",
+  "path": "captures/concepts/p-versus-np.md",
+  "title": "P versus NP",
+  "created_at": "2026-11-27",
+  "source": "inbox/articles/P_versus_NP_problem.md",
+  "summary": "Explains P versus NP in plain language: P problems are quick to solve, NP problems are quick to verify, NP-complete problems capture NP's full difficulty, and the unresolved question has major consequences for cryptography, optimization, and proof discovery.",
+  "entities": ["P", "NP", "NP-complete", "NP-hard", "reduction", "Boolean satisfiability", "SAT", "Sudoku", "traveling salesman problem", "Clay Mathematics Institute", "Millennium Prize Problems", "William Gasarch", "Gerhard Woeginger"],
+  "see_also": ["conways-law.md", "occams-razor.md"],
+  "tags": ["complexity-theory", "computer-science", "p-vs-np", "np-complete", "cryptography"],
+  "structure": [
+    {
+      "heading": "P versus NP",
+      "level": 1,
+      "content": "P versus NP asks whether every problem whose solution can be checked quickly can also be solved quickly. It is one of the most important open questions in computer science.\n"
+    },
+    {
+      "heading": "Core idea",
+      "level": 2,
+      "content": "- **P** problems are decision problems that a computer can solve in a reasonable amount of time as the input grows.\n- **NP** problems are decision problems where, if the answer is \"yes,\" there is a solution or proof that a computer can check quickly.\n- Every P problem is also in NP, because a problem you can solve quickly can also be checked quickly. The open question is the reverse: are there NP problems that can be checked quickly but cannot be solved quickly?\n\nA useful analogy is Sudoku. Checking a completed grid is easy; finding the solution from scratch can be much harder. The question is whether that gap is real for all such problems, or whether a fast general solving method exists but has not been found.\n"
+    },
+    {
+      "heading": "NP-complete problems",
+      "level": 2,
+      "content": "Some NP problems are special because they capture the full difficulty of NP. These are called **NP-complete** problems.\n\n- A problem is **NP-complete** if it is in NP and every other NP problem can be translated into it efficiently.\n- A problem is **NP-hard** if every NP problem can be translated into it efficiently, even if it is not itself in NP.\n- **Reduction** means converting one problem into another so that solving the second solves the first. If any NP-complete problem ever gets a fast general solution, then every NP problem gets one.\n\nBoolean satisfiability (SAT) was the first problem proved NP-complete. Many familiar problems, including generalized Sudoku, traveling salesman decision variants, and scheduling problems, are connected through reductions.\n"
+    },
+    {
+      "heading": "Why it matters",
+      "level": 2,
+      "content": "- **If P equals NP:** A fast general method for NP-complete problems would transform optimization, logistics, protein structure prediction, and automated proof discovery. It would also break most widely used cryptography, because many security systems rely on problems being easy to verify but hard to solve.\n- **If P does not equal NP:** It would confirm that some problems have no fast general solution, reinforcing the need for approximation, heuristics, special cases, and alternative problem formulations. Most modern cryptography would remain on firm theoretical ground.\n- **Practical caveat:** Even a proof that P equals NP might not help in practice if the method is too complex, nonconstructive, or only fast in theory.\n"
+    },
+    {
+      "heading": "Current status",
+      "level": 2,
+      "content": "P versus NP remains unsolved. It is one of the Clay Mathematics Institute Millennium Prize Problems, with a one-million-dollar prize for a correct solution.\n\nMost researchers believe P does not equal NP. William Gasarch's polls showed belief in P not equal to NP rising from 61% in 2001 to 88% in 2018; among experts in 2018, 99% believed P does not equal NP. Decades of work have produced no fast general algorithm for any NP-complete problem, but belief and lack of counterexamples are not proof.\n\nMany claimed proofs have been published, but none has been accepted. Gerhard Woeginger cataloged 116 purported proofs from 1986 to 2016: 61 claiming P equals NP, 49 claiming P does not equal NP, and 6 claiming other results.\n"
+    },
+    {
+      "heading": "Concepts worth remembering",
+      "level": 2,
+      "content": "- **Easy to check is not the same as easy to solve.** Verification and discovery are different tasks.\n- **NP-complete problems are the pressure points.** One fast breakthrough there would change everything in NP.\n- **Reductions connect problems.** They show that many hard problems are different faces of the same computational difficulty.\n- **The answer changes more than theory.** Cryptography, optimization, and mathematical discovery all depend on the outcome.\n- **Open means open.** Strong community belief is evidence of difficulty, not a proof.\n"
+    }
+  ]
+}
